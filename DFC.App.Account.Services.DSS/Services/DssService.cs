@@ -15,15 +15,14 @@ namespace DFC.App.Account.Services.DSS.Services
     {
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
-        private const string CustomerUrl = "/customers/api/Customers/";
 
         public DssService(IOptions<DssSettings> settings)
         {
             Throw.IfNull(settings, nameof(settings));
-            Throw.IfNullOrWhiteSpace(settings.Value.ApiUrl, nameof(settings.Value.ApiUrl));
+            Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiUrl, nameof(settings.Value.CustomerApiUrl));
             Throw.IfNullOrWhiteSpace(settings.Value.ApiKey, nameof(settings.Value.ApiKey));
             Throw.IfNullOrWhiteSpace(settings.Value.AccountsTouchpointId, nameof(settings.Value.AccountsTouchpointId));
-            Throw.IfNullOrWhiteSpace(settings.Value.Version, nameof(settings.Value.Version));
+            Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiVersion, nameof(settings.Value.CustomerApiVersion));
             _restClient = new RestClient();
             _dssSettings = settings;
 
@@ -33,10 +32,10 @@ namespace DFC.App.Account.Services.DSS.Services
         {
             Throw.IfNull(restClient, nameof(restClient));
             Throw.IfNull(settings, nameof(settings));
-            Throw.IfNullOrWhiteSpace(settings.Value.ApiUrl, nameof(settings.Value.ApiUrl));
+            Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiUrl, nameof(settings.Value.CustomerApiUrl));
             Throw.IfNullOrWhiteSpace(settings.Value.ApiKey, nameof(settings.Value.ApiKey));
             Throw.IfNullOrWhiteSpace(settings.Value.AccountsTouchpointId, nameof(settings.Value.AccountsTouchpointId));
-            Throw.IfNullOrWhiteSpace(settings.Value.Version, nameof(settings.Value.Version));
+            Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiVersion, nameof(settings.Value.CustomerApiVersion));
             _restClient = restClient;
             _dssSettings = settings;
 
@@ -50,9 +49,10 @@ namespace DFC.App.Account.Services.DSS.Services
                 JsonConvert.SerializeObject(customerData),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
-            postData = AddRequestHeaders(postData);
-            
-            var result = await _restClient.PostAsync<Customer>($"{_dssSettings.Value.ApiUrl}{CustomerUrl}", postData, _dssSettings.Value.ApiKey);
+            postData = AddDefaultRequestHeaders(postData);
+            postData.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+            var result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, postData, _dssSettings.Value.ApiKey);
             if (_restClient.LastResponse.IsSuccess)
             {
                 return result;
@@ -61,10 +61,9 @@ namespace DFC.App.Account.Services.DSS.Services
             return null;
 
         }
-        private StringContent AddRequestHeaders(StringContent content)
+        private StringContent AddDefaultRequestHeaders(StringContent content)
         {
             content.Headers.Add("TouchpointId", _dssSettings.Value.AccountsTouchpointId);
-            content.Headers.Add("version", _dssSettings.Value.Version);
             content.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
             return content;
         }

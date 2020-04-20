@@ -2,9 +2,9 @@
 {
     public class DssSettings
     {
-        public string ApiUrl { get; set; }
-        public string ApiKey { get; set; }
+        public string CustomerApiUrl { get; set; }
+        public string CustomerApiVersion { get; set; }
         public string AccountsTouchpointId { get; set; }
-        public string Version { get; set; }
+        public string ApiKey { get; set; }
     }
 }
