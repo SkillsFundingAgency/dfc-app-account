@@ -25,7 +25,7 @@ namespace DFC.App.Account.Services.DSS.Models
         public DateTime LastModifiedDate { get; set; }
         public string LastModifiedTouchpointId { get; set; }
         public Address[] Addresses { get; set; }
-        public Contact[] Contacts { get; set; }
+        public Contact Contacts { get; set; }
     }
 
 }
