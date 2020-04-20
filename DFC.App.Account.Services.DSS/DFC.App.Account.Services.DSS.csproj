@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.22" />
+    <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
   </ItemGroup>
 
 </Project>
