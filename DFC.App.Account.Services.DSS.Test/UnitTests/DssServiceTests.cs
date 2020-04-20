@@ -24,12 +24,21 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             {
                 ApiKey = "9238dfjsjdsidfs83fds",
                 ApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                Version = "V1"
             }));
         }
 
         [Test]
         public async Task IfCustomerIsNull_ReturnNull()
         {
+            _dssService = new DssService(Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                ApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                Version = "V1"
+            }));
             var result = await _dssService.CreateCustomerData(null);
             result.Should().BeNull();
         }
@@ -48,6 +57,8 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             {
                 ApiKey = "9238dfjsjdsidfs83fds",
                 ApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9001",
+                Version = "v1"
             }));
 
             var result = await _dssService.CreateCustomerData(new Customer());
