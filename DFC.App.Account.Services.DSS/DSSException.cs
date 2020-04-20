@@ -4,9 +4,9 @@ using System.Text;
 
 namespace DFC.App.Account.Services.DSS
 {
-    public class DSSException : Exception
+    public class DssException : Exception
     {
-        public DSSException(string message)
+        public DssException(string message)
             :base(message)
         { }
 

@@ -17,11 +17,11 @@ namespace DFC.App.Account.Services.DSS.Models
         public string AlternativePostCode { get; set; }
         public float Longitude { get; set; }
         public float Latitude { get; set; }
-        public object EffectiveFrom { get; set; }
-        public DateTime EffectiveTo { get; set; }
-        public DateTime LastModifiedDate { get; set; }
+        public DateTimeOffset EffectiveFrom { get; set; }
+        public DateTimeOffset? EffectiveTo { get; set; }
+        public DateTimeOffset LastModifiedDate { get; set; }
         public string LastModifiedTouchpointId { get; set; }
-        public object SubcontractorId { get; set; }
+        public string SubcontractorId { get; set; }
     }
 
 }
