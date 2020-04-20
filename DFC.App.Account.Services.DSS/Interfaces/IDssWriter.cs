@@ -6,6 +6,6 @@ namespace DFC.App.Account.Services.DSS.Interfaces
 {
     public interface IDssWriter
     {
-        Task<HttpResponseMessage> CreateCustomerData(Customer customerData);
+        Task<Customer> CreateCustomerData(Customer customerData);
     }
 }

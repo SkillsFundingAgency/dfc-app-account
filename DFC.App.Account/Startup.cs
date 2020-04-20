@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DFC.App.Account.Services.DSS.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
+using DFC.App.Account.Services.DSS.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +27,8 @@ namespace DFC.App.Account
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IDssWriter, DssService>();
+            services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

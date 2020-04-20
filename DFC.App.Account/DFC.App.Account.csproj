@@ -3,4 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ProjectGuid>{79FB0A7E-3102-4EDB-80C5-E38AD61709B1}</ProjectGuid>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
+  </ItemGroup>
 </Project>
