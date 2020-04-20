@@ -26,7 +26,7 @@ namespace DFC.App.Account.UnitTests.Integration
                     .UseConfiguration(
                         (new ConfigurationBuilder()
                             .SetBasePath(projectDir)
-                            .AddJsonFile("appsettings.json")
+                            .AddJsonFile("appsettings-template.json")
                             .Build()
                         )));
             _client = _factory.CreateClient();
