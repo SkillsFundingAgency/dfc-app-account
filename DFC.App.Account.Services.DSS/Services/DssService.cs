@@ -47,15 +47,19 @@ namespace DFC.App.Account.Services.DSS.Services
             if(customerData == null)
                 return null;
 
-            
-            var request = await CreateRequestMessage();
-            request.Content = new StringContent(
-                JsonConvert.SerializeObject(customerData),
-                Encoding.UTF8,
-                MediaTypeNames.Application.Json);
-            request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
-            var result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
+            Customer result;
+            using (var request = CreateRequestMessage())
+            {
+                request.Content = new StringContent(
+                    JsonConvert.SerializeObject(customerData),
+                    Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+                result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
+            }
+
             if (_restClient.LastResponse.IsSuccess)
             {
                 return result;
@@ -68,7 +72,7 @@ namespace DFC.App.Account.Services.DSS.Services
         public async Task<Customer> GetCustomerData(string customerId)
         {
             
-            var request = await CreateRequestMessage();
+            var request = CreateRequestMessage();
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
             var customer = new Customer();
@@ -81,7 +85,7 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        private async Task<HttpRequestMessage> CreateRequestMessage()
+        private HttpRequestMessage CreateRequestMessage()
         {
             var request = new HttpRequestMessage();
             request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
