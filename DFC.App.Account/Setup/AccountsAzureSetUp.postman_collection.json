@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d734ad5b-925e-497a-99fe-e9201d6b4632",
+		"_postman_id": "218a220f-b783-4cb5-805e-3ba2f320985a",
 		"name": "AccountsAzureSetUp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"accounts\",\n    \"TopNavigationText\": \"Accounts\",\n    \"TopNavigationOrder\": 400,\n    \"Layout\": \"FullWidth\",\n    \"IsOnline\": true,\n    \"OfflineHtml\": \"<H2>Match Skills Service Unavailable</H2>\"\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n    \"TopNavigationText\": \"Accounts\",\n    \"TopNavigationOrder\": 400,\n    \"Layout\": \"FullWidth\",\n    \"IsOnline\": true,\n    \"OfflineHtml\": \"<H2>Match Skills Service Unavailable</H2>\"\n}"
 				},
 				"url": {
 					"raw": "{{PathRootUrl}}paths?=",
@@ -56,12 +56,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{PathRootUrl}}paths/accounts",
+					"raw": "{{PathRootUrl}}paths/your-account",
 					"host": [
 						"{{PathRootUrl}}paths"
 					],
 					"path": [
-						"accounts"
+						"your-account"
 					]
 				}
 			},
@@ -81,15 +81,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \r\n\t\"Path\": \"accounts\",\r\n\t\"PageRegion\": \"Head\",\r\n    \"RegionEndpoint\": \"https://localhost:44355/head/{0}\",\r\n    \"HeathCheckRequired\": false,\r\n    \"OfflineHtml\": null,\r\n    \"IsHealthy\": true,\r\n    \"IsOnline\": true\r\n}"
+					"raw": "{     \r\n\t\"Path\": \"your-account\",\r\n\t\"PageRegion\": \"Head\",\r\n    \"RegionEndpoint\": \"https://localhost:44355/head/{0}\",\r\n    \"HeathCheckRequired\": false,\r\n    \"OfflineHtml\": null,\r\n    \"IsHealthy\": true,\r\n    \"IsOnline\": true\r\n}"
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
@@ -116,12 +116,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
@@ -142,15 +142,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \r\n\t\"Path\": \"accounts\", \r\n\t\"PageRegion\": \"Breadcrumb\",\r\n    \"RegionEndpoint\": \"https://localhost:44355/breadcrumb/{0}\",\r\n    \"HeathCheckRequired\": false,\r\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\r\n    \"IsHealthy\": true,\r\n    \"IsOnline\": true\r\n}"
+					"raw": "{     \r\n\t\"Path\": \"your-account\", \r\n\t\"PageRegion\": \"Breadcrumb\",\r\n    \"RegionEndpoint\": \"https://localhost:44355/breadcrumb/{0}\",\r\n    \"HeathCheckRequired\": false,\r\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\r\n    \"IsHealthy\": true,\r\n    \"IsOnline\": true\r\n}"
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
@@ -171,15 +171,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"accounts\",\n\t\"PageRegion\": \"Body\",\n    \"RegionEndpoint\": \"https://localhost:44355/body/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"Body\",\n    \"RegionEndpoint\": \"https://localhost:44355/body/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
@@ -200,15 +200,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"accounts\",\n\t\"PageRegion\": \"BodyTop\",\n    \"RegionEndpoint\": \"https://localhost:44355/bodytop/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"BodyTop\",\n    \"RegionEndpoint\": \"https://localhost:44355/bodytop/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
@@ -229,15 +229,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"accounts\",\n\t\"PageRegion\": \"SideBarRight\",\n    \"RegionEndpoint\": \"https://localhost:44355/sidebarright/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"SideBarRight\",\n    \"RegionEndpoint\": \"https://localhost:44355/sidebarright/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
-					"raw": "{{RegionRootUrl}}paths/accounts/regions",
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
 					"host": [
 						"{{RegionRootUrl}}paths"
 					],
 					"path": [
-						"accounts",
+						"your-account",
 						"regions"
 					]
 				}
