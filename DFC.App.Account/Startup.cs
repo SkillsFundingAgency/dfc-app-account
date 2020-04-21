@@ -33,26 +33,23 @@ namespace DFC.App.Account
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
-            app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseExceptionHandler("/Home/Error");
+
+            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute("yourDetails", appPath + "/your-account/your-details", new {controller = "yourDetails", action = "body"});
-                endpoints.MapControllerRoute("yourAccount", appPath + "/your-account/home", new {controller = "yourAccount", action = "body"});
-                endpoints.MapControllerRoute("closeAccount", appPath + "/your-account/close-your-account", new {controller = "closeAccount", action = "body"});
-                endpoints.MapControllerRoute("editDetails", appPath + "/your-account/edit-your-details", new {controller = "editDetails", action = "body"});
-                endpoints.MapControllerRoute("changePassword", appPath + "/your-account/change-password", new {controller = "changePassword", action = "body"});
+                endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
+                endpoints.MapControllerRoute("yourAccount", appPath + "/home", new {controller = "yourAccount", action = "body"});
+                endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeAccount", action = "body"});
+                endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
+                endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
 
             });
 
