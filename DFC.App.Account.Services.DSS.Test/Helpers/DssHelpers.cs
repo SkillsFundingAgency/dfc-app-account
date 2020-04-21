@@ -50,5 +50,6 @@ namespace DFC.App.Account.Services.DSS.UnitTests.Helpers
                 .Verifiable();
             return handlerMock;
         }
+
     }
 }
