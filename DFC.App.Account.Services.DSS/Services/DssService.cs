@@ -42,14 +42,15 @@ namespace DFC.App.Account.Services.DSS.Services
             _dssSettings = settings;
 
         }
+
         public async Task<Customer> CreateCustomerData(Customer customerData)
         {
-            if(customerData == null)
+            if (customerData == null)
                 return null;
 
 
             Customer result;
-            using (var request = CreateRequestMessage())
+            using (var request = CreateRequestMessage(HttpMethod.Post))
             {
                 request.Content = new StringContent(
                     JsonConvert.SerializeObject(customerData),
@@ -60,24 +61,35 @@ namespace DFC.App.Account.Services.DSS.Services
                 result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
             }
 
-            if (_restClient.LastResponse.IsSuccess)
+            return _restClient.LastResponse.IsSuccess ? result : null;
+        }
+        public async Task<Customer> UpdateCustomerData(Customer customerData)
+        {
+            if (customerData == null)
+                return null;
+
+            Customer result;
+            using (var request = CreateRequestMessage(HttpMethod.Patch))
             {
-                return result;
+                request.Content = new StringContent(
+                    JsonConvert.SerializeObject(customerData),
+                    Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+                result = await _restClient.PatchAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", request);
             }
 
-            return null;
-
+            return _restClient.LastResponse.IsSuccess ? result : null;
         }
 
         public async Task<Customer> GetCustomerData(string customerId)
         {
-            
-            var request = CreateRequestMessage();
+
+            var request = CreateRequestMessage(HttpMethod.Get);
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
-            var customer = new Customer();
-            
-            customer = await GetCustomerDetail(customerId, request);
+            var customer = await GetCustomerDetail(customerId, request);
             customer.Addresses = await GetCustomerAddressDetails(customerId, request);
             customer.Contact = await GetCustomerContactDetails(customerId, request);
 
@@ -85,12 +97,13 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        private HttpRequestMessage CreateRequestMessage()
+        private HttpRequestMessage CreateRequestMessage(HttpMethod method)
         {
             var request = new HttpRequestMessage();
+            request.Method = method;
             request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
             request.Headers.Add("TouchpointId", _dssSettings.Value.AccountsTouchpointId);
-            
+
             return request;
         }
 
@@ -99,7 +112,8 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                return await  _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}", request);
+                return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
+                    request);
             }
             catch (Exception e)
             {
@@ -107,12 +121,14 @@ namespace DFC.App.Account.Services.DSS.Services
             }
 
         }
+
         public async Task<Address[]> GetCustomerAddressDetails(string customerId, HttpRequestMessage request)
         {
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-                return await  _restClient.GetAsync<Address[]>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}",customerId), request);
+                return await _restClient.GetAsync<Address[]>(
+                    _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
             }
             catch (Exception e)
             {
@@ -121,7 +137,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 else
                     throw new DssException("Failure Address, Code:" + _restClient.LastResponse.StatusCode);
             }
-            
+
         }
 
         public async Task<Contact> GetCustomerContactDetails(string customerId, HttpRequestMessage request)
@@ -129,7 +145,8 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
-                return await  _restClient.GetAsync<Contact>(_dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}",customerId), request);
+                return await _restClient.GetAsync<Contact>(
+                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request);
             }
             catch (Exception e)
             {
@@ -138,7 +155,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 else
                     throw new DssException("Failure Contact, Code:" + _restClient.LastResponse.StatusCode);
             }
-                
+
         }
     }
 }
