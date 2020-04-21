@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,27 +46,71 @@ namespace DFC.App.Account.Services.DSS.Services
             if(customerData == null)
                 return null;
 
-            var postData = new StringContent(
-                JsonConvert.SerializeObject(customerData),
-                Encoding.UTF8,
-                MediaTypeNames.Application.Json);
-            postData = AddDefaultRequestHeaders(postData);
-            postData.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-
-            var result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, postData, _dssSettings.Value.ApiKey);
-            if (_restClient.LastResponse.IsSuccess)
+            try
             {
-                return result;
+                var postData = new StringContent(
+                    JsonConvert.SerializeObject(customerData),
+                    Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+
+                var request = BuildRequestMessage(HttpMethod.Post);
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                request.Content = postData;
+
+                var result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
+                if (_restClient.LastResponse.IsSuccess)
+                {
+                    return result;
+                }
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception($"CreateCustomerDetail failure. Code: {_restClient.LastResponse.StatusCode}");
             }
 
             return null;
-
         }
-        private StringContent AddDefaultRequestHeaders(StringContent content)
+
+        public async Task<Customer> UpdateCustomerData(Customer customerData)
         {
-            content.Headers.Add("TouchpointId", _dssSettings.Value.AccountsTouchpointId);
-            content.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
-            return content;
+            if (customerData == null)
+                return null;
+
+            try
+            {
+                var postData = new StringContent(
+                    JsonConvert.SerializeObject(customerData),
+                    Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+
+                var request = BuildRequestMessage(HttpMethod.Patch);
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                request.Content = postData;
+
+                var result = await _restClient.PatchAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
+                if (_restClient.LastResponse.IsSuccess)
+                {
+                    return result;
+                }
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception($"UpdateCustomerData failure. Code: {_restClient.LastResponse.StatusCode}");
+            }
+
+            return null;
+        }
+
+        private HttpRequestMessage BuildRequestMessage(HttpMethod method)
+        {
+            var request = new HttpRequestMessage();
+            request.Method = method;
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
+            request.Headers.Add("TouchpointId", _dssSettings.Value.AccountsTouchpointId);
+
+            return request;
         }
     }
 }
