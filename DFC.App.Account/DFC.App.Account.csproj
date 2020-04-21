@@ -7,6 +7,9 @@
     <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Setup\" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
