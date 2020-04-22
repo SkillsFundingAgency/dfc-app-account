@@ -1,12 +1,9 @@
-﻿using FluentAssertions;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using System.IO;
+using System.Net.Http;
 
 namespace DFC.App.Account.UnitTests.Integration
 {
@@ -39,11 +36,5 @@ namespace DFC.App.Account.UnitTests.Integration
             _factory.Dispose();
         }
 
-        [Test]
-        public async Task Tdd()
-        {
-            var result = await _client.GetAsync("/home/index");
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
     }
 }
