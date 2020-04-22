@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using FluentAssertions;
@@ -9,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests
@@ -23,8 +19,8 @@ namespace DFC.App.Account.UnitTests
         [SetUp]
         public void Init()
         {
-            
             _compositeSettings = Options.Create(new CompositeSettings());
+            _logger = new Logger<ErrorController>(new LoggerFactory());
         }
 
         [Test]

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.ViewModels
@@ -13,9 +8,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
      [TestFixture]
     public class CompositeViewModelUnitTests
     {
-        private IOptions<CompositeSettings> _compositeSettings;
-
-
+        
         [TestFixture]
         public class PageId
         {
