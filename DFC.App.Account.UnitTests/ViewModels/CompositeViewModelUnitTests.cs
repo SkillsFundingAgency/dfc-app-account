@@ -15,14 +15,6 @@ namespace DFC.App.Account.UnitTests.ViewModels
     {
         private IOptions<CompositeSettings> _compositeSettings;
 
-        [SetUp]
-        public void Init()
-        {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-            _compositeSettings = Options.Create(config.GetSection("CompositeSettings").Get<CompositeSettings>());
-        }
 
         [TestFixture]
         public class PageId
