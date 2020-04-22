@@ -1,3 +1,5 @@
+using Castle.Core.Logging;
+using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account
 {
@@ -21,22 +24,31 @@ namespace DFC.App.Account
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             services.AddControllersWithViews();
             services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-            app.UseExceptionHandler("/home/error");
+
+            app.UseExceptionHandler(errorApp =>
+                errorApp.Run(async context =>
+                {
+                    await ErrorService.LogException(context, logger);
+                    context.Response.Redirect(appPath + "/Error");
+                }));
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
