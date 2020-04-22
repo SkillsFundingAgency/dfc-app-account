@@ -15,7 +15,7 @@ namespace DFC.App.Account.Controllers
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings)
         {
             ViewModel = new TViewModel()
             {
