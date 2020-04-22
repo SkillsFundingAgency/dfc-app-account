@@ -1,0 +1,11 @@
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.CompositeViewModel
+
+@if (null == Model)
+{
+    <title>@CompositeViewModel.AppTitle</title>
+}
+else
+{
+    <title>@Model.PageTitle</title>
+}

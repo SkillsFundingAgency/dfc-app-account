@@ -8,8 +8,7 @@ using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.Account.ViewModels
 {
-   
-         public abstract class CompositeViewModel
+    public abstract class CompositeViewModel
     {
         public static string AppTitle => "Your Account";
 
@@ -29,7 +28,6 @@ namespace DFC.App.Account.ViewModels
             public string Value { get; }
 
             public static PageId Home { get; } = new PageId("home");
-           
         }
 
         public class PageRegion
@@ -38,18 +36,18 @@ namespace DFC.App.Account.ViewModels
             {
                 Value = value;
             }
+
             public override string ToString()
             {
                 return Value;
             }
+
             public string Value { get; }
             public static PageRegion Body { get; } = new PageRegion("body");
-
         }
 
         public PageId Id { get; }
 
-        
         public string PageTitle { get; }
         public string PageHeading { get; }
 
@@ -88,4 +86,3 @@ namespace DFC.App.Account.ViewModels
         #endregion Helpers
     }
 }
-

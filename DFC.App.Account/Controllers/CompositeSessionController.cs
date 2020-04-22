@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.Controllers
 {
@@ -11,10 +12,10 @@ namespace DFC.App.Account.Controllers
     /// <summary>
     /// Adds default Composite UI endpoints and routing logic to the base session controller.
     /// </summary>
-    public abstract class CompositeSessionController<TViewModel> where TViewModel : CompositeViewModel, new()
+    public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings)
+        protected CompositeSessionController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings)
         {
             ViewModel = new TViewModel()
             {

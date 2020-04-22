@@ -36,7 +36,7 @@ namespace DFC.App.Account
 
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-            app.UseExceptionHandler("/Home/Error");
+            app.UseExceptionHandler("/home/error");
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
