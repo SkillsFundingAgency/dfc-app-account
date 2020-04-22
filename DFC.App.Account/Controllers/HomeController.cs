@@ -13,7 +13,7 @@ namespace DFC.App.Account.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings)
-        :base(logger,compositeSettings)
+        :base(compositeSettings)
         {
             _logger = logger;
         }
