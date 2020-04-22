@@ -1,5 +1,3 @@
-using System;
-
 namespace DFC.App.Account.Models
 {
     public class ErrorViewModel

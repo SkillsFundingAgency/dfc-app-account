@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Logging;
+﻿using System.Threading.Tasks;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
@@ -11,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests
@@ -25,6 +20,7 @@ namespace DFC.App.Account.UnitTests
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
         }
         [Test]
