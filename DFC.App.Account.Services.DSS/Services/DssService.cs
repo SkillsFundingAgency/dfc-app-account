@@ -63,6 +63,7 @@ namespace DFC.App.Account.Services.DSS.Services
 
             return _restClient.LastResponse.IsSuccess ? result : null;
         }
+
         public async Task<Customer> UpdateCustomerData(Customer customerData)
         {
             if (customerData == null)
