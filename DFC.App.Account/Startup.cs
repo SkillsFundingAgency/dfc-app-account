@@ -57,7 +57,7 @@ namespace DFC.App.Account
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
-                endpoints.MapControllerRoute("yourAccount", appPath + "/home", new {controller = "yourAccount", action = "body"});
+                endpoints.MapControllerRoute("yourAccount", appPath + "/your-account", new {controller = "yourAccount", action = "body"});
                 endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeAccount", action = "body"});
                 endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});

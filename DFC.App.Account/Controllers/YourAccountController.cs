@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DFC.App.Account.Models;
+using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    public class YourAccountController : Controller
+    public class YourAccountController : CompositeSessionController<YourAccountCompositeViewModel>
     {
-        public IActionResult Body()
+        public YourAccountController(ILogger logger, IOptions<CompositeSettings> compositeSettings) : base(logger, compositeSettings)
+        {
+            
+        }
+        public override async Task<IActionResult> Body()
         {
             return View();
         }

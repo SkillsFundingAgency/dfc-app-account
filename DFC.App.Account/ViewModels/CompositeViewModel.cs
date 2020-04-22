@@ -28,6 +28,7 @@ namespace DFC.App.Account.ViewModels
             public string Value { get; }
 
             public static PageId Home { get; } = new PageId("home");
+            public static PageId YourAccount { get; } = new PageId("yourAccount");
         }
 
         public class PageRegion
