@@ -1,6 +1,6 @@
 [
     {
-        "Path": "your-account",
+        "Path": "accounts",
         "TopNavigationText": "Accounts",
         "TopNavigationOrder": 400,
         "Layout": "FullWidth",
