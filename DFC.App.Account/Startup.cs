@@ -50,7 +50,6 @@ namespace DFC.App.Account
                     context.Response.Redirect(appPath + "/Error");
                 }));
 
-            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
             app.UseRouting();
 
