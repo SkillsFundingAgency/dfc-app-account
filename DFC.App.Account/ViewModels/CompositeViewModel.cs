@@ -26,6 +26,8 @@ namespace DFC.App.Account.ViewModels
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
             public static PageId YourAccount { get; } = new PageId("yourAccount");
+            public static PageId ChangePassword { get; } = new PageId("changePassword");
+            public static PageId CloseAccount { get; } = new PageId("closeAccount");
         }
 
         public class PageRegion
