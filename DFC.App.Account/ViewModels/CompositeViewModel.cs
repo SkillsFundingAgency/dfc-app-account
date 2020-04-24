@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.Personalisation.Common.Extensions;
-using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.Account.ViewModels
 {

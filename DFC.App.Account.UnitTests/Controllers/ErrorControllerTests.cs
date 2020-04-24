@@ -23,7 +23,7 @@ namespace DFC.App.Account.UnitTests
         [SetUp]
         public void Init()
         {
-            
+            _logger = Substitute.For<ILogger<ErrorController>>();
             _compositeSettings = Options.Create(new CompositeSettings());
         }
 

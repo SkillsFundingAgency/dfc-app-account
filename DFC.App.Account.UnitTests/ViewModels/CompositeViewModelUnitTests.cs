@@ -13,8 +13,6 @@ namespace DFC.App.Account.UnitTests.ViewModels
      [TestFixture]
     public class CompositeViewModelUnitTests
     {
-        private IOptions<CompositeSettings> _compositeSettings;
-
 
         [TestFixture]
         public class PageId

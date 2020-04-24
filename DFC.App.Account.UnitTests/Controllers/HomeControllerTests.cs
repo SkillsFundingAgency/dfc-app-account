@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Logging;
-using DFC.App.Account.Controllers;
+﻿using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
@@ -13,10 +8,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests
 {
-     public class HomeControllerTests
+    public class HomeControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<HomeController> _logger;
@@ -26,6 +22,7 @@ namespace DFC.App.Account.UnitTests
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
+            _logger = Substitute.For<ILogger<HomeController>>();
         }
         [Test]
         public void WhenHeadCalled_ReturnHtml()
