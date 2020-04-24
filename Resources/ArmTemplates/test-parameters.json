@@ -1,0 +1,39 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appSharedResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "apimProxyAddress": {
+            "value": "https://foo.api.nationalcareersservice.org.uk"
+        },
+        "apimDSSApiKey": {
+            "value": "not-a-real-key"
+        },
+        "appSharedStorageAccountName": {
+            "value": "dfcdevappsharedstr"
+        },
+        "cosmosDBName": {
+            "value": "dfc-dev-app-sharedresources-cdb"
+        },
+        "cosmosDbKey": {
+            "value": "not-a-real-key"
+        },
+        "Environment": {
+            "value": "FOO"
+        },
+        "sharedAppServicePlanName": {
+            "value": "dfc-dev-app-shared-asp"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "cosmosDbCollectionName": {
+            "value": "a-collection"
+        },
+        "enableAlerts": {
+            "value": false
+        }
+    }
+}
