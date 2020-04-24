@@ -78,7 +78,7 @@ namespace DFC.App.Account.Services.DSS.Services
                     MediaTypeNames.Application.Json);
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
-                result = await _restClient.PatchAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", request);
+                result = await _restClient.PatchAsync<Customer>(apiPath:$"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", requestMessage: request);
             }
 
             return _restClient.LastResponse.IsSuccess ? result : null;
