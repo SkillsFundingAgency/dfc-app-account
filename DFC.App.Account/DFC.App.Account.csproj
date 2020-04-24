@@ -1,6 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ProjectGuid>{79FB0A7E-3102-4EDB-80C5-E38AD61709B1}</ProjectGuid>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Setup\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.28" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
 </Project>
