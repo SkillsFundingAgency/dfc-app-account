@@ -4,6 +4,7 @@ using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +27,7 @@ namespace DFC.App.Account
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
+            services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
         }
@@ -50,12 +52,21 @@ namespace DFC.App.Account
                 }));
 
 
+
             app.UseRouting();
+           
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                #region YourDetails Routing
                 endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
+                endpoints.MapControllerRoute("yourDetails",  "/body/your-details", new {controller = "yourDetails", action = "body"});
+                endpoints.MapControllerRoute("yourDetails",  "/head/your-details", new {controller = "yourDetails", action = "head"});
+                // endpoints.MapControllerRoute("yourDetails",  "/bodytop/your-details", new {controller = "yourDetails", action = "bodytop"});
+                // endpoints.MapControllerRoute("yourDetails",  "/breadcrumb/your-details", new {controller = "yourDetails", action = "breadcrumb"});
+                #endregion
                 endpoints.MapControllerRoute("yourAccount", appPath + "/home", new {controller = "yourAccount", action = "body"});
                 endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeAccount", action = "body"});
                 endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});

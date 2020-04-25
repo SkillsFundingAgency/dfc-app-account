@@ -1,5 +1,105 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using DFC.App.Account.Models
+@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.YourDetailsCompositeViewModel
+
+
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="heading-xlarge">Your details</h1>
+        <h2 class="heading-medium">Your personal details</h2>
+        <div class="govuk-form-group">
+            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditYourDetails" class="form-group mt" method="get">
+                <div class="govuk-form-group">
+                    <table class="check-your-answers" role="presentation">
+                        <tbody>
+                            <tr>
+                                <td><label for="Identity_PersonalDetails_Title">Title</label></td>
+                                <td>@Model.CustomerDetails.Title</td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_PersonalDetails_GivenName">First name</label></td>
+                                <td>@Model.CustomerDetails.GivenName</td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_PersonalDetails_FamilyName">Last name</label></td>
+                                <td>@Model.CustomerDetails.FamilyName</td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_PersonalDetails_DateOfBirth">Date of birth</label></td>
+                                <td>@Convert.ToDateTime(Model.CustomerDetails.DateofBirth).ToString("dd-MM-yyyy")</td>
+
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_PersonalDetails_Gender">Gender</label></td>
+                                <td>@Model.CustomerDetails.Gender</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>
+                                    @{
+                                        if (Model.CustomerDetails.Addresses != null && Model.CustomerDetails.Addresses.Length > 0)
+                                        {
+                                            <div>@Model.CustomerDetails.Addresses[0].Address1</div>
+                                            <div>@Model.CustomerDetails.Addresses[0].Address2</div>
+                                            <div>@Model.CustomerDetails.Addresses[0].Address3</div>
+                                            <div>@Model.CustomerDetails.Addresses[0].Address4</div>
+                                            <div>@Model.CustomerDetails.Addresses[0].Address5</div>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2 class="heading-medium">Your contact details</h2>
+                    <table class="check-your-answers" role="presentation">
+                        <tbody>
+                            <tr>
+                                <td><label for="Identity_ContactDetails_ContactEmail">Email address</label></td>
+                                <td><a href="mailto:@Model.CustomerDetails.Contact.EmailAddress"> @Model.CustomerDetails.Contact.EmailAddress</a></td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_ContactDetails_TelephoneNumber">Phone number</label></td>
+                                <td>@(Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.MobileNumber)</td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_ContactDetails_TelephoneNumberAlternative">Alternative phone number</label></td>
+                                <td>@(Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.AlternativeNumber)</td>
+                            </tr>
+                            <tr>
+                                <td><label for="Identity_ContactDetails_ContactPreference">Contact by</label></td>
+                                <td>@(Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.PreferredContactMethod.ToString())</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2 class="heading-medium">Your marketing preferences</h2>
+                    <p>I agree to the following:</p>
+
+                    <legend class="govuk-visually-hidden">
+                        Your marketing preferences
+                    </legend>
+                    <div class="form-group govuk-checkboxes govuk-checkboxes--small">
+
+                        <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
+                                       label="To receive marketing from the National Careers Service’s trusted partners"
+                                       AdditionalClass="checkbox-container-item govuk-checkboxes"
+                                       checked="@Model.CustomerDetails.OptInUserResearch">
+                        </govukCheckbox>
+
+                        <govukCheckbox id="@Model.GetElementId("govukCheckBox", "market-research")"
+                                       label="The National Careers Service can contact me for market research"
+                                       AdditionalClass="checkbox-container-item govuk-checkboxes"
+                                       checked="@Model.CustomerDetails.OptInMarketResearch" >
+                        </govukCheckbox>
+                    </div>
+                </div>
+                <div>
+                    <govukButton id="@Model.GetElementId("govukButton", "Edit")" text="Edit your details" />
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+<div class="govuk-grid-column-one-third">
+    <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
+</div>

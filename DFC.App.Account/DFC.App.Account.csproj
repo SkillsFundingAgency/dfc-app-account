@@ -7,11 +7,15 @@
     <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Handlers\" />
     <Folder Include="Setup\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.28" />
+    <PackageReference Include="Glimpse" Version="1.8.6" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 </Project>
