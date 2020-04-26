@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using DFC.App.Account.Helpers;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace DFC.App.Account
 {
@@ -17,6 +19,7 @@ namespace DFC.App.Account
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+           
         }
 
         public IConfiguration Configuration { get; }
@@ -30,6 +33,12 @@ namespace DFC.App.Account
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
+
+            services.AddMvc().AddMvcOptions(options =>
+            {
+                options.Conventions.Add(new RouteTokenTransformerConvention(
+                    new HyphenControllerTransformer()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,20 +67,12 @@ namespace DFC.App.Account
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-
-                #region YourDetails Routing
                 endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
-                endpoints.MapControllerRoute("yourDetails",  "/body/your-details", new {controller = "yourDetails", action = "body"});
-                endpoints.MapControllerRoute("yourDetails",  "/head/your-details", new {controller = "yourDetails", action = "head"});
-                // endpoints.MapControllerRoute("yourDetails",  "/bodytop/your-details", new {controller = "yourDetails", action = "bodytop"});
-                // endpoints.MapControllerRoute("yourDetails",  "/breadcrumb/your-details", new {controller = "yourDetails", action = "breadcrumb"});
-                #endregion
                 endpoints.MapControllerRoute("yourAccount", appPath + "/home", new {controller = "yourAccount", action = "body"});
                 endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeAccount", action = "body"});
                 endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
-
+                endpoints.MapControllers();
             });
 
         }
