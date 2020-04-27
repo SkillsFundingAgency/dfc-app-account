@@ -32,6 +32,9 @@
         "cosmosDbCollectionName": {
             "value": "a-collection"
         },
+        "accountAppDatabaseNeedsCreation": {
+            "value": true
+        },
         "enableAlerts": {
             "value": false
         }

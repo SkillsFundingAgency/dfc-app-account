@@ -57,6 +57,9 @@
                 "description": "The name of the collection to create"
             }
         },
+        "accountAppDatabaseNeedsCreation": {
+            "type": "bool"
+        },
         "enableAlerts": {
             "type": "bool",
             "metadata": {
@@ -258,6 +261,9 @@
                     },
                     "partitionKey": {
                         "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                    },
+                    "databaseNeedsCreation": {
+                        "value": "[parameters('accountAppDatabaseNeedsCreation')]"
                     }
                 }
             }
