@@ -15,6 +15,7 @@ namespace DFC.App.Account.Controllers
         protected TViewModel ViewModel { get; }
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings)
         {
+            
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,

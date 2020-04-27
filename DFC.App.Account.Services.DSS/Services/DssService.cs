@@ -128,8 +128,7 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-                return await _restClient.GetAsync<Address[]>(
-                    _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
+                return await _restClient.GetAsync<Address[]>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
             }
             catch (Exception e)
             {
@@ -147,12 +146,12 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
                 return await _restClient.GetAsync<Contact>(
-                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request);
+                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request)??new Contact();
             }
             catch (Exception e)
             {
                 if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
-                    return null;
+                    return new Contact();
                 else
                     throw new DssException("Failure Contact, Code:" + _restClient.LastResponse.StatusCode);
             }

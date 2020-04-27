@@ -1,38 +1,56 @@
-﻿using DFC.App.Account.Controllers;
+﻿using System;
+using System.Threading.Tasks;
+using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
+using DFC.App.Account.Services.DSS.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
+using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NSubstitute;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
-    public class YourDetailsControllerTests
+    class YourDetailsControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
-
-
+        private IDssReader _dssService;
+        private ILogger<YourDetailsController> _logger;
+        private YourDetailsController _controller;
+        private Customer _customer;
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
+            _dssService = Substitute.For<IDssReader>();
+            _customer = new Customer()
+            {
+                Addresses = new []{new Address() {Address1 = "Line 1"}},
+                Contact = new Contact() {ContactId = "id",EmailAddress = "email"},
+                OptInMarketResearch = true,
+                OptInUserResearch = true,
+                GivenName = "First Name",
+                CustomerId = Guid.Parse("a9dacf19-d11f-45b6-a958-8a4cf24f1407"),
+                FamilyName = "Surname"
+            };
         }
+
+       
 
         [Test]
-        public async Task WhenBodyCalled_ReturnHtml()
+        public async Task WhenBodyCalled_ReturnCustomer()
         {
-            var controller = new YourDetailsController(_compositeSettings);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-
-            var result = await controller.Body() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
+            _dssService.GetCustomerData(Arg.Any<string>()).Returns(_customer);
+            _controller = new YourDetailsController(_logger, _compositeSettings, _dssService);
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var result = await _controller.Body("somecustomerid") as ViewResult;
+            result.ViewData.Model.As<YourDetailsCompositeViewModel>().CustomerDetails.Should().NotBeNull();
         }
+
+
     }
 }

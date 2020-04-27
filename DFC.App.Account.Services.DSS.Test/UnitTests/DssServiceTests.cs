@@ -121,15 +121,6 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             result.Should().NotBeNull();
         }
 
-        [Test]
-        public async Task When_GetCustomerContactDetailsWithNoData_Return_NullContact () 
-        {
-            var mockHandler = DssHelpers.GetMockMessageHandler("", statusToReturn: HttpStatusCode.NoContent);
-            _restClient = new RestClient(mockHandler.Object);
-            _dssService = new DssService(_restClient, _dssSettings);
-            var result = await _dssService.GetCustomerContactDetails("993cfb94-12b7-41c4-b32d-7be9331174f1",new HttpRequestMessage());
-            result.Should().BeNull();
-        }
 
         [Test]
         public async Task When_GetCustomerAddressDetails_Return_NullAddress () 

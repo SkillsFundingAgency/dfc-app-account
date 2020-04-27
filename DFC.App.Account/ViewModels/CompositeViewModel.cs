@@ -1,6 +1,6 @@
-﻿using Dfc.ProviderPortal.Packages;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.Personalisation.Common.Extensions;
+using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.Account.ViewModels
 {
