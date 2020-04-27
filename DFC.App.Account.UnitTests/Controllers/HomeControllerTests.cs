@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
@@ -21,6 +20,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
         }
