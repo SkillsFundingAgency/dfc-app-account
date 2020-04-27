@@ -34,6 +34,9 @@
             "type": "string",
             "defaultValue": ""
         },
+        "CosmosDbResourceGroup": {
+            "type": "string"
+        },
         "cosmosDbName": {
             "type": "string"
         },
@@ -57,6 +60,13 @@
                 "description": "The name of the collection to create"
             }
         },
+        "accountAppDatabaseNeedsCreation": {
+            "type": "bool"
+        },
+        "accountAppDatabaseThroughput": {
+            "type": "int"
+        },
+
         "enableAlerts": {
             "type": "bool",
             "metadata": {
@@ -233,10 +243,40 @@
             ]
         },
         {
+            "name": "[variables('CosmosDbDatabaseName')]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+            "apiVersion": "2017-05-10",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'),'CosmosDb/cosmos-database.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "accountName": {
+                        "value": "[parameters('CosmosDbName')]"
+                    },
+                    "databaseName": {
+                        "value": "[variables('CosmosDbDatabaseName')]"
+                    },
+                    "useSharedRequestUnits": {
+                        "value": true
+                    },
+                    "offerThroughput": {
+                        "value": "[parameters('accountAppDatabaseThroughput')]"
+                    },
+                    "databaseNeedsCreation": {
+                        "value": "[parameters('accountAppDatabaseNeedsCreation')]"
+                    }
+                }
+            }
+        },
+        {
             "apiVersion": "2017-05-10",
             "name": "[parameters('cosmosDbCollectionName')]",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('appSharedResourceGroup')]",
+            "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
