@@ -3,9 +3,6 @@ using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.Account.Models;
-using DFC.App.Account.ViewModels;
-using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.Controllers
 {
