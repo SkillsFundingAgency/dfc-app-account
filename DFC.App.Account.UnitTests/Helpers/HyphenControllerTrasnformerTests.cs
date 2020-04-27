@@ -10,11 +10,18 @@ namespace DFC.App.Account.UnitTests.Helpers
     class HyphenControllerTrasnformerTests
     {
         [Test]
-        public void WhenHyphenatedRoute_ThenReturnNonHyphenated()
+        public void WhenHyphenatedRoute_ThenAddCleanHyphenatedRouteToApplication()
         {
             var sut = new HyphenControllerTransformer();
             var result = sut.TransformOutbound("your-details");
             result.Should().Be("your-details");
+        }
+
+        [Test] public void WhenHyphenatedRouteNull_ThenRetunrNull()
+        {
+            var sut = new HyphenControllerTransformer();
+            var result = sut.TransformOutbound("your-details");
+            result.Should().BeNull();
         }
     }
 }
