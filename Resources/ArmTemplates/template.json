@@ -298,9 +298,6 @@
                     },
                     "partitionKey": {
                         "value": "[variables('cosmosDbCollectionPartitionKey')]"
-                    },
-                    "databaseNeedsCreation": {
-                        "value": "[parameters('accountAppDatabaseNeedsCreation')]"
                     }
                 }
             }
