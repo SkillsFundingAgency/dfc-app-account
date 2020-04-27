@@ -1,11 +1,11 @@
-﻿using System;
-using DFC.App.Account.ViewModels;
+﻿using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using NUnit.Framework;
+using System;
 
 namespace DFC.App.Account.UnitTests.ViewModels
 {
-     [TestFixture]
+    [TestFixture]
     public class CompositeViewModelUnitTests
     {
         

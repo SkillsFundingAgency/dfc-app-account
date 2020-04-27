@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NUnit.Framework;
 using NSubstitute;
+using NUnit.Framework;
 
-namespace DFC.App.Account.UnitTests
+namespace DFC.App.Account.UnitTests.Controllers
 {
     public class HomeControllerTests
     {
@@ -74,6 +74,25 @@ namespace DFC.App.Account.UnitTests
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
-        
+        [Test]
+        public void WhenBodyFooterCalled_ReturnHtml()
+        {
+            var controller = new HomeController(_logger, _compositeSettings);
+            var result = controller.BodyFooter() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
+        [Test]
+        public void WhenErrorCalled_ReturnHtml()
+        {
+            var controller = new HomeController(_logger, _compositeSettings);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var result = controller.Error() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
+
     }
 }
