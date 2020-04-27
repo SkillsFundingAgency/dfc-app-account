@@ -30,10 +30,10 @@
             "value": "dfc-dev-app-sharedresources-rg"
         },
         "cosmosDbCollectionName": {
-            "value": "a-collection"
+            "value": "a-test-collection"
         },
         "CosmosDbResourceGroup": {
-            "value": "ResourceGroup"
+            "value": "dfc-dev-app-sharedresources-rg"
         },
         "accountAppDatabaseNeedsCreation": {
             "value": true
