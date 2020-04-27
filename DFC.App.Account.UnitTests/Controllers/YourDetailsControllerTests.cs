@@ -7,6 +7,7 @@ using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
+using DFC.App.Account.ViewModels;
 using DFC.Personalisation.Common.Net.RestClient;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -51,7 +52,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _controller = new YourDetailsController(_logger, _compositeSettings, _dssService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = await _controller.Body("somecustomerid") as ViewResult;
-
+            result.ViewData.Model.As<YourDetailsCompositeViewModel>().CustomerDetails.Should().NotBeNull();
         }
 
 

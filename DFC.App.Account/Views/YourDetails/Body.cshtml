@@ -82,13 +82,13 @@
                         <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
                                        label="To receive marketing from the National Careers Service’s trusted partners"
                                        AdditionalClass="checkbox-container-item govuk-checkboxes"
-                                       checked="@Model.CustomerDetails.OptInUserResearch">
+                                       checked="@Model.CustomerDetails.OptInUserResearch" disabled="true">
                         </govukCheckbox>
 
                         <govukCheckbox id="@Model.GetElementId("govukCheckBox", "market-research")"
                                        label="The National Careers Service can contact me for market research"
                                        AdditionalClass="checkbox-container-item govuk-checkboxes"
-                                       checked="@Model.CustomerDetails.OptInMarketResearch" >
+                                       checked="@Model.CustomerDetails.OptInMarketResearch" disabled="true">
                         </govukCheckbox>
                     </div>
                 </div>
