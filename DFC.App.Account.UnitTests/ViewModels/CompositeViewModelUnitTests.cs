@@ -67,6 +67,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 act.Should().Throw<ArgumentException>().WithMessage("elementName cannot be null or empty or whitespace.*");
             }
 
+            [Test]
             public void When_InstanceNameIsMissing_Then_ShouldThrowException()
             {
                 // Arrange.
@@ -81,6 +82,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 act.Should().Throw<ArgumentException>().WithMessage("instanceName cannot be null or empty or whitespace.*");
             }
 
+            [Test]
             public void When_ValidValuesProvided_Then_ResultShouldBeCamelCased()
             {
                 // Arrange.

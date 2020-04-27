@@ -12,13 +12,12 @@ namespace DFC.App.Account.Controllers
      [Route("your-details")]
      public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
     {
-        private readonly ILogger<YourDetailsController> _logger;
+        
         private readonly IDssReader _dssService;
 
         public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService)
         :base(compositeSettings)
         {
-            _logger = logger;
             _dssService = dssService;
         }
         

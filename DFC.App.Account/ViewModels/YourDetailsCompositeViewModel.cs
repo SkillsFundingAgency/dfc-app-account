@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DFC.App.Account.Services.DSS.Models;
+﻿using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.ViewModels
 {

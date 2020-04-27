@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
-using System.Threading.Tasks;
 using NSubstitute;
 
 namespace DFC.App.Account.UnitTests

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
-using DFC.Personalisation.Common.Net.RestClient;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
