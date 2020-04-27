@@ -26,7 +26,7 @@
                             </tr>
                             <tr>
                                 <td><label for="Identity_PersonalDetails_DateOfBirth">Date of birth</label></td>
-                                <td>@Convert.ToDateTime(Model.CustomerDetails.DateofBirth).ToString("dd-MM-yyyy")</td>
+                                <td>@Html.DisplayFor(x => x.CustomerDetails.DateofBirth)</td>
 
                             </tr>
                             <tr>
@@ -55,7 +55,9 @@
                         <tbody>
                             <tr>
                                 <td><label for="Identity_ContactDetails_ContactEmail">Email address</label></td>
-                                <td><a href="mailto:@Model.CustomerDetails.Contact.EmailAddress"> @Model.CustomerDetails.Contact.EmailAddress</a></td>
+                                <td>
+                                    @Html.DisplayFor(x => x.CustomerDetails.Contact.EmailAddress)
+                                </td>
                             </tr>
                             <tr>
                                 <td><label for="Identity_ContactDetails_TelephoneNumber">Phone number</label></td>

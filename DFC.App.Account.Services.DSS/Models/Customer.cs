@@ -11,6 +11,7 @@ namespace DFC.App.Account.Services.DSS.Models
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateofBirth { get; set; }
         public long Gender { get; set; }
         public string? UniqueLearnerNumber { get; set; }
