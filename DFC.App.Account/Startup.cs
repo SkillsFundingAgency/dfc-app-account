@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace DFC.App.Account
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
