@@ -300,7 +300,10 @@
                         "value": "[variables('cosmosDbCollectionPartitionKey')]"
                     }
                 }
-            }
+            },
+            "dependsOn": [
+                "[variables('CosmosDbDatabaseName')]"
+            ]
         },
         {
             "apiVersion": "2019-05-01",
