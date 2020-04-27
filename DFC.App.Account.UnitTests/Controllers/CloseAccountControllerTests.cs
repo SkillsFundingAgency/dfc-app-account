@@ -4,31 +4,25 @@ using DFC.App.Account.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
-    public class ErrorControllerTests
+    public class CloseAccountControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
-        private ILogger<ErrorController> _logger;
 
 
         [SetUp]
         public void Init()
         {
-            _logger = Substitute.For<ILogger<ErrorController>>();
             _compositeSettings = Options.Create(new CompositeSettings());
-            _logger = new Logger<ErrorController>(new LoggerFactory());
         }
-
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings);
+            var controller = new CloseAccountController(_compositeSettings);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -39,6 +33,5 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
-
     }
 }

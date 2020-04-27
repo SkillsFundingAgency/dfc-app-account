@@ -1,4 +1,5 @@
-﻿using DFC.App.Account.Controllers;
+﻿using System.Threading.Tasks;
+using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
@@ -8,9 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
-namespace DFC.App.Account.UnitTests
+namespace DFC.App.Account.UnitTests.Controllers
 {
     public class HomeControllerTests
     {
@@ -21,6 +21,7 @@ namespace DFC.App.Account.UnitTests
         [SetUp]
         public void Init()
         {
+            _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
         }
@@ -73,6 +74,25 @@ namespace DFC.App.Account.UnitTests
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
-        
+        [Test]
+        public void WhenBodyFooterCalled_ReturnHtml()
+        {
+            var controller = new HomeController(_logger, _compositeSettings);
+            var result = controller.BodyFooter() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
+        [Test]
+        public void WhenErrorCalled_ReturnHtml()
+        {
+            var controller = new HomeController(_logger, _compositeSettings);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var result = controller.Error() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
+
     }
 }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DFC.App.Account.Models;
-using DFC.App.Account.ViewModels;
+﻿using DFC.App.Account.ViewModels;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System;
 
 namespace DFC.App.Account.UnitTests.ViewModels
 {
-     [TestFixture]
+    [TestFixture]
     public class CompositeViewModelUnitTests
     {
 
