@@ -47,6 +47,9 @@
         "accountAppDatabaseNeedsCreation": {
             "value": __CosmosDbDatabaseDoesntExist__
         },
+        "accountAppDatabaseThroughput": {
+            "value": __accountAppDatabaseThroughput__
+        },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
         }

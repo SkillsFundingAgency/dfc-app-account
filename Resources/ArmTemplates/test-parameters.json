@@ -35,6 +35,9 @@
         "accountAppDatabaseNeedsCreation": {
             "value": true
         },
+        "accountAppDatabaseThroughput": {
+            "value": 2
+        },
         "enableAlerts": {
             "value": false
         }
