@@ -17,10 +17,10 @@ namespace DFC.App.Account.UnitTests.Helpers
             result.Should().Be("your-details");
         }
 
-        [Test] public void WhenHyphenatedRouteNull_ThenRetunrNull()
+        [Test] public void WhenHyphenatedRouteNull_ThenReturnNull()
         {
             var sut = new HyphenControllerTransformer();
-            var result = sut.TransformOutbound("your-details");
+            var result = sut.TransformOutbound(null);
             result.Should().BeNull();
         }
     }
