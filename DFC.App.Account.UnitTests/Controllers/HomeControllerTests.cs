@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests
 {
-     public class HomeControllerTests
+    public class HomeControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<HomeController> _logger;
@@ -22,6 +23,7 @@ namespace DFC.App.Account.UnitTests
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
+            _logger = Substitute.For<ILogger<HomeController>>();
         }
         [Test]
         public void WhenHeadCalled_ReturnHtml()

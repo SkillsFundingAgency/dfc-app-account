@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DFC.App.Account.Models;
+using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Models;
@@ -6,7 +8,7 @@ using DFC.App.Account.ViewModels;
 
 namespace DFC.App.Account.Controllers
 {
-   
+
     /// <summary>
     /// Adds default Composite UI endpoints and routing logic to the base session controller.
     /// </summary>
