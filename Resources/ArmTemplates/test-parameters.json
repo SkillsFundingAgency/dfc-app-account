@@ -32,6 +32,9 @@
         "cosmosDbCollectionName": {
             "value": "a-collection"
         },
+        "CosmosDbResourceGroup": {
+            "value": "ResourceGroup"
+        },
         "accountAppDatabaseNeedsCreation": {
             "value": true
         },

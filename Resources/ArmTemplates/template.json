@@ -276,7 +276,7 @@
             "apiVersion": "2017-05-10",
             "name": "[parameters('cosmosDbCollectionName')]",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('appSharedResourceGroup')]",
+            "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
