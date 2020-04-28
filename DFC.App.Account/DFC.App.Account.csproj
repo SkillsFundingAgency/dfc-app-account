@@ -4,6 +4,7 @@
     <ProjectGuid>{79FB0A7E-3102-4EDB-80C5-E38AD61709B1}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
     <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -15,5 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
   </ItemGroup>
 </Project>
