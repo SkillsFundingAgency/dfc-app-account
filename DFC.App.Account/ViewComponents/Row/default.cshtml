@@ -1,0 +1,10 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model DFC.App.Account.ViewComponents.Row.RowModel
+
+<tr>
+    <td>
+        <govukLabel id="@Model.Label" text="@Model.Label" for="Identity_PersonalDetails_@Model.Label"></govukLabel>
+    </td>
+    <td>@Html.Raw(Model.LabelValue)</td>
+</tr>

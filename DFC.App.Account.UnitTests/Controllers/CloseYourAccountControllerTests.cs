@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
-    public class CloseAccountControllerTests
+    public class CloseYourAccountControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
 
@@ -22,7 +22,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new CloseAccountController(_compositeSettings);
+            var controller = new CloseYourAccountController(_compositeSettings);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
