@@ -7,7 +7,6 @@ using DFC.App.Account.ViewModels;
 
 namespace DFC.App.MatchSkills.Controllers
 {
-//    [ApiController]
     [Route("[controller]")]
     public class HealthController : Controller
     {
