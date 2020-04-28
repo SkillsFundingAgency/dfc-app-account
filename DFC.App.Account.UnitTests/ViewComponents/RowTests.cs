@@ -23,5 +23,18 @@ namespace DFC.App.Account.UnitTests.ViewComponents
             var results = viewComponent.InvokeAsync(rm);
             results.Should().NotBeNull();
         }
+
+
+        [Test]
+        public void WhenModelLabelValueNull_Then_ShouldReturnHtml()
+        {
+            var rm = new RowModel(){
+                Label="Name",
+                LabelValue = null
+            };
+            var viewComponent = new Row();
+            var results = viewComponent.InvokeAsync(rm);
+            results.Should().NotBeNull();
+        }
     }
 }
