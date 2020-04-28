@@ -28,10 +28,11 @@ namespace DFC.App.Account.UnitTests.ViewComponents
         [Test]
         public void WhenModelLabelValueNull_Then_ShouldReturnHtml()
         {
-            var rm = new RowModel(){
-                Label="Name",
-                LabelValue = null
-            };
+            var rm = new RowModel();
+            rm.Label = "Name";
+            rm.LabelValue = null;
+            var label = rm.Label;
+            var labelValue = rm.LabelValue;
             var viewComponent = new Row();
             var results = viewComponent.InvokeAsync(rm);
             results.Should().NotBeNull();
