@@ -9,7 +9,7 @@ namespace DFC.App.Account.ViewComponents.ShowRow
 {
     public class Row : ViewComponent
     {
-        public IViewComponentResult Invoke(RowModel model)
+        public async Task<IViewComponentResult> InvokeAsync(RowModel model)
         {
             return View("~/ViewComponents/Row/Default.cshtml", model);
         }
