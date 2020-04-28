@@ -6,24 +6,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using DFC.App.Account.Services;
+using NSubstitute;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
     public class EditDetailsControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
+        private IAuthService _authService;
 
 
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
+            _authService = Substitute.For<IAuthService>();
         }
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new EditDetailsController(_compositeSettings);
+            var controller = new EditDetailsController(_compositeSettings, _authService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

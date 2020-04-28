@@ -1,10 +1,11 @@
 ﻿using DFC.App.Account.Models;
+using DFC.App.Account.Services;
+using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using DFC.App.Account.ViewModels;
-using Microsoft.Extensions.Options;
 
 namespace DFC.App.Account.Controllers
 {
@@ -12,8 +13,8 @@ namespace DFC.App.Account.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings)
-        :base(compositeSettings)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+        :base(compositeSettings, authService)
         {
             _logger = logger;
         }
@@ -24,7 +25,7 @@ namespace DFC.App.Account.Controllers
         [Route("/head/{controller}")]
         [Route("/head")]
         public override IActionResult Head()
-        { 
+        {
             return base.Head();
         }
         [Route("/bodytop/{controller}")]
@@ -42,11 +43,10 @@ namespace DFC.App.Account.Controllers
 
         [Route("/body/{controller}")]
         [Route("/body")]
-
-        public override Task<IActionResult> Body()
+        public override async Task<IActionResult> Body()
         {
-            ViewModel.HasErrors = HasErrors();
-            return base.Body();
+            var x = await GetCustomerDetails();
+            return await base.Body();
         }
 
         [Route("/bodyfooter/{controller}")]
