@@ -1,4 +1,5 @@
-﻿@model DFC.App.Account.ViewModels.HomeCompositeViewModel
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.HomeCompositeViewModel
 
 <div class="govuk-main-wrapper ">
     <div class="govuk-width-container">
@@ -13,7 +14,36 @@
                 <div class="govuk-inset-text">
                     If you need further help or advice, you can speak to a careers adviser by calling 0800 100 900
                 </div>
-                <govukHeadingH3>Skills health checks</govukHeadingH3>
+                <govUkHeadingH3 text="Skills health checks"></govUkHeadingH3>
+                <table class="govuk-table" aria-describedby="govuk-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
+                            <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @{
+                            if (Model.ShcDocuments.Count > 0)
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table-cell">Started 20 April 2020 08:47</td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="#" link-text="View"></govUkLink></td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="#" link-text="Delete"></govUkLink></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table-cell">No skills health checks found.</td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
             <div class="govuk-grid-column-one-third">
                 <div class="app-related-items">
@@ -21,26 +51,17 @@
                     @*TODO: Add basic list to CommonUI Library*@
                     <ul class="govuk-list">
                         <li>
-                            <a class="govuk-!-font-size-16" href="/your-account/your-details" target="_self">Your details</a>
+                            <govukLink class="govuk-!-font-size-16" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.YourDetails" id="@Model.GetElementId("govUkLink", "your-details")"link-text="Your details"></govukLink>
                         </li>
                         <li>
-                            <a class="govuk-!-font-size-16" href="/your-account/change-password" target="_self">Change your password</a>
+                            <govukLink class="govuk-!-font-size-16" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ChangePassword" id="@Model.GetElementId("govUkLink", "change-password")" link-text="Change your password"></govukLink>
                         </li>
                         <li>
-                            <a class="govuk-!-font-size-16" href="/your-account/close-your-account" target="_self">Close your account</a>
+                            <govukLink class="govuk-!-font-size-16" link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseAccount" id="@Model.GetElementId("govUkLink", "close-account")" link-text="Close your account"></govukLink>
                         </li>
                     </ul>
                 </div>
-                <div class="app-related-items">
-                    <govukHeadingH3 text="Want to speak to an adviser?"></govukHeadingH3>
-                    <p class="govuk-body">
-                        <span class="govuk-!-font-weight-bold">Call </span>
-                        0800 100 900 or
-                        <br/>
-                        <a href="https://nationalcareers.service.gov.uk/webchat/chat/">use webchat</a>
-                    </p>
-                    <p class="govuk-caption-m govuk-!-font-size-16">8am to 10pm, 7 days a week</p>
-                </div>
+                <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
             </div>
         </div>
     </div>

@@ -29,6 +29,9 @@
         "cosmosDbKey": {
             "value": "__appSharedCosmosPrimaryKey__"
         },
+        "CosmosDbResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
         "environment": {
             "value": "__ReleaseEnvironmentName__",
             "metadata": {
@@ -43,6 +46,12 @@
         },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
+        },
+        "accountAppDatabaseNeedsCreation": {
+            "value": __CosmosDbDatabaseDoesntExist__
+        },
+        "accountAppDatabaseThroughput": {
+            "value": __accountAppDatabaseThroughput__
         },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
