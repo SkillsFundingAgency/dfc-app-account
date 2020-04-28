@@ -15,12 +15,12 @@ namespace DFC.App.Account.UnitTests.ViewComponents
         [Test]
         public void WhenModel_Then_ShouldReturnHtml()
         {
-            var viewComponent = new Row();
-            var results = viewComponent.InvokeAsync(new RowModel()
-            {
+            var rm = new RowModel(){
                 Label="Name",
                 LabelValue = "Robin"
-            });
+            };
+            var viewComponent = new Row();
+            var results = viewComponent.InvokeAsync(rm);
             results.Should().NotBeNull();
         }
     }
