@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DFC.App.Account.Helpers;
+using DFC.App.Account.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace DFC.App.Account
@@ -34,6 +35,7 @@ namespace DFC.App.Account
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
+            services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
 
             services.AddMvc().AddMvcOptions(options =>
             {
