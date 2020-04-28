@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DFC.App.Account.ViewComponents.Row;
+﻿using DFC.App.Account.ViewComponents.Row;
 using DFC.App.Account.ViewComponents.ShowRow;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace DFC.App.Account.UnitTests.ViewComponents
 {
@@ -20,7 +16,7 @@ namespace DFC.App.Account.UnitTests.ViewComponents
                 LabelValue = "Robin"
             };
             var viewComponent = new Row();
-            var results = viewComponent.InvokeAsync(rm);
+            var results = viewComponent.Invoke(rm);
             results.Should().NotBeNull();
         }
 
@@ -34,7 +30,7 @@ namespace DFC.App.Account.UnitTests.ViewComponents
             var label = rm.Label;
             var labelValue = rm.LabelValue;
             var viewComponent = new Row();
-            var results = viewComponent.InvokeAsync(rm);
+            var results = viewComponent.Invoke(rm);
             results.Should().NotBeNull();
         }
     }
