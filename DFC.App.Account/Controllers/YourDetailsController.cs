@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace DFC.App.Account.Controllers
 {
  
-     [Route("your-details")]
+     
      public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
     {
         

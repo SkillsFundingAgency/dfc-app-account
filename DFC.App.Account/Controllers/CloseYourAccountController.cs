@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    public class CloseAccountController : CompositeSessionController<ChangePasswordCompositeViewModel>
+    public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
-        public CloseAccountController(IOptions<CompositeSettings> compositeSettings) : base(compositeSettings)
+        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings) : base(compositeSettings)
         {
             
         }
+        [Route("/body/close-your-account")] 
         public override async Task<IActionResult> Body()
         {
-            return await base.Body();
+            return View(ViewModel);
         }
     }
 }
