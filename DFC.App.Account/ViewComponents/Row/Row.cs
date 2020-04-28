@@ -1,7 +1,6 @@
-﻿using DFC.App.Account.ViewComponents.Row;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DFC.App.Account.ViewComponents.ShowRow
+namespace DFC.App.Account.ViewComponents.Row
 {
     public class Row : ViewComponent
     {

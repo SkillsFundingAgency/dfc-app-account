@@ -2,7 +2,7 @@
 {
     public class CloseYourAccountCompositeViewModel : CompositeViewModel
     {
-        public CloseYourAccountCompositeViewModel() : base(PageId.CloseAccount, "Close Your Account")
+        public CloseYourAccountCompositeViewModel() : base(PageId.CloseYourAccount, "Close Your Account")
         {
         }
     }

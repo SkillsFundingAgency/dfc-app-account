@@ -1,27 +1,28 @@
 ﻿@using DFC.App.Account.ViewComponents.Row
-@using DFC.App.Account.ViewComponents.ShowRow
 @using DFC.App.Account.ViewModels
 @model DFC.App.Account.ViewModels.YourDetailsCompositeViewModel
 
+<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
 
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="heading-xlarge">Your details</h1>
-        <h2 class="heading-medium">Your personal details</h2>
-        <div class="govuk-form-group">
-            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="form-group mt" method="get">
-                <div class="govuk-form-group">
-                    <table class="check-your-answers" role="presentation">
-                        <tbody>
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Title", LabelValue = @Model.CustomerDetails.Title.ToString() })
+            <govukHeadingH1 text="@Model.PageHeading"></govukHeadingH1>
+            <govukHeadingH2 text=Your personal details></govukHeadingH2>
+            <div class="govuk-form-group">
+                <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="form-group mt" method="get">
+                    <div class="govuk-form-group">
+                        <table class="check-your-answers" role="presentation">
+                            <tbody>
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Title", LabelValue = @Model.CustomerDetails.Title.ToString()})
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "First name", LabelValue = @Model.CustomerDetails.GivenName })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "First name", LabelValue = @Model.CustomerDetails.GivenName})
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Last name", LabelValue = @Model.CustomerDetails.FamilyName })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Last name", LabelValue = @Model.CustomerDetails.FamilyName})
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd/MM/yyyy") })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd/MM/yyyy")})
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Gender", LabelValue = @Model.CustomerDetails.Gender.ToString() })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Gender", LabelValue = @Model.CustomerDetails.Gender.ToString()})
 
                             @await Component.InvokeAsync(nameof(Row), new RowModel()
                             {
@@ -35,51 +36,53 @@
                                         $"<div>{@Model.CustomerDetails.Addresses[0].Address5}</div>"
                                         : ""
                             })
-                        </tbody>
-                    </table>
-                    <h2 class="heading-medium">Your contact details</h2>
-                    <table class="check-your-answers" role="presentation">
-                        <tbody>
+                            </tbody>
+                        </table>
+                        <h2 class="heading-medium">Your contact details</h2>
+                        <table class="check-your-answers" role="presentation">
+                            <tbody>
 
-                        @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Email address", LabelValue = $"<a href ='mailto:{@Model.CustomerDetails.Contact.EmailAddress}'>{@Model.CustomerDetails.Contact.EmailAddress}</a>" })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Email address", LabelValue = $"<a href ='mailto:{@Model.CustomerDetails.Contact.EmailAddress}'>{@Model.CustomerDetails.Contact.EmailAddress}</a>"})
 
-                        @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.MobileNumber})
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.MobileNumber})
 
-                        @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Alternative phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.AlternativeNumber })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Alternative phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.AlternativeNumber})
 
-                        @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Contact by", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.PreferredContactMethod.ToString() })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Contact by", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.PreferredContactMethod.ToString()})
 
-                        </tbody>
-                    </table>
-                    <h2 class="heading-medium">Your marketing preferences</h2>
-                    <p>I agree to the following:</p>
+                            </tbody>
+                        </table>
+                        <h2 class="heading-medium">Your marketing preferences</h2>
+                        <p>I agree to the following:</p>
 
-                    <legend class="govuk-visually-hidden">
-                        Your marketing preferences
-                    </legend>
-                    <div class="form-group govuk-checkboxes govuk-checkboxes--small">
+                        <legend class="govuk-visually-hidden">
+                            Your marketing preferences
+                        </legend>
+                        <div class="form-group govuk-checkboxes govuk-checkboxes--small">
 
-                        <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
-                                       label="To receive marketing from the National Careers Service’s trusted partners"
-                                       AdditionalClass="checkbox-container-item govuk-checkboxes"
-                                       checked="@Model.CustomerDetails.OptInUserResearch" disabled="true">
-                        </govukCheckbox>
+                            <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
+                                           label="To receive marketing from the National Careers Service’s trusted partners"
+                                           AdditionalClass="checkbox-container-item govuk-checkboxes"
+                                           checked="@Model.CustomerDetails.OptInUserResearch" disabled="true">
+                            </govukCheckbox>
 
-                        <govukCheckbox id="@Model.GetElementId("govukCheckBox", "market-research")"
-                                       label="The National Careers Service can contact me for market research"
-                                       AdditionalClass="checkbox-container-item govuk-checkboxes"
-                                       checked="@Model.CustomerDetails.OptInMarketResearch" disabled="true">
-                        </govukCheckbox>
+                            <govukCheckbox id="@Model.GetElementId("govukCheckBox", "market-research")"
+                                           label="The National Careers Service can contact me for market research"
+                                           AdditionalClass="checkbox-container-item govuk-checkboxes"
+                                           checked="@Model.CustomerDetails.OptInMarketResearch" disabled="true">
+                            </govukCheckbox>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <govukButton id="@Model.GetElementId("govukButton", "Edit")" text="Edit your details" />
-                </div>
-            </form>
+                    <div>
+                        <govukButton id="@Model.GetElementId("govukButton", "Edit")" text="Edit your details"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="govuk-grid-column-one-third">
+            <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml"/>
         </div>
     </div>
-    
-
-<div class="govuk-grid-column-one-third">
-    <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
 </div>
