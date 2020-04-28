@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    public class CloseAccountController : CompositeSessionController<ChangePasswordCompositeViewModel>
+    public class CloseAccountController : CompositeSessionController<CloseAccountCompositeViewModel>
     {
         public CloseAccountController(IOptions<CompositeSettings> compositeSettings) : base(compositeSettings)
         {

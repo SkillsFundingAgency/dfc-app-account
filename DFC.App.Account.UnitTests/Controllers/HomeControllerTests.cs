@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -87,6 +89,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenErrorCalled_ReturnHtml()
         {
             var controller = new HomeController(_logger, _compositeSettings);
+            
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = controller.Error() as ViewResult;
             result.Should().NotBeNull();
@@ -94,5 +97,13 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
+        [Test]
+        public void AssigningViewModelValues()
+        {
+            var viewModel = new HomeCompositeViewModel();
+            viewModel.ShcDocuments.Add(new ShcDocuments());
+            var item = viewModel.ShcDocuments[0];
+            item.Should().NotBeNull();
+        }
     }
 }
