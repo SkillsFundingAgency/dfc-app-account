@@ -1,16 +1,20 @@
-using System.Diagnostics.CodeAnalysis;
+using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using DFC.App.Account.Helpers;
-using DFC.App.Account.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace DFC.App.Account
@@ -29,14 +33,40 @@ namespace DFC.App.Account
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+          
+
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
 
+        //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //.AddJwtBearer(cfg =>
+        //{
+        //    cfg.TokenValidationParameters =
+        //            new TokenValidationParameters
+        //            {
+        //                ValidateIssuer = true,
+        //                ValidateAudience = true,
+        //                ValidateIssuerSigningKey = true,
+
+        //                  /*
+        //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
+        //                   * This will mark the User.IsAuthenticated as false
+        //                  */
+        //                ValidateLifetime = true,
+        //                ClockSkew = TimeSpan.FromMinutes(1),
+
+        //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
+        //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
+        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
+        //            };
+        //});
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
@@ -66,12 +96,12 @@ namespace DFC.App.Account
 
 
             app.UseRouting();
-           
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
-                endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeAccount", action = "body"});
+                endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeYourAccount", action = "body"});
                 endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 endpoints.MapControllers();

@@ -2,11 +2,11 @@
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
+using DFC.App.Account.Services;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -18,19 +18,21 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<HomeController> _logger;
-         
-        
+        private IAuthService _authService;
+
+
         [SetUp]
         public void Init()
         {
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
+            _authService = Substitute.For<IAuthService>();
         }
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger,_compositeSettings );
+            var controller = new HomeController(_logger,_compositeSettings, _authService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = controller.Head() as ViewResult;
             var vm = new HeadViewModel
@@ -47,7 +49,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger,_compositeSettings );
+            var controller = new HomeController(_logger,_compositeSettings, _authService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -61,7 +63,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenBreadCrumbCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger,_compositeSettings );
+            var controller = new HomeController(_logger,_compositeSettings, _authService);
             var result = controller.Breadcrumb() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
@@ -70,7 +72,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenBodyTopCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger,_compositeSettings );
+            var controller = new HomeController(_logger,_compositeSettings, _authService);
             var result = controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
@@ -79,7 +81,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenBodyFooterCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger, _compositeSettings);
+            var controller = new HomeController(_logger, _compositeSettings, _authService);
             var result = controller.BodyFooter() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
@@ -88,8 +90,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenErrorCalled_ReturnHtml()
         {
-            var controller = new HomeController(_logger, _compositeSettings);
-            
+            var controller = new HomeController(_logger, _compositeSettings, _authService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = controller.Error() as ViewResult;
             result.Should().NotBeNull();

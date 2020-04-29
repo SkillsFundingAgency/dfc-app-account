@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "apimProxyAddress": {
+        "apimDSSProxyAddress": {
             "type": "string"
         },
         "apimDSSApiKey": {
@@ -33,6 +33,9 @@
         "aspTier": {
             "type": "string",
             "defaultValue": ""
+        },
+        "cdnUrl": {
+            "type": "string"
         },
         "CosmosDbResourceGroup": {
             "type": "string"
@@ -84,7 +87,7 @@
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-account'))]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
-        "webAppInsightsName": "[concat(variables('webAppName'), '-ai')]",
+        "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
         "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
     },
     "resources": [
@@ -148,7 +151,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service-staging.json')]",
+                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -163,6 +166,9 @@
                     },
                     "appServiceType": {
                         "value": "app"
+                    },
+                    "deployStagingSlot": {
+                        "value": false
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -200,7 +206,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerApiUrl",
-                                "value": "[concat(parameters('apimProxyAddress'), '/customers/api/Customers/')]"
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/customers/api/Customers/')]"
                             },
                             {
                                 "name": "DssSettings__CustomerApiVersion",
@@ -208,7 +214,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiUrl",
-                                "value": "[concat(parameters('apimProxyAddress'), '/contactdetails/api/customers/{customerId}/ContactDetails/')]"
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/contactdetails/api/customers/{customerId}/ContactDetails/')]"
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiVersion",
@@ -216,7 +222,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiUrl",
-                                "value": "[concat(parameters('apimProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses')]"
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses')]"
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiVersion",
@@ -229,6 +235,14 @@
                             {
                                 "name": "DssSettings__AccountsTouchpointId",
                                 "value": "9000000000"
+                            },
+                            {
+                                "name": "CompositeSettings__Path",
+                                "value": "/your-account"
+                            },
+                            {
+                                "name": "CompositeSettings__CDN",
+                                "value": "[parameters('cdnUrl')]"
                             },
                             {
                                 "name": "Logging__ApplicationInsights__LogLevel__Default",

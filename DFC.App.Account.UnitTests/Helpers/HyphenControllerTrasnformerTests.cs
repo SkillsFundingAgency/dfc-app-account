@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DFC.App.Account.Helpers;
+﻿using DFC.App.Account.Helpers;
 using FluentAssertions;
 using NUnit.Framework;
 

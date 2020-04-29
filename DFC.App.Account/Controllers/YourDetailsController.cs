@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DFC.App.Account.Models;
+using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +10,14 @@ using Microsoft.Extensions.Options;
 namespace DFC.App.Account.Controllers
 {
  
-     [Route("your-details")]
+     
      public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
     {
         
         private readonly IDssReader _dssService;
 
-        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService)
-        :base(compositeSettings)
+        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService)
+            : base(compositeSettings, authService)
         {
             _dssService = dssService;
         }

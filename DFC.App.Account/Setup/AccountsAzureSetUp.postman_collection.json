@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"your-account\",\n    \"TopNavigationText\": \"Accounts\",\n    \"TopNavigationOrder\": 400,\n    \"Layout\": \"FullWidth\",\n    \"IsOnline\": true,\n    \"OfflineHtml\": \"<H2>Match Skills Service Unavailable</H2>\"\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n    \"TopNavigationText\": \"Accounts\",\n    \"TopNavigationOrder\": 400,\n    \"Layout\": \"FullWidth\",\n    \"IsOnline\": true,\n    \"OfflineHtml\": \"<H2>Accounts Service Unavailable</H2>\"\n}"
 				},
 				"url": {
 					"raw": "{{PathRootUrl}}paths?=",
