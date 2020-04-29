@@ -104,11 +104,9 @@ namespace DFC.App.Account.Application.Common.Extensions
         /// <returns></returns>
         public static string GetClass(string fieldName, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelState)
         {
-            if (modelState.IsValid == false)
-            {
-                return modelState.ContainsKey(fieldName) && modelState[fieldName].Errors.Count > 0 ? "error" : String.Empty;
-            }
-            return string.Empty;
+
+            return modelState.ContainsKey(fieldName) && modelState[fieldName].Errors.Count > 0 ? "error" : String.Empty;
+                
         }
 
         /// <summary>
