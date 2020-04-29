@@ -45,28 +45,28 @@ namespace DFC.App.Account
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(cfg =>
-        {
-            cfg.TokenValidationParameters =
-                    new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
+        //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //.AddJwtBearer(cfg =>
+        //{
+        //    cfg.TokenValidationParameters =
+        //            new TokenValidationParameters
+        //            {
+        //                ValidateIssuer = true,
+        //                ValidateAudience = true,
+        //                ValidateIssuerSigningKey = true,
 
-                          /*
-                           * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
-                           * This will mark the User.IsAuthenticated as false
-                          */
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromMinutes(1),
+        //                  /*
+        //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
+        //                   * This will mark the User.IsAuthenticated as false
+        //                  */
+        //                ValidateLifetime = true,
+        //                ClockSkew = TimeSpan.FromMinutes(1),
 
-                        ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
-                        ValidAudience = Configuration["TokenProviderOptions:ClientId"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
-                    };
-        });
+        //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
+        //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
+        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
+        //            };
+        //});
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
