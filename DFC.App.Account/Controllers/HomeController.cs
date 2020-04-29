@@ -46,6 +46,7 @@ namespace DFC.App.Account.Controllers
         public override async Task<IActionResult> Body()
         {
             var x = await GetCustomerDetails();
+
             return await base.Body();
         }
 

@@ -50,7 +50,7 @@ namespace DFC.App.Account.Application.Common.Models
             BfpoPostCodeRegex = @"(?ixs)^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4})$")]
         [RegularExpression(ServiceCommon.RegexPatterns.PostCode.Postcode, ErrorMessage = "Home postcode contains invalid characters")]
         [StringLength(8, ErrorMessage = "Home postcode too long (max. 8)")]
-        [Display(Name = "Enter your postcode<span class=\"form-hint\">Use your postcode to find your address. <br />For example, SW1A 1AA.</ span>", Order = 9)]
+        [Display(Name = "Enter your postcode<span class=\"form-hint\">Use your postcode to find your address. <br />For example, SW1A 1AA.</span>", Order = 9)]
         public string HomePostCode { get; set; }
 
         public string FindAddressServiceResult { get; set; }
