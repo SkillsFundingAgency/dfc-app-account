@@ -1,4 +1,7 @@
-﻿namespace DFC.App.Account.ViewModels
+﻿using System.Collections.Generic;
+using DFC.App.Account.Application.Common.Models;
+
+namespace DFC.App.Account.ViewModels
 {
     public class EditDetailsCompositeViewModel : CompositeViewModel
     {
@@ -6,5 +9,8 @@
         {
             
         }
+        public CitizenIdentity Identity { get; set; }
+
+        public IList<PostalAddressModel> Items { get; set; }
     }
 }

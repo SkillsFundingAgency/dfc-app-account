@@ -1,13 +1,13 @@
-﻿using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using DFC.App.Account;
+﻿using DFC.App.Account;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DFC.App.Accounts.IntegrationTest
 {
@@ -43,7 +43,7 @@ namespace DFC.App.Accounts.IntegrationTest
         public async Task Tdd()
         {
             var result = await _client.GetAsync("/body");
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }
     }
 }
