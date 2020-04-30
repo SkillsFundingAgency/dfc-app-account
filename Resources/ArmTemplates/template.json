@@ -210,7 +210,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerApiVersion",
-                                "value": "v3"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiUrl",
