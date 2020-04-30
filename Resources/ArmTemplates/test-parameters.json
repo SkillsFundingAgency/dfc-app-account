@@ -5,7 +5,10 @@
         "appSharedResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
         },
-        "apimProxyAddress": {
+        "apimDSSProxyAddress": {
+            "value": "https://foo.api.nationalcareersservice.org.uk"
+        },
+        "cdnUrl": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },
         "apimDSSApiKey": {
