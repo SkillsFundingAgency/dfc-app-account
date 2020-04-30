@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Linq;
 using DFC.App.Account.ViewModels;
 
-namespace DFC.App.MatchSkills.Controllers
+namespace DFC.App.Account.Controllers
 {
     [Route("[controller]")]
     public class HealthController : Controller
