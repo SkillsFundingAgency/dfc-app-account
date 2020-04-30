@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DFC.App.Account.Application.Common.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DFC.App.Account.Application.Common.CustomAttributes
@@ -27,8 +28,8 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
                 throw new MissingMemberException("Missing member DependsOn - Should be set to contact preference.");
             }
 
-            var contactPref = (Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
-            base.IsRequired = contactPref == Channel.Phone;
+            var contactPref = (CommonEnums.Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
+            base.IsRequired = contactPref == CommonEnums.Channel.Phone;
 
             return base.IsValid(value, validationContext);
         }

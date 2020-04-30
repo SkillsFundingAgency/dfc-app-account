@@ -40,27 +40,6 @@ namespace DFC.App.Account.Application.Common.Models
                 public const String Numeric = @"^[0-9]*$";
             }
 
-            /// <summary>
-            /// Course directory Regex patterns
-            /// </summary>
-            public static class CourseDirectory
-            {
-                /// <summary>
-                /// The no invalid characters
-                /// </summary>
-                public const string NoInvalidCharacters = @"^[a-zA-Z0-9& \(\)\+:'’,\./]*$";
-            }
-
-            /// <summary>
-            /// Job Profile Regex patterns
-            /// </summary>
-            public static class JobProfile
-            {
-                /// <summary>
-                /// The no invalid characters
-                /// </summary>
-                public const string NoInvalidCharacters = @"^[a-zA-Z0-9& \(\)\+:'’,\./]*$";
-            }
         }
 
         public static Boolean IsValidEmailAddress(String emailAddress)

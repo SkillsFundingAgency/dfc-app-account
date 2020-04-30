@@ -2,21 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Channels;
 using System.Web.Mvc;
+using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Services;
 
 namespace DFC.App.Account.Application.Common.CustomAttributes
 {
-    public enum Channel
-    {
-        [Display(Name = "Email")]
-        Email = 0,
-        [Display(Name = "Text")]
-        Text = 1,
-        [Display(Name = "Phone")]
-        Phone = 2
-    }
     public class MobilePhoneAttribute : ValidationAttribute, IClientValidatable
     {
         /// <summary>
@@ -43,7 +34,7 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
                 throw new MissingMemberException("Missing member DependsOn - Should be set to contact preference.");
             }
 
-            var contactPref = (Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
+            var contactPref = (CommonEnums.Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
 
             // Get all properties, where MobilePhoneAttribute is applied
             var propertyTelephoneNumbers = validationContext.ObjectType.GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(MobilePhoneAttribute)));
@@ -52,7 +43,7 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
                 throw new InvalidOperationException("Cannot find properties referencing MobilePnoneAttribute - Expected telephone and alternative telephone.");
             }
 
-            if (contactPref == Channel.Text) // The logic is applied only if selection of the ContactPreference is Text
+            if (contactPref == CommonEnums.Channel.Text) // The logic is applied only if selection of the ContactPreference is Text
             {
                 // If ANY of the validated properties is Mobile number validation rule is satisfied. If not ErrorMessage is returned as validation result
                 bool hasMobileNumber = propertyTelephoneNumbers.Any(p => ServiceFunctions.IsValidRegexValue(p.GetValue(validationContext.ObjectInstance)?.ToString(), MobilePhoneRegex));

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DFC.App.Account.Application.Common.CustomAttributes;
+﻿using DFC.App.Account.Application.Common.CustomAttributes;
+using DFC.App.Account.Application.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DFC.App.Account.Application.Common.Models
 {
@@ -36,6 +37,6 @@ namespace DFC.App.Account.Application.Common.Models
         public string TelephoneNumberAlternative { get; set; }
 
         [Display(Name = "Contact by", Order = 20)]
-        public Channel ContactPreference { get; set; }
+        public CommonEnums.Channel ContactPreference { get; set; }
     }
 }

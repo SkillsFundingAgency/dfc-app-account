@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.CustomAttributes;
+﻿using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
@@ -24,7 +24,7 @@ namespace DFC.App.Account.Controllers
                 ContactDetails = new ContactDetails
                 {
                     ContactEmail = "ContactEmail",
-                    ContactPreference = Channel.Email,
+                    ContactPreference = CommonEnums.Channel.Email,
                     TelephoneNumber = "8675309",
                     TelephoneNumberAlternative = "2222"
                 },
