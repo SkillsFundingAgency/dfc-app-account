@@ -90,7 +90,12 @@ namespace DFC.App.Account.UnitTests.Controllers
                     Line1 = "Line1"
                 }
             };
+            var identity = editViewModel.Identity;
+            var items = editViewModel.Items;
+
             editViewModel.Should().NotBeNull();
+            identity.Should().NotBeNull();
+            items.Should().NotBeNull();
         }
 
         [Test]
@@ -119,7 +124,12 @@ namespace DFC.App.Account.UnitTests.Controllers
                 Line1 = "Line1"
             };
 
+            var items = postalModel.Items;
+            var selectedItems = postalModel.SelectedItem;
+
             postalModel.Should().NotBeNull();
+            items.Should().NotBeNull();
+            selectedItems.Should().NotBeNull();
         }
     }
 }
