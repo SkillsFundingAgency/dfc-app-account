@@ -1,21 +1,17 @@
+using DFC.App.Account.Helpers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using DFC.App.Account.Helpers;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace DFC.App.Account
 {
@@ -33,9 +29,6 @@ namespace DFC.App.Account
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-          
-
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
