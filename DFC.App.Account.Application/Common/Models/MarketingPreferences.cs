@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DFC.App.Account.Application.Common.Models
+﻿namespace DFC.App.Account.Application.Common.Models
 {
     public class MarketingPreferences
     {

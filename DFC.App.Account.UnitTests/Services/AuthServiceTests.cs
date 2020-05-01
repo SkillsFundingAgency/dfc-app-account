@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
-using DFC.App.Account.Services.DSS.Services;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.Core;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Services

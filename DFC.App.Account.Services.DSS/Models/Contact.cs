@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DFC.App.Account.Application;
+using DFC.App.Account.Application.Common.Enums;
 
 namespace DFC.App.Account.Services.DSS.Models
 {
     public class Contact
     {
         public string ContactId { get; set; }
-        public PreferredContactMethod PreferredContactMethod { get; set; }
+        public CommonEnums.Channel PreferredContactMethod { get; set; }
         public string MobileNumber { get; set; }
         public string HomeNumber { get; set; }
         public string AlternativeNumber { get; set; }

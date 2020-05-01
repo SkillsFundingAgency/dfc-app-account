@@ -1,5 +1,4 @@
-﻿using System;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -23,12 +22,13 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Body(CloseYourAccountCompositeViewModel model)
+        public  async Task<IActionResult> Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            
 
             /*
                 var request = new DeleteAccountRequest
@@ -85,8 +85,20 @@ namespace DFC.App.Account.Controllers
 
                 ModelState.AddModelError(nameof(model.Password), deleteRequestErrorMessage); 
             */
-            return RedirectPermanent("/");
             
+            
+            return View("DeleteAccountConfirmation",model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountDeleted(CloseYourAccountCompositeViewModel model)
+        {
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccountConfirmation(CloseYourAccountCompositeViewModel model)
+        {
+            return View("AccountDeleted",model);
         }
     }
 }

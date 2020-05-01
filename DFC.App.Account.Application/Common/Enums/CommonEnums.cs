@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DFC.App.Account.Application.Common.Enums
 {
@@ -56,5 +53,6 @@ namespace DFC.App.Account.Application.Common.Enums
             [Display(Name = "Other", Order = 4)]
             Other = 4
         }
+
     }
 }
