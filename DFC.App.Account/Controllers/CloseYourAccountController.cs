@@ -1,4 +1,6 @@
-﻿using DFC.App.Account.Models;
+﻿using System;
+using System.Linq;
+using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,7 +17,6 @@ namespace DFC.App.Account.Controllers
 
         }
 
-        [Route("/body/close-your-account")]
         public override async Task<IActionResult> Body()
         {
             return View(ViewModel);
@@ -26,7 +27,12 @@ namespace DFC.App.Account.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+               
+               /* ViewModel.Errors  =(from item in ModelState.Values
+                    from error in item.Errors
+                    select error.ErrorMessage).ToList();
+                */
+                return View(ViewModel);
             }
             
 
@@ -87,18 +93,13 @@ namespace DFC.App.Account.Controllers
             */
             
             
-            return View("DeleteAccountConfirmation",model);
+            return View("ConfirmDeleteAccount",ViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AccountDeleted(CloseYourAccountCompositeViewModel model)
+        public async Task<IActionResult> DeleteAccount(CloseYourAccountCompositeViewModel model)
         {
-            return View(model);
+            return View("AccountDeleted",ViewModel);
         }
-        [HttpPost]
-        public async Task<IActionResult> DeleteAccountConfirmation(CloseYourAccountCompositeViewModel model)
-        {
-            return View("AccountDeleted",model);
-        }
+
     }
 }
