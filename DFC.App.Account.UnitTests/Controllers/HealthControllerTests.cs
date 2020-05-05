@@ -31,7 +31,15 @@ namespace DFC.App.Account.UnitTests.Controllers
             {
                 // Arrange
                 var actionDescriptorCollectionMock = new Mock<IActionDescriptorCollectionProvider>();
-                actionDescriptorCollectionMock.Setup(m => m.ActionDescriptors).Returns(new ActionDescriptorCollection(new List<ActionDescriptor>(), 0));
+                var actionActionDescriptors = new List<ActionDescriptor>();
+                var routeValues = new Dictionary<string, string>()
+                {
+                    {"controller", "controllerName"},
+                    {"action", "actionName"}
+                };
+
+                actionActionDescriptors.Add(new ActionDescriptor(){RouteValues = routeValues});
+                actionDescriptorCollectionMock.Setup(m => m.ActionDescriptors).Returns(new ActionDescriptorCollection(actionActionDescriptors, 0));
                 var controller = new HealthController(actionDescriptorCollectionMock.Object);
 
                 // Act
