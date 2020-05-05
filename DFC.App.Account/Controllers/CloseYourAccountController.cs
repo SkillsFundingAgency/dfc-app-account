@@ -27,16 +27,13 @@ namespace DFC.App.Account.Controllers
         {
             if (!ModelState.IsValid)
             {
-               
-               /* ViewModel.Errors  =(from item in ModelState.Values
-                    from error in item.Errors
-                    select error.ErrorMessage).ToList();
-                */
+                ViewModel.PageTitle = $"Error: {ViewModel.PageTitle}"; 
                 return View(ViewModel);
             }
             
 
             /*
+             Logic for deleting the account
                 var request = new DeleteAccountRequest
                 {
                     CitizenId = model.citizenId,

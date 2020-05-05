@@ -50,8 +50,8 @@ namespace DFC.App.Account.ViewModels
 
         public PageId Id { get; }
 
-        public string PageTitle { get; }
-        public string PageHeading { get; }
+        public string PageTitle { get; set;}
+        public string PageHeading { get; set;}
 
         public CompositeSettings CompositeSettings { get; set; }
 
