@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using DFC.App.Account.Application;
 using DFC.App.Account.Application.Common.Enums;
 
 namespace DFC.App.Account.Services.DSS.Models

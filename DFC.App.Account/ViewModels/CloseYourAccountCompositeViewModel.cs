@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DFC.App.Account.ViewModels
@@ -19,9 +17,6 @@ namespace DFC.App.Account.ViewModels
         [Required(ErrorMessage = "Invalid password")]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        public bool HasErrors => Errors != null && Errors.Count > 0;
-        public ModelErrorCollection  Errors { get; set; }
     }
 
 }
