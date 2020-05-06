@@ -21,7 +21,6 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        [Route("/body/close-your-account")]
         public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)

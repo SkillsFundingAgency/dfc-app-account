@@ -5,7 +5,7 @@
     
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            
+            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group mt" method="post" novalidate="novalidate">
 
                 @if (!ViewData.ModelState.IsValid)
                 {
@@ -43,7 +43,7 @@
                     careers advisers face-to-face or over the phone.
                 </p>
 
-                <form action="/your-account/close-your-account/" class="govuk-form-group mt" method="post" novalidate="novalidate">
+
                 <div class="govuk-form-group
                      @((!ViewData.ModelState.IsValid && ViewData.ModelState[Html.NameFor(m => m.Reason).ToString()].Errors.Any()) ? " govuk-form-group--error" : "")
                      @HtmlExtensions.GetClass(Html.NameFor(m => m.Reason).ToString(), ViewData.ModelState)">
