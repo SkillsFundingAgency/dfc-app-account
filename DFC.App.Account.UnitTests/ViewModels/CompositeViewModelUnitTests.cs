@@ -40,7 +40,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
             {
                 // Arrange.
                 var pageId = CompositeViewModel.PageId.Home;
-                var branding = CompositeViewModel.NCSBranding.Length;
+                var branding = CompositeViewModel.NCSBranding;
                 
                 // Act.
                 var s = pageId.Value;
