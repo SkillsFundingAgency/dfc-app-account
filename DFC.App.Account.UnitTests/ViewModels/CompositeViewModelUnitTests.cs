@@ -36,6 +36,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 // Assert.
                 s.Should().Be("body");
             }
+            [Test]
             public void When_PageIdSet_Then_ValueReturnsPageId()
             {
                 // Arrange.
@@ -47,6 +48,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
 
                 // Assert.
                 s.Should().Be("home");
+                branding.Should().Be("National Careers Service");
             }
         }
 
