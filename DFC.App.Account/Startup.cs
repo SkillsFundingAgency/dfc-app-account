@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using DFC.App.Account.Services.SHC.Models;
 
 namespace DFC.App.Account
 {
@@ -37,6 +38,7 @@ namespace DFC.App.Account
             services.AddScoped<IAuthService, AuthService>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
 
         //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //.AddJwtBearer(cfg =>

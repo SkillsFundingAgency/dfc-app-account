@@ -4,4 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
+  </ItemGroup>
+
 </Project>
