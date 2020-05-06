@@ -98,8 +98,6 @@ namespace DFC.App.Account
                 endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 endpoints.MapControllerRoute("deleteAccount", appPath + "/close-your-account/DeleteAccount", new {controller = "closeyouraccount", action = "deleteaccount"});
-                
-                
                 endpoints.MapControllers();
             });
 
