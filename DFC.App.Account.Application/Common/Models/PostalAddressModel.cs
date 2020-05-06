@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DFC.App.Account.Application.Common.Models
+﻿namespace DFC.App.Account.Application.Common.Models
 {
     public class PostalAddressModel
     {

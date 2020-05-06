@@ -26,7 +26,7 @@ namespace DFC.App.Account.ViewModels
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
             public static PageId ChangePassword { get; } = new PageId("change-password");
-            public static PageId CloseAccount { get; } = new PageId("close-your-account");
+            public static PageId CloseYourAccount { get; } = new PageId("close-your-account");
             public static PageId YourDetails { get; } = new PageId("your-details");
             public static PageId EditDetails { get; } = new PageId("edit-details");
             public static PageId SessionTimeout { get; } = new PageId("sessionTimeout");
@@ -50,8 +50,8 @@ namespace DFC.App.Account.ViewModels
 
         public PageId Id { get; }
 
-        public string PageTitle { get; }
-        public string PageHeading { get; }
+        public string PageTitle { get; set;}
+        public string PageHeading { get; set;}
 
         public CompositeSettings CompositeSettings { get; set; }
 

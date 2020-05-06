@@ -1,0 +1,21 @@
+﻿@model DFC.App.Account.ViewModels.EndPointsViewModel
+
+<h1>Application Endpoints (@Model.EndPoints.Count)</h1>
+
+@{
+    var currentController = string.Empty;
+    foreach (var ep in Model.EndPoints)
+    {
+        @if (currentController != ep.Controller)
+        {
+            currentController = ep.Controller;
+            <text>
+                <br />
+            </text>
+        }
+        <text>
+            [@ep.Methods] @ep.Controller -> @ep.Action
+            <br />
+        </text>
+    }
+}

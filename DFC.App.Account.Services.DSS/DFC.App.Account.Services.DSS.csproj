@@ -9,4 +9,8 @@
     <PackageReference Include="Dfc.ProviderPortal.Packages" Version="0.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
+  </ItemGroup>
+
 </Project>
