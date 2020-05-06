@@ -9,6 +9,7 @@ using DFC.App.Account.Services.SHC.UnitTest.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 
 namespace DFC.App.Account.Services.SHC.UnitTest.Services
@@ -80,8 +81,9 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 ServiceName = "serviceName"
             };
             var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
-            var documents = serviceUnderTest.GetSHCDocumentsForUser("12345");
-            documents.Should().BeNull();
+            serviceUnderTest.Invoking(x => x.GetSHCDocumentsForUser("12345")).Should().Throw<ShcException>()
+                .WithMessage("Failure to get SHC document. LLA ID: 12345, Code: InternalServerError");
+
         }
 
     }

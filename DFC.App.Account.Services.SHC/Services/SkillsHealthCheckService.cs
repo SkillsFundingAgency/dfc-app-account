@@ -1,4 +1,5 @@
 ﻿using Dfc.ProviderPortal.Packages;
+using DFC.App.Account.Application.Common.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using Microsoft.Extensions.Options;
@@ -6,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Mime;
 using System.Xml;
-using DFC.App.Account.Application.Common.Services;
 
 namespace DFC.App.Account.Services.SHC.Services
 {
@@ -15,6 +16,7 @@ namespace DFC.App.Account.Services.SHC.Services
     {
         private readonly IOptions<ShcSettings> _settings;
         private readonly IHttpWebRequestFactory _factory;
+        private const string ContentType = "text/xml;charset=\"utf-8\"";
         public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory)
         {
             
@@ -42,7 +44,7 @@ namespace DFC.App.Account.Services.SHC.Services
             var result = webRequest.GetResponse();
             if (result.StatusCode != HttpStatusCode.OK)
             {
-                return null;
+                throw new ShcException($"Failure to get SHC document. LLA ID: {llaId}, Code: {result.StatusCode}");
             }
 
             var rd = new StreamReader(result.GetResponseStream() ?? throw new InvalidOperationException());
@@ -57,8 +59,8 @@ namespace DFC.App.Account.Services.SHC.Services
             var webRequest = _factory.Create(url);
             webRequest.Headers = new WebHeaderCollection();
             webRequest.Headers.Add("SOAPAction", action);
-            webRequest.ContentType = "text/xml;charset=\"utf-8\"";
-            webRequest.Accept = "text/xml";
+            webRequest.ContentType = ContentType;
+            webRequest.Accept = MediaTypeNames.Text.Xml;
             webRequest.Method = "POST";
             return webRequest;
         }

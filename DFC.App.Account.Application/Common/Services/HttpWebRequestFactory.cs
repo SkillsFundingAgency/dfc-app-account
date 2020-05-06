@@ -67,6 +67,7 @@ namespace DFC.App.Account.Application.Common.Services
         {
             get => _request.Method;
             set => _request.Method = value;
+            
         }
 
         public Stream GetRequestStream()
