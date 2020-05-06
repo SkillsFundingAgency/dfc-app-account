@@ -180,7 +180,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
             var itemUnderTest = new HomeCompositeViewModel();
             
             // Assert.
-            itemUnderTest.PageTitle.Should().Be("Home | Your account");
+            itemUnderTest.PageTitle.Should().Be("Home | Your account | National Careers Service");
         }
     }
 }
