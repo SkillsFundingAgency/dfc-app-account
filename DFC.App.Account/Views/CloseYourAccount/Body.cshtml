@@ -60,7 +60,7 @@ else
                     <p id="textdetailscounter" class="hint" aria-live="polite" aria-atomic="false">(Limit is 250 characters)</p>
                 </div>
                 <h2 class="heading-medium">Confirm account closure</h2>
-                <govukLabel id="lablepassword" text="Enter your password to close your account." for="Password"></govukLabel>
+                <govukLabel id="lablepassword" text="Enter your password to close your account." for="password"></govukLabel>
                 <div class="govuk-form-group
                      @((!ViewData.ModelState.IsValid && ViewData.ModelState["password"].Errors.Any())?"govuk-form-group--error":"")
 
