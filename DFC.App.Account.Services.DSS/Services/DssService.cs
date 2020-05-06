@@ -118,7 +118,7 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
-                throw new DssException("Failure Customer Details, Code:" + _restClient.LastResponse.StatusCode);
+                throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 
         }
@@ -135,7 +135,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     return null;
                 else
-                    throw new DssException("Failure Address, Code:" + _restClient.LastResponse.StatusCode);
+                    throw new DssException($"Failure Address, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 
         }
@@ -153,7 +153,26 @@ namespace DFC.App.Account.Services.DSS.Services
                 if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     return new Contact();
                 else
-                    throw new DssException("Failure Contact, Code:" + _restClient.LastResponse.StatusCode);
+                    throw new DssException($"Failure Contact, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+            }
+
+        }
+
+
+        public async Task<Contact> DeleteCustomer(string customerId, HttpRequestMessage request)
+        {
+            try
+            {
+                request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
+                return await _restClient.GetAsync<Contact>(
+                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request)??new Contact();
+            }
+            catch (Exception e)
+            {
+                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                    return new Contact();
+                else
+                    throw new DssException($"Failure Contact, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 
         }

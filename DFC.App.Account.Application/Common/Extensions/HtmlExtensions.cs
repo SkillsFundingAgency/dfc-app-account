@@ -1,9 +1,11 @@
 ﻿using System;
 
+
 namespace DFC.App.Account.Application.Common.Extensions
 {
     public static class HtmlExtensions
     {
+
         /// <summary>
         /// Gets the class.
         /// </summary>

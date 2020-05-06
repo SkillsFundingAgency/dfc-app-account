@@ -7,12 +7,12 @@ namespace DFC.App.Account.Services.DSS.Models
      
         public string AddressId { get; set; }
         public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string Address3 { get; set; }
-        public string Address4 { get; set; }
-        public string Address5 { get; set; }
+        public string? Address2 { get; set; }
+        public string? Address3 { get; set; }
+        public string? Address4 { get; set; }
+        public string? Address5 { get; set; }
         public string PostCode { get; set; }
-        public string AlternativePostCode { get; set; }
+        public string? AlternativePostCode { get; set; }
         public float Longitude { get; set; }
         public float Latitude { get; set; }
         public DateTimeOffset EffectiveFrom { get; set; }

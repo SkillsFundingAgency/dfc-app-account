@@ -1,46 +1,82 @@
-﻿
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="heading-xlarge">Close your account</h1>
-        <div>
-            Closing your account means we'll delete all of your personal information and any of the following that are stored in your account:
+﻿@using DFC.App.Account.Application.Common.Extensions
+@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.CloseYourAccountCompositeViewModel
+<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
+    
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group mt" method="post" novalidate="novalidate">
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+
+                    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                        <h2 class="govuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                @foreach (var error in ViewData.ModelState)
+                                {
+                                    <li><a href="#@error.Key">@error.Value.Errors[0].ErrorMessage</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                <govukHeadingH1 text="@Model.PageHeading"></govukHeadingH1>
+                <p>
+                    Closing your account means we'll delete all of your personal information and any of the following that are stored in your account:
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>CVs</li>
+                    <li>Skills health check reports</li>
+                    <li>adviser created action plans</li>
+                    <li>personal action plans</li>
+                    <li>saved course searches</li>
+                </ul>
+                <p>
+                    It will also mean that advisers won't be able to access any
+                    information about you that you've provided to
+                    careers advisers face-to-face or over the phone.
+                </p>
+
+
+                <div class="govuk-form-group
+                     @((!ViewData.ModelState.IsValid && ViewData.ModelState[Html.NameFor(m => m.Reason).ToString()].Errors.Any()) ? " govuk-form-group--error" : "")
+                     @HtmlExtensions.GetClass(Html.NameFor(m => m.Reason).ToString(), ViewData.ModelState)">
+
+                    @Html.ValidationMessageFor(model => model.Reason, null, new { @class = "govuk-error-message" })
+                    @Html.TextAreaFor(model => model.Reason, new { @class = "govuk-textarea", ariaRequired = "true", cols = "50", rows = "10", data_Fieldgroup = "DetailsGroup" })
+                    <p id="textdetailscounter" class="hint" aria-live="polite" aria-atomic="false">(Limit is 250 characters)</p>
+                </div>
+                <h2 class="heading-medium">Confirm account closure</h2>
+                <p>Enter your password to close your account.</p>
+                <div class="govuk-form-group
+                     @((!ViewData.ModelState.IsValid && ViewData.ModelState["password"].Errors.Any())?"govuk-form-group--error":"")
+
+                     @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)">
+
+                    @Html.ValidationMessageFor(model => model.Password, null, new { @class = "govuk-error-message" })
+
+                    @Html.PasswordFor(model => model.Password, new { id = "password", @class = "govuk-input govuk-input--width-20" })
+                </div>
+                <br />
+                <div class="govuk-form-group">
+                    <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account" />
+                </div>
+                <p>
+                    or
+                    <a href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.Home">
+                        cancel and return to your account
+                    </a>.
+                </p>
+            </form>
         </div>
-        
-        <ul class="list list-bullet">
-            <li>CVs</li>
-            <li>Skills health check reports</li>
-            <li>adviser created action plans</li>
-            <li>personal action plans</li>
-            <li>saved course searches</li>
-        </ul>
-    <div>
-            It will also mean that advisers won't be able to access any
-            information about you that you've provided to
-            careers advisers face-to-face or over the phone.
-    </div>
-        <form action="/your-account/close-your-account/deleteAccount/" class="form" method="post" novalidate="novalidate">    
-            <div class="form-group  ">
-                <label class="form-label" for="Reason">Tell us why you want to close your account</label>
-                <span class="field-validation-valid error-message" data-valmsg-for="Reason" data-valmsg-replace="true"></span>
-                <textarea ariarequired="true" class="form-control w100" cols="30" data-fieldgroup="DetailsGroup" data-val="true" data-val-length="You may only have up to 250 characters" data-val-length-max="250" data-val-length-min="1" data-val-required="Enter a reason for closing your account" id="Reason" name="Reason" rows="10"></textarea>
-                <p id="textdetailscounter" class="hint" aria-live="polite" aria-atomic="false">(Limit is 250 characters)</p>
-            </div>
-            <h2 class="heading-medium">Confirm account closure</h2>
-            <p>Enter your password to close your account.</p>
-            <div class="form-group ">
-                <label class="form-label" for="Password">Password</label>
-                <span class="field-validation-valid error-message" data-valmsg-for="Password" data-valmsg-replace="true"></span>
-                <input class="form-control" data-val="true" data-val-required="Invalid password" id="password" name="Password" type="password">
-            </div>
-            <div class="form-group">
-                <button class="button">Close account</button>
-            </div>
-            <p>
-                or <a href="/your-account/home">
-                    cancel and return to your account
-                </a>.
-            </p>
-        </form>
-    </div>
         <div class="govuk-grid-column-one-third">
             <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
         </div>
+    </div>
+</div>
