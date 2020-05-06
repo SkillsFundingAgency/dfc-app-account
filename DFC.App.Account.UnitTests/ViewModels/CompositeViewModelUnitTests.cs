@@ -40,7 +40,8 @@ namespace DFC.App.Account.UnitTests.ViewModels
             {
                 // Arrange.
                 var pageId = CompositeViewModel.PageId.Home;
-
+                var branding = CompositeViewModel.NCSBranding.Length;
+                
                 // Act.
                 var s = pageId.Value;
 
@@ -172,10 +173,10 @@ namespace DFC.App.Account.UnitTests.ViewModels
         public void When_ChildConstructed_Then_PageTitleShouldBeSet()
         {
             // Arrange.
-
+            
             // Act.
             var itemUnderTest = new HomeCompositeViewModel();
-
+            
             // Assert.
             itemUnderTest.PageTitle.Should().Be("Home | Your account");
         }
