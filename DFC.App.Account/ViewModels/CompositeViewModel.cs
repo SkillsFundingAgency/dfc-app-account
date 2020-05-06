@@ -6,7 +6,8 @@ namespace DFC.App.Account.ViewModels
 {
     public abstract class CompositeViewModel
     {
-        public static string AppTitle => "Your Account";
+        public static string AppTitle => "Your account";
+        public static string NCSBranding => "National Careers Service";
 
         public class PageId
         {
