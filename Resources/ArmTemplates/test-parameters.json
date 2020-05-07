@@ -46,6 +46,15 @@
         },
         "enableAlerts": {
             "value": false
+        },
+        "ShcSettingsUrl": {
+            "value": "https://foo"
+        },
+        "ShcSettingsFindDocumentsAction": {
+            "value": "https://foo"
+        },
+        "ShcSettingsLinkUrl": {
+            "value": "https://foo"
         }
     }
 }

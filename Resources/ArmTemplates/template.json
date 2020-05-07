@@ -69,12 +69,20 @@
         "accountAppDatabaseThroughput": {
             "type": "int"
         },
-
         "enableAlerts": {
             "type": "bool",
             "metadata": {
                 "description": "Enable or disable alerting"
             }
+        },
+        "ShcSettingsUrl": {
+            "type": "string"
+        },
+        "ShcSettingsFindDocumentsAction": {
+            "type": "string"
+        },
+        "ShcSettingsLinkUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -247,6 +255,26 @@
                             {
                                 "name": "Logging__ApplicationInsights__LogLevel__Default",
                                 "value": "Information"
+                            },
+                            {
+                                "name": "ShcSettings__SHCDocType",
+                                "value": "sdt.dr.6"
+                            },
+                            {
+                                "name": "ShcSettings__ServiceName",
+                                "value": "san.id"
+                            },
+                            {
+                                "name": "ShcSettings__Url",
+                                "value": "[parameters('ShcSettingsUrl')]"
+                            },
+                            {
+                                "name": "ShcSettings__FindDocumentsAction",
+                                "value": "[parameters('ShcSettingsFindDocumentsAction')]"
+                            },
+                            {
+                                "name": "ShcSettings__LinkUrl",
+                                "value": "[parameters('ShcSettingsLinkUrl')]"
                             }
                         ]
                     }
