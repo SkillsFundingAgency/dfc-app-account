@@ -1,14 +1,13 @@
-﻿using DFC.App.Account.Models;
+﻿using Dfc.ProviderPortal.Packages;
+using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using DFC.App.Account.Services.SHC.Interfaces;
-using DFC.App.Account.Services.SHC.Models;
-using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.Account.Controllers
 {
