@@ -20,11 +20,10 @@ else
                 <li>career action plans that you've saved to your account</li>
             </ul>
 
-            <br />
+            <br/>
             <div class="govuk-form-group">
-                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@CompositeViewModel.PageId.Home"></govukButtonLink>
                 <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account" />
-
+                <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@CompositeViewModel.PageId.Home"></govukButtonLink>
             </div>
         </form>
     </div>
