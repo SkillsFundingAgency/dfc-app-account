@@ -25,6 +25,7 @@ namespace DFC.App.Account.Services.SHC.Services
             Throw.IfNullOrEmpty(settings.Value.FindDocumentsAction, nameof(settings.Value.FindDocumentsAction));
             Throw.IfNullOrEmpty(settings.Value.SHCDocType, nameof(settings.Value.SHCDocType));
             Throw.IfNullOrEmpty(settings.Value.ServiceName, nameof(settings.Value.ServiceName));
+            Throw.IfNullOrEmpty(settings.Value.LinkUrl, nameof(settings.Value.LinkUrl));
 
             Throw.IfNull(requestFactory, nameof(requestFactory));
 
@@ -34,7 +35,7 @@ namespace DFC.App.Account.Services.SHC.Services
         public List<SkillsDocument> GetSHCDocumentsForUser(string llaId)
         {
             if (string.IsNullOrWhiteSpace(llaId))
-                return null;
+                return new List<SkillsDocument>();
             
 
             var soapEnvelopeXml = CreateSoapEnvelope(llaId);

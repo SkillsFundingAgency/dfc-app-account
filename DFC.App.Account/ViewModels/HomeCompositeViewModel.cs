@@ -9,9 +9,9 @@ namespace DFC.App.Account.ViewModels
         public HomeCompositeViewModel()
             : base(PageId.Home, "Home")
         {
-            ShcDocuments = new List<ShcDocuments>();
+            ShcDocuments = new List<ShcDocument>();
         }
 
-        public List<ShcDocuments> ShcDocuments { get; set; }
+        public List<ShcDocument> ShcDocuments { get; set; }
     }
 }

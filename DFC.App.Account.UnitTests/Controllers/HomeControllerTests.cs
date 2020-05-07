@@ -102,7 +102,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void AssigningViewModelValues()
         {
             var viewModel = new HomeCompositeViewModel();
-            viewModel.ShcDocuments.Add(new ShcDocuments());
+            viewModel.ShcDocuments.Add(new ShcDocument());
             var item = viewModel.ShcDocuments[0];
             item.Should().NotBeNull();
         }

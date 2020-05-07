@@ -6,5 +6,6 @@
         public string ServiceName { get; set; }
         public string Url { get; set; }
         public string FindDocumentsAction { get; set; }
+        public string LinkUrl { get; set; }
     }
 }
