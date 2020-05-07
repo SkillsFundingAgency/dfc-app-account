@@ -26,14 +26,16 @@ namespace DFC.App.Account.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewModel.PageTitle = $"Error: {ViewModel.PageTitle}"; 
+                ViewData["Title"] = $"Error: {ViewModel.PageTitle}";
                 return View(ViewModel);
             }
             return View("ConfirmDeleteAccount",ViewModel);
         }
-
+        [HttpPost]
+        [Route("body/close-your-account/DeleteAccount")]
         public async Task<IActionResult> DeleteAccount(CloseYourAccountCompositeViewModel model)
         {
+            ViewData["Title"] = ViewModel.PageTitle;
              /*
              Logic for deleting the account
                 var request = new DeleteAccountRequest

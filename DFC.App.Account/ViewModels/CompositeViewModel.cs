@@ -60,7 +60,8 @@ namespace DFC.App.Account.ViewModels
         {
             Id = pageId;
             PageHeading = pageHeading;
-            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? AppTitle : $"{pageHeading} | {AppTitle}";
+            
+            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NCSBranding}" : $"{pageHeading} | {AppTitle} | {NCSBranding}";
         }
 
         #region Helpers

@@ -1,5 +1,13 @@
-﻿@model DFC.App.Account.ViewModels.CloseYourAccountCompositeViewModel
-   
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.CloseYourAccountCompositeViewModel
+@if (null == Model)
+{
+    <title>@CompositeViewModel.AppTitle</title>
+}
+else
+{
+    <title>@Model.PageTitle</title>
+}  
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
