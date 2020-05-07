@@ -58,6 +58,15 @@
         },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
+        },
+        "ShcSettingsUrl": {
+            "value": "__ShcSettingsUrl__"
+        },
+        "ShcSettingsFindDocumentsAction": {
+            "value": "__ShcSettingsFindDocumentsAction__"
+        },
+        "ShcSettingsLinkUrl": {
+            "value": "__ShcSettingsLinkUrl__"
         }
     }
 }
