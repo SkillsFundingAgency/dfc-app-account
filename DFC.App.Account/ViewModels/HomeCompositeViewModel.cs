@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DFC.App.Account.Application.SkillsHealthCheck.Models;
+﻿using DFC.App.Account.Application.SkillsHealthCheck.Models;
+using System.Collections.Generic;
 
 namespace DFC.App.Account.ViewModels
 {

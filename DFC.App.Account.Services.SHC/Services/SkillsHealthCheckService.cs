@@ -6,9 +6,11 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using System.Xml;
+using DFC.App.Account.Application.SkillsHealthCheck.Models;
 
 namespace DFC.App.Account.Services.SHC.Services
 {
@@ -32,10 +34,10 @@ namespace DFC.App.Account.Services.SHC.Services
             _settings = settings;
             _factory = requestFactory;
         }
-        public List<SkillsDocument> GetSHCDocumentsForUser(string llaId)
+        public List<ShcDocument> GetShcDocumentsForUser(string llaId)
         {
             if (string.IsNullOrWhiteSpace(llaId))
-                return new List<SkillsDocument>();
+                return new List<ShcDocument>();
             
 
             var soapEnvelopeXml = CreateSoapEnvelope(llaId);
@@ -83,10 +85,26 @@ namespace DFC.App.Account.Services.SHC.Services
             return soapEnvelopeDocument;
         }
 
-        private List<SkillsDocument> ParseShcDocuments(ShcDocumentResponse response)
+        private List<ShcDocument> ParseShcDocuments(ShcDocumentResponse response)
         {
-            return response.Body.FindDocumentsByServiceNameKeyValueAndDocTypeResponse
+            var documents =  response.Body.FindDocumentsByServiceNameKeyValueAndDocTypeResponse
                 .FindDocumentsByServiceNameKeyValueAndDocTypeResult.SkillsDocument;
+            if (documents.Any())
+            {
+                var shcDocs = Mapping.Mapper.Map<List<ShcDocument>>(documents);
+                return GenerateLinkUrls(shcDocs);
+            }
+            return new List<ShcDocument>();
+        }
+
+        private  List<ShcDocument> GenerateLinkUrls(List<ShcDocument> documents)
+        {
+            foreach (var doc in documents)
+            {
+                doc.LinkUrl = $"{_settings.Value.LinkUrl}{doc.DocumentId}";
+            }
+
+            return documents;
         }
         private static void InsertSoapEnvelopeIntoWebRequest(XmlDocument soapEnvelopeXml, IHttpWebRequest webRequest)
         {

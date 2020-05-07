@@ -6,17 +6,22 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using DFC.App.Account.Services.SHC.Interfaces;
+using DFC.App.Account.Services.SHC.Models;
+using Dfc.ProviderPortal.Packages;
 
 namespace DFC.App.Account.Controllers
 {
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+        private readonly ISkillsHealthCheckService _skillsHealthCheckService;
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService)
         :base(compositeSettings, authService)
         {
             _logger = logger;
+            Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
+            _skillsHealthCheckService = skillsHealthCheckService;
         }
 
         #region Default Routes
@@ -46,6 +51,8 @@ namespace DFC.App.Account.Controllers
         public override async Task<IActionResult> Body()
         {
             var x = await GetCustomerDetails();
+            //Hard coded value - Needs removing upon account, and DSS integration
+            ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
             return await base.Body();
         }
 

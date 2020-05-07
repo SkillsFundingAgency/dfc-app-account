@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DFC.App.Account.Services.SHC.Models;
+﻿using DFC.App.Account.Application.SkillsHealthCheck.Models;
+using System.Collections.Generic;
 
 namespace DFC.App.Account.Services.SHC.Interfaces
 {
     public interface ISkillsHealthCheckService
     {
-        List<SkillsDocument> GetSHCDocumentsForUser(string llaId);
+        List<ShcDocument> GetShcDocumentsForUser(string llaId);
     }
 }

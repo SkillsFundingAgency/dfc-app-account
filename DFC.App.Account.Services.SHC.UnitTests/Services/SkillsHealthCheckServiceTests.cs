@@ -1,23 +1,18 @@
-﻿using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Services;
+﻿using DFC.App.Account.Application.Common.Services;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
 using DFC.App.Account.Services.SHC.UnitTest.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
+using System.Net;
 
 namespace DFC.App.Account.Services.SHC.UnitTest.Services
 {
     public class SkillsHealthCheckServiceTests
     {
         [Test]
-        public async Task IfIdIsNull_ReturnNull()
+        public void IfIdIsNull_ReturnNull()
         {
             var factory = new HttpWebRequestFactory();
             var settings = new ShcSettings
@@ -25,15 +20,16 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 Url = "url",
                 SHCDocType = "docType",
                 FindDocumentsAction = "findDocumentsAction",
-                ServiceName = "serviceName"
+                ServiceName = "serviceName",
+                LinkUrl = "linkUrl"
             };
             var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
-            var documents = serviceUnderTest.GetSHCDocumentsForUser(null);
-            documents.Should().BeNull();
+            var documents = serviceUnderTest.GetShcDocumentsForUser(null);
+            documents.Should().BeEmpty();
         }
 
         [Test]
-        public async Task IfSuccessfulCall_ReturnDocuments()
+        public void IfSuccessfulCall_ReturnDocuments()
         {
             var factory = new MockHttpWebFactory().CreateMockFactory(HttpWebRequestHelper.SuccessfulCall(), HttpStatusCode.OK);
 
@@ -42,16 +38,17 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 Url = "url",
                 SHCDocType = "docType",
                 FindDocumentsAction = "findDocumentsAction",
-                ServiceName = "serviceName"
+                ServiceName = "serviceName",
+                LinkUrl = "linkUrl"
             };
             var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
-            var documents = serviceUnderTest.GetSHCDocumentsForUser("12345");
+            var documents = serviceUnderTest.GetShcDocumentsForUser("12345");
             documents.Should().NotBeNull();
             documents.Should().NotBeEmpty();
             documents.Count.Should().Be(2);
         }
         [Test]
-        public async Task IfSuccessfulCall_ButNoData_ReturnEmptyList()
+        public void IfSuccessfulCall_ButNoData_ReturnEmptyList()
         {
             var factory = new MockHttpWebFactory().CreateMockFactory(HttpWebRequestHelper.EmptyResult(), HttpStatusCode.OK);
 
@@ -60,16 +57,17 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 Url = "url",
                 SHCDocType = "docType",
                 FindDocumentsAction = "findDocumentsAction",
-                ServiceName = "serviceName"
+                ServiceName = "serviceName",
+                LinkUrl = "linkUrl"
             };
             var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
-            var documents = serviceUnderTest.GetSHCDocumentsForUser("12345");
+            var documents = serviceUnderTest.GetShcDocumentsForUser("12345");
             documents.Should().NotBeNull();
             documents.Should().BeEmpty();
             documents.Count.Should().Be(0);
         }
         [Test]
-        public async Task IfUnsuccessfulCall_ReturnNull()
+        public void IfUnsuccessfulCall_ReturnNull()
         {
             var factory = new MockHttpWebFactory().CreateMockFactory(HttpWebRequestHelper.EmptyResult(), HttpStatusCode.InternalServerError);
 
@@ -78,10 +76,11 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 Url = "url",
                 SHCDocType = "docType",
                 FindDocumentsAction = "findDocumentsAction",
-                ServiceName = "serviceName"
+                ServiceName = "serviceName",
+                LinkUrl = "linkUrl"
             };
             var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
-            serviceUnderTest.Invoking(x => x.GetSHCDocumentsForUser("12345")).Should().Throw<ShcException>()
+            serviceUnderTest.Invoking(x => x.GetShcDocumentsForUser("12345")).Should().Throw<ShcException>()
                 .WithMessage("Failure to get SHC document. LLA ID: 12345, Code: InternalServerError");
 
         }
