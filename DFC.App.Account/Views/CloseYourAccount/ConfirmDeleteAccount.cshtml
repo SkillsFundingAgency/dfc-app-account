@@ -22,9 +22,8 @@ else
 
             <br/>
             <div class="govuk-form-group">
+                <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account" />
                 <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@CompositeViewModel.PageId.Home"></govukButtonLink>
-                <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account"/>
-
             </div>
         </form>
     </div>
