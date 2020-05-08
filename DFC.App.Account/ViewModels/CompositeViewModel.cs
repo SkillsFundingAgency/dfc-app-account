@@ -31,6 +31,7 @@ namespace DFC.App.Account.ViewModels
             public static PageId YourDetails { get; } = new PageId("your-details");
             public static PageId EditDetails { get; } = new PageId("edit-details");
             public static PageId SessionTimeout { get; } = new PageId("sessionTimeout");
+            public static PageId DeleteAccount { get; } = new PageId("deleteAccount");
         }
 
         public class PageRegion

@@ -1,11 +1,11 @@
 ﻿@using DFC.App.Account.ViewModels
-@model DFC.App.Account.ViewModels.CompositeViewModel
+@model DFC.App.Account.ViewModels.CloseYourAccountCompositeViewModel
 <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
             <a class="govuk-breadcrumbs__link" href="https://nationalcareers.service.gov.uk/">Home</a>
         </li>
-        @if (Model.PageTitle != "Home | Your account | National Careers Service")
+        @if (Model.Id != CompositeViewModel.PageId.Home && Model.Id != CompositeViewModel.PageId.DeleteAccount)
         {
             <li class="govuk-breadcrumbs__list-item">
                 <a class="govuk-breadcrumbs__link" href="/your-account">Your account</a>
