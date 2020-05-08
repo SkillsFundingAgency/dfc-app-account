@@ -13,7 +13,11 @@ else
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group mt" method="post">
+            @Html.ValidationSummary(false, "", new { @class = "govuk-error-summary" })
+
+            <div class="govuk-error-summary" asp-validation-summary="All"></div>
+
+            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group" method="post">
 
                 @if (!ViewData.ModelState.IsValid)
                 {
@@ -56,8 +60,8 @@ else
                      @((!ViewData.ModelState.IsValid && ViewData.ModelState[Html.NameFor(m => m.Reason).ToString()].Errors.Any()) ? " govuk-form-group--error" : "")
                      @HtmlExtensions.GetClass(Html.NameFor(m => m.Reason).ToString(), ViewData.ModelState)">
 
-                    @Html.ValidationMessageFor(model => model.Reason, null, new {@class = "govuk-error-message"})
-                    @Html.TextAreaFor(model => model.Reason, new {@class = "govuk-textarea", ariaRequired = "true", cols = "50", rows = "10", data_Fieldgroup = "DetailsGroup"})
+                    @Html.ValidationMessageFor(model => model.Reason, null, new { @class = "govuk-error-message" })
+                    @Html.TextAreaFor(model => model.Reason, new { @class = "govuk-textarea", ariaRequired = "true", cols = "50", rows = "10", data_Fieldgroup = "DetailsGroup" })
                     <p id="textdetailscounter" class="hint" aria-live="polite" aria-atomic="false">(Limit is 250 characters)</p>
                 </div>
                 <h2 class="heading-medium">Confirm account closure</h2>
@@ -67,13 +71,13 @@ else
 
                      @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)">
 
-                    @Html.ValidationMessageFor(model => model.Password, null, new {@class = "govuk-error-message"})
+                    @Html.ValidationMessageFor(model => model.Password, null, new { @class = "govuk-error-message" })
 
-                    @Html.PasswordFor(model => model.Password, new {id = "password", @class = "govuk-input govuk-input--width-20"})
+                    @Html.PasswordFor(model => model.Password, new { id = "password", @class = "govuk-input govuk-input--width-20" })
                 </div>
-                <br/>
+                <br />
                 <div class="govuk-form-group">
-                    <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account"/>
+                    <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account" />
                 </div>
                 <p>
                     or
@@ -84,7 +88,10 @@ else
             </form>
         </div>
         <div class="govuk-grid-column-one-third">
-            <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml"/>
+            <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
