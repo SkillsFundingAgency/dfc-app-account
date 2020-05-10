@@ -6,6 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
     <ProjectReference Include="..\DFC.App.Account.Services.DSS\DFC.App.Account.Services.DSS.csproj" />
+    <ProjectReference Include="..\DFC.App.Account.Services.SHC\DFC.App.Account.Services.SHC.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connected Services\" />

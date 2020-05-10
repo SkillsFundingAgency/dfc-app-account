@@ -4,6 +4,9 @@ using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
+using DFC.App.Account.Services.SHC.Interfaces;
+using DFC.App.Account.Services.SHC.Models;
+using DFC.App.Account.Services.SHC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using DFC.App.Account.Application.Common.Services;
 
 namespace DFC.App.Account
 {
@@ -35,8 +39,11 @@ namespace DFC.App.Account
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
+            services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
 
         //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //.AddJwtBearer(cfg =>
