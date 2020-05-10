@@ -16,7 +16,6 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpGet,HttpPost]
-        [Route("body/DeleteAccount")]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
             
