@@ -5,7 +5,7 @@
 
 
 @{
-    var liveAddress = Model.CustomerDetails.Addresses.FirstOrDefault(x =>  x.EffectiveTo == null);
+    var liveAddress = Model.CustomerDetails.Addresses==null?null:Model.CustomerDetails.Addresses.FirstOrDefault(x =>  x.EffectiveTo == null);
 }
 <div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
 
@@ -64,7 +64,7 @@
                         <legend class="govuk-visually-hidden">
                             Your marketing preferences
                         </legend>
-                        <div class="form-group govuk-checkboxes govuk-checkboxes--small">
+                        <div class="form-group govuk-checkboxes govuk-checkboxes--small @(!Model.CustomerDetails.OptInUserResearch && !Model.CustomerDetails.OptInMarketResearch ? " govuk-visually-hidden"  : "")">
 
                             <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
                                            label="To receive marketing from the National Careers Service’s trusted partners"
