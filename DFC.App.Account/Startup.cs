@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using DFC.App.Account.Models.AddressSearch;
+using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Application.Common.Services;
 
 namespace DFC.App.Account
@@ -38,11 +40,15 @@ namespace DFC.App.Account
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
+            services.AddScoped<IAddressSearchService, AddressSearchService>();
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<AddressSearchServiceSettings>(
+                Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
 
         //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -72,6 +78,11 @@ namespace DFC.App.Account
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                     new HyphenControllerTransformer()));
             });
+            //services.AddRazorPages()
+            //    .AddViewOptions(options =>
+            //    {
+            //        options.HtmlHelperOptions.ClientValidationEnabled = false;
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,7 +116,8 @@ namespace DFC.App.Account
                 endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeYourAccount", action = "body"});
                 endpoints.MapControllerRoute("closeAccountBody", "/body/close-your-account", new {controller = "closeYourAccount", action = "body"});
                 
-                endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editDetails", action = "body"});
+                
+                endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editYourDetails", action = "body"});
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 
                 endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new {controller = "deleteAccount", action = "body"});

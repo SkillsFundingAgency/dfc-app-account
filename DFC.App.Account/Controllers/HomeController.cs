@@ -47,6 +47,7 @@ namespace DFC.App.Account.Controllers
 
         [Route("/body/{controller}")]
         [Route("/body")]
+
         public override async Task<IActionResult> Body()
         {
             var x = await GetCustomerDetails();

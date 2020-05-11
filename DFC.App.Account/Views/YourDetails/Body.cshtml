@@ -2,6 +2,10 @@
 @using DFC.App.Account.ViewModels
 @model DFC.App.Account.ViewModels.YourDetailsCompositeViewModel
 
+
+@{
+    var liveAddress = Model.CustomerDetails.Addresses.FirstOrDefault(x => x.EffectiveFrom <= DateTime.Now && x.EffectiveTo >= DateTime.Now);
+}
 <div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
 
     <div class="govuk-grid-row">
@@ -28,12 +32,12 @@
                             {
                                 Label = "Address",
                                 LabelValue =
-                                    Model.CustomerDetails.Addresses != null && Model.CustomerDetails.Addresses.Length > 0 ?
-                                        $"<div>{@Model.CustomerDetails.Addresses[0].Address1}</div>" +
-                                        $"<div>{@Model.CustomerDetails.Addresses[0].Address2}</div>" +
-                                        $"<div>{@Model.CustomerDetails.Addresses[0].Address3}</div>" +
-                                        $"<div>{@Model.CustomerDetails.Addresses[0].Address4}</div>" +
-                                        $"<div>{@Model.CustomerDetails.Addresses[0].Address5}</div>"
+                                    liveAddress != null?
+                                        $"<div>{liveAddress.Address1}</div>" +
+                                        $"<div>{liveAddress.Address2}</div>" +
+                                        $"<div>{liveAddress.Address3}</div>" +
+                                        $"<div>{liveAddress.Address4}</div>" +
+                                        $"<div>{liveAddress.Address5}</div>"
                                         : ""
                             })
                             </tbody>

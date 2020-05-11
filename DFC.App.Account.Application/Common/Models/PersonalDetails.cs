@@ -99,6 +99,8 @@ namespace DFC.App.Account.Application.Common.Models
         [Display(Name = "Fifth line of your address", Order = 15)]
         public string AddressLine5 { get; set; }
 
+        public string AddressId { get; set; }
+
         [BFPOAddress(DependsOn = "HomePostCode", DependsOnPropertyForAttribute = "HomePostCode",
             IsNotBfpo = true,
             ErrorMessage = "Town is required")]
