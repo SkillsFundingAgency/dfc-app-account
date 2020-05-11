@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.Personalisation.Common.Net.RestClient;
 
@@ -19,6 +18,12 @@ namespace DFC.App.Account.Services
         {
             _settings = settings.Value;
             _restClient = restClient;
+        }
+
+        public AddressSearchService(IOptions<AddressSearchServiceSettings> settings)
+        {
+            _settings = settings.Value;
+            _restClient = new RestClient();
         }
 
         private string BuildUrlToFindAddresses(string searchterm)
