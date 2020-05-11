@@ -7,11 +7,15 @@ namespace DFC.App.Account.Application.Common.Enums
         public enum Channel
         {
             [Display(Name = "Email")]
-            Email = 0,
-            [Display(Name = "Text")]
-            Text = 1,
+            Email = 1,
+            [Display(Name = "Mobile")]
+            Mobile = 2,
             [Display(Name = "Phone")]
-            Phone = 2
+            Phone = 3,
+            [Display(Name = "Text")]
+            Text = 4,
+            [Display(Name = "Post")]
+            Post = 5
         }
         public enum Gender
         {

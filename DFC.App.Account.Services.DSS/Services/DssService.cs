@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Dfc.ProviderPortal.Packages;
+using DFC.App.Account.Services.DSS.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
+using DFC.Personalisation.Common.Net.RestClient;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
-using DFC.Personalisation.Common.Net.RestClient;
-using Dfc.ProviderPortal.Packages;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using DFC.App.Account.Services.DSS.Exceptions;
 
 namespace DFC.App.Account.Services.DSS.Services
 {
@@ -50,7 +53,7 @@ namespace DFC.App.Account.Services.DSS.Services
 
 
             Customer result;
-            using (var request = CreateRequestMessage(HttpMethod.Post))
+            using (var request = CreateRequestMessage())
             {
                 request.Content = new StringContent(
                     JsonConvert.SerializeObject(customerData),
@@ -70,7 +73,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 return null;
 
             Customer result;
-            using (var request = CreateRequestMessage(HttpMethod.Patch))
+            using (var request = CreateRequestMessage())
             {
                 request.Content = new StringContent(
                     JsonConvert.SerializeObject(customerData),
@@ -81,13 +84,88 @@ namespace DFC.App.Account.Services.DSS.Services
                 result = await _restClient.PatchAsync<Customer>(apiPath:$"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", requestMessage: request);
             }
 
-            return _restClient.LastResponse.IsSuccess ? result : null;
+            if (!_restClient.LastResponse.IsSuccess)
+            {
+                throw new UnableToUpdateCustomerDetailsException($"Unable To Updated customer details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
+            }
+
+            return result;
+        }
+
+        public async Task<Contact> UpsertCustomerContactData(Customer customerData)
+        {
+            if (customerData == null)
+                return null;
+            Contact result;
+            using (var request = CreateRequestMessage())
+            {
+                request.Content = new StringContent(
+                    JsonConvert.SerializeObject(customerData.Contact),
+                    Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+                request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
+
+
+                if (string.IsNullOrEmpty(customerData.Contact.ContactId))
+                {
+                    result = await _restClient.PostAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()), 
+                        requestMessage: request);
+                }
+                else
+                {
+                    result = (await _restClient.PatchAsync<IList<Contact>>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()) + 
+                                                                            customerData.Contact.ContactId, requestMessage: request)).FirstOrDefault();
+                }
+            }
+
+            if (_restClient.LastResponse.Content.Contains(
+                $"Contact with Email Address {customerData.Contact.EmailAddress} already exists"))
+            {
+                throw new EmailAddressAlreadyExistsException(_restClient.LastResponse.Content);
+            }
+
+            if (!_restClient.LastResponse.IsSuccess)
+            {
+              throw new UnableToUpdateContactDetailsException($"Unable To Updated contact details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
+            }
+
+            return result;
+        }
+
+        public async Task<Address> UpsertCustomerAddressData(Address address, Guid customerId)
+        {
+            Address result;
+            using (var request = CreateRequestMessage())
+            {
+                request.Content = new StringContent(
+                    JsonConvert.SerializeObject(address));
+                request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
+
+
+                if (string.IsNullOrEmpty(address.AddressId))
+                {
+                    result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()),
+                        requestMessage: request);
+                }
+                else
+                {
+                    result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
+                                                                                                 address.AddressId, requestMessage: request);
+                }
+            }
+
+            if (!_restClient.LastResponse.IsSuccess)
+            {
+                throw new UnableToUpdateAddressDetailsException($"Unable To Updated address details for customer {customerId}, Response {_restClient.LastResponse.Content}");
+            }
+
+            return result;
         }
 
         public async Task<Customer> GetCustomerData(string customerId)
         {
 
-            var request = CreateRequestMessage(HttpMethod.Get);
+            var request = CreateRequestMessage();
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
             var customer = await GetCustomerDetail(customerId, request);
@@ -98,10 +176,9 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        private HttpRequestMessage CreateRequestMessage(HttpMethod method)
+        private HttpRequestMessage CreateRequestMessage()
         {
             var request = new HttpRequestMessage();
-            request.Method = method;
             request.Headers.Add("Ocp-Apim-Subscription-Key", _dssSettings.Value.ApiKey);
             request.Headers.Add("TouchpointId", _dssSettings.Value.AccountsTouchpointId);
 
@@ -123,12 +200,12 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        public async Task<Address[]> GetCustomerAddressDetails(string customerId, HttpRequestMessage request)
+        public async Task<IList<Address>> GetCustomerAddressDetails(string customerId, HttpRequestMessage request)
         {
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-                return await _restClient.GetAsync<Address[]>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
+                return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
             }
             catch (Exception e)
             {
