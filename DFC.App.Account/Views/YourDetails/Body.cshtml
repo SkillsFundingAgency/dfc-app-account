@@ -27,7 +27,7 @@
 
                             @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd MMMM yyyy") })
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Gender", LabelValue = Enum.GetName(typeof(CommonEnums.Gender), Model.CustomerDetails.Gender)})})
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() {Label = "Gender", LabelValue = Model.CustomerDetails.Gender.GetDisplayName()})
 
                             @await Component.InvokeAsync(nameof(Row), new RowModel()
                             {
