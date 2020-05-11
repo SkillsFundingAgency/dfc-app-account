@@ -5,7 +5,7 @@
 
 
 @{
-    var liveAddress = Model.CustomerDetails.Addresses.FirstOrDefault(x => x.EffectiveFrom <= DateTime.Now && x.EffectiveTo >= DateTime.Now);
+    var liveAddress = Model.CustomerDetails.Addresses.FirstOrDefault(x =>  x.EffectiveTo == null);
 }
 <div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
 
@@ -38,7 +38,8 @@
                                         $"<div>{liveAddress.Address2}</div>" +
                                         $"<div>{liveAddress.Address3}</div>" +
                                         $"<div>{liveAddress.Address4}</div>" +
-                                        $"<div>{liveAddress.Address5}</div>"
+                                        $"<div>{liveAddress.Address5}</div>" +
+                                        $"<div>{liveAddress.PostCode}</div>"
                                         : ""
                             })
                             </tbody>
