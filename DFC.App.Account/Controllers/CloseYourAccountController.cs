@@ -21,7 +21,6 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        [Route("/body/close-your-account")]
         public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -29,71 +28,11 @@ namespace DFC.App.Account.Controllers
                 ViewData["Title"] = $"Error: {ViewModel.PageTitle}";
                 return View(ViewModel);
             }
+            
+            ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
             return View("ConfirmDeleteAccount",ViewModel);
         }
-        [HttpPost]
-        [Route("body/close-your-account/DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount(CloseYourAccountCompositeViewModel model)
-        {
-            ViewData["Title"] = ViewModel.PageTitle;
-             /*
-             Logic for deleting the account
-                var request = new DeleteAccountRequest
-                {
-                    CitizenId = model.citizenId,
-                    Password = model.Password,
-                    Reason = model.Reason
-                };
-                //Call DSS Service Endpoint 
-                var deleteRequest = Task.Run(async () => await ServiceClient.DeleteAccountAsync(request)).Result;
-
-                 if (deleteRequest.Success)
-                {
-                   Response.Redirect("/home/signout", true);
-                }
-
-                string deleteRequestErrorMessage = string.Empty;
-                string currentPageUrl = Request.Url.AbsolutePath;
-
-                switch (deleteRequest.ErrorMessage.ToLowerInvariant())
-                {
-                    case ServiceConstants.CompareValues.invalidpassword:
-                        var validationSet =
-                            ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl,
-                                nameof(model.Password));
-                        if (validationSet != null && !string.IsNullOrEmpty(validationSet.CustomValidationErrorMessage))
-                        {
-                            deleteRequestErrorMessage = validationSet.CustomValidationErrorMessage;
-                        }
-                        else
-                        {
-                            deleteRequestErrorMessage = "Invalid password.";
-                        }
-
-                        break;
-                    case ServiceConstants.CompareValues.genericerror:
-                        var validationSetGeneric =
-                            ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl,
-                                ServiceConstants.MessageTypes.GenericError);
-                        if (validationSetGeneric != null &&
-                            !string.IsNullOrEmpty(validationSetGeneric.CustomValidationErrorMessage))
-                        {
-                            deleteRequestErrorMessage = validationSetGeneric.CustomValidationErrorMessage;
-                        }
-                        else
-                        {
-                            deleteRequestErrorMessage = "Could not close account. Please try again later";
-                        }
-
-                        break;
-                    default:
-                        break;
-                }
-
-                ModelState.AddModelError(nameof(model.Password), deleteRequestErrorMessage); 
-            */
-            return View("AccountDeleted",ViewModel);
-        }
+        
 
     }
 }

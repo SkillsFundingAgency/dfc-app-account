@@ -12,7 +12,7 @@ using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
-    public class CloseYourAccountControllerTests
+    public class DeleteAccountControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
@@ -26,7 +26,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var controller = new DeleteAccountController(_compositeSettings, _authService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -41,35 +41,22 @@ namespace DFC.App.Account.UnitTests.Controllers
 
 
         [Test]
-        public void WhenBodyCalledWithInvalidModelState_ReturnToViewWithError()
+        public async Task WhenBodyCalled_AccountDeleted()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
-            var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
-
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-            controller.ModelState.AddModelError("password","Invalid password");
-            var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
-            result.ViewData.ModelState.IsValid.Should().BeFalse();
-        }
-
-        [Test]
-        public void WhenBodyCalled_RedirectToConfirmDelete()
-        {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
-            var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
+            var controller = new DeleteAccountController(_compositeSettings, _authService);
+            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
             
-            var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
+            var result =  await controller.Body(deleteAccountCompositeViewModel) as ViewResult;
             result.Should().BeOfType<ViewResult>();
-            result.ViewName = "ConfirmDeleteAccount";
+            result.ViewName = "AccountDeleted";
             
         }
+
+        
     }
 }
