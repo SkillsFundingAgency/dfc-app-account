@@ -9,6 +9,9 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DFC.App.Account.Services.DSS.Exceptions;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {
@@ -187,7 +190,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             result.Should().NotBeNull();
         }
         [Test]
-        public async Task IfApiCallIsUnSuccessful_ReturnNull()
+        public void IfApiCallIsUnSuccessful_ReturnNull()
         {
             var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.InternalServerError);
             _restClient = new RestClient(mockHandler.Object);
@@ -199,8 +202,9 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 CustomerApiVersion = "V1"
             }));
 
-            var result = await _dssService.UpdateCustomerData(new Customer());
-            result.Should().BeNull();
+            _dssService.Invoking(x => x.UpdateCustomerData(new Customer())).Should()
+                .Throw<UnableToUpdateCustomerDetailsException>();
+
         }
     }
 }

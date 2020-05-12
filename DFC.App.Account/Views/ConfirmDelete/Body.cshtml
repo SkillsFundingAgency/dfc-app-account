@@ -8,15 +8,15 @@
             <table class="govuk-table">
                 <caption class="govuk-table__caption govuk-heading-m"> </caption>
                 <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header"></th>
-                    </tr>
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header"></th>
+                </tr>
                 </thead>
                 <tbody class="govuk-table__body">
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">Skills health check started @Model.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">Skills health check started @Model.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
 
-                    </tr>
+                </tr>
                 </tbody>
             </table>
             <div class="govuk-warning-text">
@@ -28,7 +28,10 @@
             </div>
         </section>
         <govukButton text="Delete"></govukButton>
-        <govukButtonLink LinkText="Cancel" LinkHref="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.Home"></govukButtonLink>
+        <govukButtonLink AdditionalClass="govuk-button--secondary" LinkText="Cancel" LinkHref="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.Home"></govukButtonLink>
     </div>
-    <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
+    <div class="govuk-grid-column-one-third">
+        <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
+    </div>
 </div>
+
