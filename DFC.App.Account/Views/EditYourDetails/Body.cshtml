@@ -27,26 +27,7 @@
         setInterval(CheckSessionExist, sessionTimeoutIntervalPeriod);
     });
 </script>
-
-<div class="govuk-error-summary @(ViewData.ModelState.IsValid ? " govuk-visually-hidden"  : "")" aria-labelledby="your-details-error" role="alert" tabindex="-1" data-module="govuk-error-summary">
-    <h2 class="govuk-error-summary__title" id="your-details-error">
-        There is a problem
-    </h2>
-    <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-            @foreach (var modelStateKey in ViewData.ModelState.Keys)
-            {
-                var modelStateVal = ViewData.ModelState[modelStateKey];
-                if (modelStateVal.Errors.Count > 0)
-                {
-                    <li id="@modelStateKey.Replace(".", "_")">
-                        <a href="#@modelStateKey.Replace(".", "_")">@Html.Raw(modelStateVal.Errors[0].ErrorMessage)</a>
-                    </li>
-                }
-            }
-        </ul>
-    </div>
-</div>
+<partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
 
 
 <div class="govuk-grid-column-two-thirds">
