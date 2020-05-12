@@ -15,6 +15,7 @@ using DFC.App.Account.Services.DSS.Exceptions;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace DFC.App.Account.Controllers
 {
@@ -150,7 +151,7 @@ namespace DFC.App.Account.Controllers
                 bool isFindAddressServiceOnError = false;
                 try
                 {
-                    var addresses = (await _addressSearchService.GetAddresses("ws28nw")).ToList();
+                    var addresses = (await _addressSearchService.GetAddresses(postalCode)).ToList();
                     if (addresses.Any())
                     {
                         viewModel.Items = addresses.ToList();
@@ -158,7 +159,6 @@ namespace DFC.App.Account.Controllers
                 }
                 catch
                 {
-                    // Log.Write(ex, ConfigurationPolicy.ErrorLog);
 
                     viewModel.Identity.PersonalDetails.FindAddressServiceResult = ErrorMessageServiceUnavailable;
                     isFindAddressServiceOnError = true;
@@ -181,27 +181,28 @@ namespace DFC.App.Account.Controllers
 
         private async Task GetSelectAddress(EditDetailsCompositeViewModel viewModel, EditDetailsAdditionalData additionalData)
         {
-            if (!string.IsNullOrWhiteSpace(additionalData.SelectedAddress))
+            if (additionalData.SelectAddress != null)
             {
                 try
                 {
-                    additionalData.SelectedAddress = additionalData.SelectedAddress.Trim();
-                    var selectedAddress = await _addressSearchService.GetAddress(additionalData.SelectedAddress);
-                    if (selectedAddress != null)
+                    if (!string.IsNullOrEmpty(additionalData.SelectedAddress.Id))
                     {
-                        viewModel.Identity.PersonalDetails.AddressLine1 = selectedAddress.Line1;
-                        viewModel.Identity.PersonalDetails.AddressLine2 = selectedAddress.Line2;
-                        viewModel.Identity.PersonalDetails.AddressLine3 = selectedAddress.Line3;
-                        viewModel.Identity.PersonalDetails.AddressLine4 = selectedAddress.Line4;
-                        viewModel.Identity.PersonalDetails.AddressLine5 = selectedAddress.Line5;
-                        viewModel.Identity.PersonalDetails.HomePostCode = selectedAddress.PostalCode;
-                        viewModel.Identity.PersonalDetails.Town = selectedAddress.City;
+                        additionalData.SelectedAddress = await _addressSearchService.GetAddress(additionalData.SelectedAddress.Id);
+                    }
+
+                    if (additionalData.SelectedAddress != null)
+                    {
+                        viewModel.Identity.PersonalDetails.AddressLine1 = additionalData.SelectedAddress.Line1;
+                        viewModel.Identity.PersonalDetails.AddressLine2 = additionalData.SelectedAddress.Line2;
+                        viewModel.Identity.PersonalDetails.AddressLine3 = additionalData.SelectedAddress.Line3;
+                        viewModel.Identity.PersonalDetails.AddressLine4 = additionalData.SelectedAddress.Line4;
+                        viewModel.Identity.PersonalDetails.AddressLine5 = additionalData.SelectedAddress.Line5;
+                        viewModel.Identity.PersonalDetails.HomePostCode = additionalData.SelectedAddress.PostalCode;
+                        viewModel.Identity.PersonalDetails.Town = additionalData.SelectedAddress.City;
                     }
                 }
                 catch
                 {
-                    //  Log.Write(ex, ConfigurationPolicy.ErrorLog);
-
                     viewModel.Identity.PersonalDetails.FindAddressServiceResult = ErrorMessageServiceUnavailable;
                 }
 
@@ -210,6 +211,16 @@ namespace DFC.App.Account.Controllers
 
         private EditDetailsAdditionalData GetEditDetailsAdditionalData(IFormCollection formCollection)
         {
+            PostalAddressModel selectedAddress = null;
+
+            var SelectedAddressString = formCollection.FirstOrDefault(x =>
+                string.Compare(x.Key, "select-address", StringComparison.CurrentCultureIgnoreCase) == 0).Value;
+
+            if (!string.IsNullOrEmpty(SelectedAddressString))
+            {
+                selectedAddress = JsonConvert.DeserializeObject<PostalAddressModel>(SelectedAddressString);
+            }
+
             return new EditDetailsAdditionalData
             {
                 FindAddress = formCollection.FirstOrDefault(x => string.Compare(x.Key, "findAddress", StringComparison.CurrentCultureIgnoreCase) == 0).Value,
@@ -217,7 +228,7 @@ namespace DFC.App.Account.Controllers
                 SelectAddress = formCollection.FirstOrDefault(x => string.Compare(x.Key, "selectAddress", StringComparison.CurrentCultureIgnoreCase) == 0).Value,
                 MarketResearchOptIn = !string.IsNullOrEmpty(formCollection.FirstOrDefault(x => string.Compare(x.Key, "marketResearchOptIn", StringComparison.CurrentCultureIgnoreCase) == 0).Value),
                 MarketingOptIn = !string.IsNullOrEmpty(formCollection.FirstOrDefault(x => string.Compare(x.Key, "marketingOptIn", StringComparison.CurrentCultureIgnoreCase) == 0).Value),
-                SelectedAddress = formCollection.FirstOrDefault(x => string.Compare(x.Key, "select-address", StringComparison.CurrentCultureIgnoreCase) == 0).Value
+              SelectedAddress = selectedAddress
             };
 
         }

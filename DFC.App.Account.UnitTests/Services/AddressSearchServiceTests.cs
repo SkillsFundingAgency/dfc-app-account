@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Models;
+﻿using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
 using DFC.Personalisation.Common.Net.RestClient;
@@ -12,6 +7,9 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests.Services
 {
@@ -23,13 +21,18 @@ namespace DFC.App.Account.UnitTests.Services
         public AddressSearchServiceTests()
         {
             _restClient = Substitute.For<IRestClient>();
+
+            _restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            {
+                IsSuccess = true
+            };
         }
 
         [Test]
         public async Task WhenGetAddressesCalled_ThenCorrectUrlIsGenerated()
         {
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>()));
+            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new List<PostalAddressModel>());
 
             var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings
             {
@@ -41,14 +44,14 @@ namespace DFC.App.Account.UnitTests.Services
 
             await service.GetAddresses("test");
 
-            await _restClient.Received().GetAsync<string>(Arg.Is("3&Key=1&SearchTerm=test&LastId=&SearchFor=PostalCodes&Country=GBR&LanguagePreference=EN&MaxSuggestions=&MaxResults="));
+            await _restClient.Received().GetAsync<IEnumerable<PostalAddressModel>>(Arg.Is("3&Key=1&SearchTerm=test&LastId=&SearchFor=PostalCodes&Country=GBR&LanguagePreference=EN&MaxSuggestions=&MaxResults="));
         }
 
         [Test]
         public async Task WhenGetAddressCalled_ThenCorrectUrlIsGenerated()
         {
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>()));
+            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new List<PostalAddressModel>());
 
             var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings
             {
@@ -60,14 +63,14 @@ namespace DFC.App.Account.UnitTests.Services
 
             await service.GetAddress("test");
 
-            await _restClient.Received().GetAsync<string>(Arg.Is("4&Key=1&Id=test"));
+            await _restClient.Received().GetAsync<IEnumerable<PostalAddressModel>>(Arg.Is("4&Key=1&Id=test"));
         }
 
         [Test]
         public async Task WhenGetAddressesCalled_ThenReturnResult()
         {
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>()));
+            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new List<PostalAddressModel>());
 
             var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), _restClient);
 
@@ -80,8 +83,13 @@ namespace DFC.App.Account.UnitTests.Services
         [Test]
         public async Task WhenGetAddressesCalledAndNoAddressesFound_ThenReturnNull()
         {
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(string.Empty);
+            _restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            {
+                IsSuccess = false
+            };
+
+            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new List<PostalAddressModel>());
 
             var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), _restClient);
 
@@ -94,14 +102,14 @@ namespace DFC.App.Account.UnitTests.Services
         [Test]
         public async Task WhenGetAddressCalled_ThenReturnResult()
         {
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>
+            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new List<PostalAddressModel>
                 {
                     new PostalAddressModel
                     {
                         Id = "test"
                     }
-                }));
+                });
 
             var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), _restClient);
 
@@ -114,6 +122,11 @@ namespace DFC.App.Account.UnitTests.Services
         [Test]
         public async Task WhenGetAddressCalledAndNoAddressFound_ThenReturnNull()
         {
+            _restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            {
+                IsSuccess = false
+            };
+
             _restClient.GetAsync<string>(Arg.Any<string>())
                 .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>()));
 

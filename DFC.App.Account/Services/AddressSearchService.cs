@@ -56,18 +56,18 @@ namespace DFC.App.Account.Services
         {
             var url = BuildUrlToFindAddresses(postalCode);
 
-            var result = await _restClient.GetAsync<string>(url);
+            var result = await _restClient.GetAsync<IEnumerable<PostalAddressModel>>(url);
 
-            return !string.IsNullOrWhiteSpace(result) ? JsonConvert.DeserializeObject<IEnumerable<PostalAddressModel>>(result) : null;
+            return _restClient.LastResponse.IsSuccess ? result : null;
         }
 
         public async Task<PostalAddressModel> GetAddress(string addressIdentifier)
         {
 
             var url = BuildUrlToRetrieveAddress(addressIdentifier);
-            var result = await _restClient.GetAsync<string>(url);
+            var result = await _restClient.GetAsync<IEnumerable<PostalAddressModel>>(url);
 
-            return !string.IsNullOrWhiteSpace(result) ? (JsonConvert.DeserializeObject<IEnumerable<PostalAddressModel>>(result)).FirstOrDefault() : null;
+            return _restClient.LastResponse.IsSuccess ? result.FirstOrDefault() : null;
         }
     }
 }

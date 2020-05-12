@@ -14,6 +14,7 @@ namespace DFC.App.Account.ViewModels
 
         public IList<PostalAddressModel> Items { get; set; }
 
+        public IList<PostalAddressModel> SelectedAddress { get; set; }
         public string GetErrorClass(string elementName, ModelStateDictionary state)
         {
             var elementState = state[elementName];
