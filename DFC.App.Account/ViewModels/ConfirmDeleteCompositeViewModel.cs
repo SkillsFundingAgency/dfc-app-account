@@ -1,4 +1,6 @@
-﻿namespace DFC.App.Account.ViewModels
+﻿using System;
+
+namespace DFC.App.Account.ViewModels
 {
     public class ConfirmDeleteCompositeViewModel : CompositeViewModel
     {
@@ -6,5 +8,8 @@
         {
 
         }
+
+        public string DocumentId { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }
