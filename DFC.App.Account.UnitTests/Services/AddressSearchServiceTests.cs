@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -69,10 +70,17 @@ namespace DFC.App.Account.UnitTests.Services
         [Test]
         public async Task WhenGetAddressesCalled_ThenReturnResult()
         {
-            _restClient.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
+            var client = Substitute.For<IRestClient>();
+
+            client.GetAsync<IEnumerable<PostalAddressModel>>(Arg.Any<string>())
                 .ReturnsForAnyArgs(new List<PostalAddressModel>());
 
-            var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), _restClient);
+            client.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            {
+                IsSuccess = true
+            };
+
+            var service = new AddressSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), client);
 
             var result = await service.GetAddresses("test");
 
