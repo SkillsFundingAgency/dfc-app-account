@@ -10,8 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Exceptions;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {

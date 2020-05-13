@@ -15,9 +15,6 @@ using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
 using DFC.App.Account.Services.DSS.Exceptions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace DFC.App.Account.Services.DSS.Services
 {

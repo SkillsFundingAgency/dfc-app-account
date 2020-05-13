@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;

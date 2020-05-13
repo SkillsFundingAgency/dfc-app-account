@@ -1,12 +1,10 @@
-﻿using System;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Controllers
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.Common.Interfaces;
 using DFC.App.Account.Services.DSS.Models;

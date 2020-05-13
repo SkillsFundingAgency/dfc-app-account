@@ -1,11 +1,9 @@
-﻿using System.Net;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
-using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Controllers
@@ -13,9 +11,6 @@ namespace DFC.App.Account.Controllers
    
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
-        private readonly IHttpContextAccessor _contextAccessor;
-        private ISession _session => _contextAccessor.HttpContext.Session;
-
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
             : base(compositeSettings, authService)
         {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using DFC.App.Account.Application.Common.Interfaces;
 
 namespace DFC.App.Account.Application.Common
