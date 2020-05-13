@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using DFC.App.Account.Models;
+using DFC.App.Account.Services;
+using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace DFC.App.Account.Controllers
 {
-    public class ChangePasswordController : Controller
+    public class ChangePasswordController : CompositeSessionController<ChangePasswordCompositeViewModel>
     {
-        public IActionResult Body()
+        public ChangePasswordController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+            : base(compositeSettings, authService)
         {
-            return View();
+            
+        }
+        public override async Task<IActionResult> Body()
+        {
+            return await base.Body();
         }
     }
 }

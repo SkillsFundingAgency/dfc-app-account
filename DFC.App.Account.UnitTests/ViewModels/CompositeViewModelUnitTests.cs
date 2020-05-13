@@ -1,11 +1,11 @@
-﻿using System;
-using DFC.App.Account.ViewModels;
+﻿using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using NUnit.Framework;
+using System;
 
 namespace DFC.App.Account.UnitTests.ViewModels
 {
-     [TestFixture]
+    [TestFixture]
     public class CompositeViewModelUnitTests
     {
         
@@ -36,16 +36,19 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 // Assert.
                 s.Should().Be("body");
             }
+            [Test]
             public void When_PageIdSet_Then_ValueReturnsPageId()
             {
                 // Arrange.
                 var pageId = CompositeViewModel.PageId.Home;
-
+                var branding = CompositeViewModel.NCSBranding;
+                
                 // Act.
                 var s = pageId.Value;
 
                 // Assert.
                 s.Should().Be("home");
+                branding.Should().Be("National Careers Service");
             }
         }
 
@@ -67,6 +70,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 act.Should().Throw<ArgumentException>().WithMessage("elementName cannot be null or empty or whitespace.*");
             }
 
+            [Test]
             public void When_InstanceNameIsMissing_Then_ShouldThrowException()
             {
                 // Arrange.
@@ -81,6 +85,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
                 act.Should().Throw<ArgumentException>().WithMessage("instanceName cannot be null or empty or whitespace.*");
             }
 
+            [Test]
             public void When_ValidValuesProvided_Then_ResultShouldBeCamelCased()
             {
                 // Arrange.
@@ -170,12 +175,12 @@ namespace DFC.App.Account.UnitTests.ViewModels
         public void When_ChildConstructed_Then_PageTitleShouldBeSet()
         {
             // Arrange.
-
+            
             // Act.
             var itemUnderTest = new HomeCompositeViewModel();
-
+            
             // Assert.
-            itemUnderTest.PageTitle.Should().Be("Home | Your Account");
+            itemUnderTest.PageTitle.Should().Be("Home | Your account | National Careers Service");
         }
     }
 }

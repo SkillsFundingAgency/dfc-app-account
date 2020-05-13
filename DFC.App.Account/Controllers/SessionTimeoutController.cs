@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using DFC.App.Account.Models;
+using DFC.App.Account.Services;
+using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace DFC.App.Account.Controllers
 {
-    public class SessionTimeoutController : Controller
+    public class SessionTimeoutController : CompositeSessionController<SessionTimeoutCompositeViewModel>
     {
-        public IActionResult Body()
+        public SessionTimeoutController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+            : base(compositeSettings, authService)
         {
-            return View();
+        }
+        public override async Task<IActionResult> Body()
+        {
+            return await base.Body();
         }
     }
 }

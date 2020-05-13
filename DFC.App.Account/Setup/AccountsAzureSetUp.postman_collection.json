@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "218a220f-b783-4cb5-805e-3ba2f320985a",
+		"_postman_id": "fd2759d3-29f1-4cbc-aa7c-a7b6ca9fe637",
 		"name": "AccountsAzureSetUp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -214,7 +214,65 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "RegionSidebarRight",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"SideBarRight\",\n    \"RegionEndpoint\": \"https://localhost:44355/sidebarright/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+				},
+				"url": {
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
+					"host": [
+						"{{RegionRootUrl}}paths"
+					],
+					"path": [
+						"your-account",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegionBodyFooter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"BodyFooter\",\n    \"RegionEndpoint\": \"https://localhost:44355/bodytop/{0}\",\n    \"HealthCheckRequired\": false,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+				},
+				"url": {
+					"raw": "{{RegionRootUrl}}paths/your-account/regions",
+					"host": [
+						"{{RegionRootUrl}}paths"
+					],
+					"path": [
+						"your-account",
+						"regions"
+					]
+				}
+			},
+			"response": []
 		}
-  ],
+	],
 	"protocolProfileBehavior": {}
 }

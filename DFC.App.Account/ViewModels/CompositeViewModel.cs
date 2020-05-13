@@ -6,7 +6,8 @@ namespace DFC.App.Account.ViewModels
 {
     public abstract class CompositeViewModel
     {
-        public static string AppTitle => "Your Account";
+        public static string AppTitle => "Your account";
+        public static string NCSBranding => "National Careers Service";
 
         public class PageId
         {
@@ -25,6 +26,14 @@ namespace DFC.App.Account.ViewModels
 
             public static PageId Home { get; } = new PageId("home");
             public static PageId Error { get; } = new PageId("error");
+            public static PageId ChangePassword { get; } = new PageId("change-password");
+            public static PageId CloseYourAccount { get; } = new PageId("close-your-account");
+            public static PageId YourDetails { get; } = new PageId("your-details");
+            public static PageId EditDetails { get; } = new PageId("edit-your-details");
+            public static PageId SessionTimeout { get; } = new PageId("sessionTimeout");
+            public static PageId DeleteAccount { get; } = new PageId("delete-account");
+            public static PageId ConfirmDelete { get; } = new PageId("confirm-delete");
+
         }
 
         public class PageRegion
@@ -45,8 +54,8 @@ namespace DFC.App.Account.ViewModels
 
         public PageId Id { get; }
 
-        public string PageTitle { get; }
-        public string PageHeading { get; }
+        public string PageTitle { get; set;}
+        public string PageHeading { get; set;}
 
         public CompositeSettings CompositeSettings { get; set; }
 
@@ -54,7 +63,8 @@ namespace DFC.App.Account.ViewModels
         {
             Id = pageId;
             PageHeading = pageHeading;
-            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? AppTitle : $"{pageHeading} | {AppTitle}";
+            
+            PageTitle = string.IsNullOrWhiteSpace(pageHeading) ? $"{AppTitle} | {NCSBranding}" : $"{pageHeading} | {AppTitle} | {NCSBranding}";
         }
 
         #region Helpers

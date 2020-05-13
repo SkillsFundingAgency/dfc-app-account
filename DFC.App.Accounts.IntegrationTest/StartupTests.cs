@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DFC.App.Account;
+using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace DFC.App.Account.UnitTests.Integration
+namespace DFC.App.Accounts.IntegrationTest
 {
     [TestFixture]
     public class StartupTests
@@ -35,6 +39,11 @@ namespace DFC.App.Account.UnitTests.Integration
             _client.Dispose();
             _factory.Dispose();
         }
-
+        [Test]
+        public async Task Tdd()
+        {
+            var result = await _client.GetAsync("/body");
+            result.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        }
     }
 }

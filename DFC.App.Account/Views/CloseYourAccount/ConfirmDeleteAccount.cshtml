@@ -1,0 +1,32 @@
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.CloseYourAccountCompositeViewModel
+@if (null == Model)
+{
+    <title>@CompositeViewModel.AppTitle</title>
+}
+else
+{
+    <title>@Model.PageTitle</title>
+}
+<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.DeleteAccount" class="govuk-form-group mt" method="post">
+                <h1 class="govuk-heading-xl">Are you sure you want to close your account?</h1>
+                <p>If you close your account, you will no longer be able to view any:</p>
+
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+                    <li>Skills health checks that you’ve started or completed</li>
+                    <li>career action plans that you've saved to your account</li>
+                </ul>
+
+                <br/>
+                <div class="govuk-form-group">
+                    <govukButton id="@Model.GetElementId("govukButton", "CloseAccount")" text="Close account"/>
+                    <govukButtonLink additional-class="govuk-button--secondary" id="@Model.GetElementId("govukButtonLink", "Cancel")" LinkTitle="Cancel" LinkText="Cancel" LinkHref="@CompositeViewModel.PageId.Home"></govukButtonLink>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

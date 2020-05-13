@@ -1,1 +1,15 @@
-﻿@model DFC.App.Account.ViewModels.CompositeViewModel
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.CompositeViewModel
+<div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+        <li class="govuk-breadcrumbs__list-item">
+            <a class="govuk-breadcrumbs__link" href="https://nationalcareers.service.gov.uk/">Home</a>
+        </li>
+        @if (Model.Id != CompositeViewModel.PageId.Home && Model.Id != CompositeViewModel.PageId.DeleteAccount)
+        {
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="/your-account">Your account</a>
+            </li>
+        }
+    </ol>
+</div>

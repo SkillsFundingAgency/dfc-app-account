@@ -1,8 +1,6 @@
 [
     {
-        "Path": "your-account",
-        "TopNavigationText": "Accounts",
-        "TopNavigationOrder": 400,
+        "Path": "your-account",      
         "Layout": "FullWidth",
         "OfflineHtml": "<H2>Accounts Service Unavailable</H2>",
         "IsOnline": true,
@@ -22,20 +20,20 @@
             {
                 "PageRegion": 3,
                 "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodytop/{0}",
-                "HealthCheckRequired": true,
+                "HealthCheckRequired": false,
                 "OfflineHtml": "<H3>Service Unavailable</H3>"
             },
           {
             "PageRegion": 4,
             "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/body/{0}",
-            "HealthCheckRequired": true,
+            "HealthCheckRequired": false,
             "OfflineHtml": "<H3>Service Unavailable</H3>"
           
           },
 		  {
             "PageRegion": 7,
             "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodyfooter/{0}",
-            "HealthCheckRequired": true,
+            "HealthCheckRequired": false,
             "OfflineHtml": "<H3>Service Unavailable</H3>"
           
           }
