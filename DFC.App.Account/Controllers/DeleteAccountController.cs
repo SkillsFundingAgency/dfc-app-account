@@ -1,23 +1,28 @@
-﻿using DFC.App.Account.Models;
+﻿using System;
+using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Controllers
 {
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
-        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+        private readonly IDssWriter _dssService;
+        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService)
             : base(compositeSettings, authService)
         {
-
+            _dssService = dssService;
         }
 
         [HttpGet,HttpPost]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
+
             
              /*
              Logic for deleting the account
@@ -75,6 +80,9 @@ namespace DFC.App.Account.Controllers
 
                 ModelState.AddModelError(nameof(model.Password), deleteRequestErrorMessage); 
             */
+            
+
+             await _dssService.DeleteCustomer();
              return View(ViewModel);
         }
 
