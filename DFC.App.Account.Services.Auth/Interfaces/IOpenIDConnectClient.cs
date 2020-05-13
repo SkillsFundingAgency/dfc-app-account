@@ -7,6 +7,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth.Interfaces
     {
         Task<string> GetRegisterUrl();
         Task<string> GetSignInUrl();
+        string GetAuthdUrl();
         Task<JwtSecurityToken> ValidateToken(string token);        
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
@@ -104,17 +105,19 @@ namespace DFC.App.Account.Controllers
             {
                 validatedToken = await _authClient.ValidateToken(id_token);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 // TBC: how to handle invalid token?
+                _logger.LogError(ex, "Failed to validate auth token.");
                 throw;
             }
 
             // TBC: How to use validated token now - what claims to stuff in the session?
             //      Which claim is the unique ID of the user - is it TID?
-            //      Get a claim like this:    var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
+            var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
 
-            return Redirect("https://localhost:44383/your-account");
+            var loggedInUrl = await _authClient.GetAuthdUrl();
+            return Redirect(loggedInUrl);
         }
 
         #endregion

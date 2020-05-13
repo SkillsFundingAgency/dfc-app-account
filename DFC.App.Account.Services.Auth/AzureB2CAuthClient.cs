@@ -134,5 +134,10 @@ namespace DFC.App.Account.Services.AzureB2CAuth
 
             return validatedToken as JwtSecurityToken;
         }
+
+        public string GetAuthdUrl()
+        {
+            return _settings.AuthdUrl;
+        }
     }
 }

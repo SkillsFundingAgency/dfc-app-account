@@ -10,6 +10,7 @@
         public string JWK { get; set; }
         public string Issuer { get; set; }
         public string RedirectUrl { get; set; }
+        public string AuthdUrl { get; set; }
         public bool LogPersonalInfo { get; set; }
     }
 }
