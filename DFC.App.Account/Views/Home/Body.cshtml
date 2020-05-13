@@ -31,7 +31,7 @@
                                 {
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table-cell">Started @doc.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
-                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"skills-health-check-{@doc.DocumentId}")" link-href="@doc.LinkUrl" link-text="View" id="@Model.GetElementId("govUkLink", "skills-health-check")"></govUkLink></td>
+                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"skills-health-check-{@doc.DocumentId}")" link-href="@doc.LinkUrl" link-text="View"></govUkLink></td>
                                         <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ConfirmDelete?id=@doc.DocumentId" id="@Model.GetElementId("govUkLink", $"confirm-delete-{@doc.DocumentId}")" link-text="Delete"></govUkLink></td>
                                     </tr>
                                 }
