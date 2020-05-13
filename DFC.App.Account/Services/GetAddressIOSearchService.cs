@@ -6,6 +6,7 @@ using DFC.App.Account.Services.Interfaces;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Services
@@ -34,10 +35,9 @@ namespace DFC.App.Account.Services
             var result = await _restClient.GetAsync<GetAddressIoResult>(url);
             if (!_restClient.LastResponse.IsSuccess)
             {
-                var statusCode = (int)_restClient.LastResponse.StatusCode;
-                switch (statusCode)
+                switch (_restClient.LastResponse.StatusCode)
                 {
-                    case 429:
+                    case HttpStatusCode.TooManyRequests:
                         throw new AddressServiceRequestLimitReachedException(_restClient.LastResponse.Content);
                 }
 
@@ -49,7 +49,7 @@ namespace DFC.App.Account.Services
 
         public Task<PostalAddressModel> GetAddress(string addressIdentifier)
         {
-            return null;
+            return Task.FromResult<PostalAddressModel>(null);
         }
     }
 }

@@ -119,6 +119,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                     Line1 = "Line1"
                 }
             };
+            editViewModel.SelectedAddress = new List<PostalAddressModel>();
             var identity = editViewModel.Identity;
             var items = editViewModel.Items;
 

@@ -1,12 +1,11 @@
 ﻿using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services.Interfaces;
+using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.Personalisation.Common.Net.RestClient;
 
 namespace DFC.App.Account.Services
 {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Models;
+﻿using DFC.App.Account.Application.Common.Models;
+using DFC.App.Account.Exception;
 using DFC.App.Account.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
@@ -12,7 +8,13 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests.Services
 {
@@ -107,6 +109,68 @@ namespace DFC.App.Account.UnitTests.Services
 
             result.Should().BeNull();
 
+        }
+
+        [Test]
+        public async Task WhenGetAddressesCalledAndServiceLimitReached_ThenThrowServiceLimitReachedException()
+        {
+            var client = Substitute.For<IRestClient>();
+
+            client.GetAsync<GetAddressIoResult>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new GetAddressIoResult
+                {
+                    Addresses = new List<GetAddressIOAddressModel>()
+                });
+
+            client.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.TooManyRequests
+            };
+
+            var service = new GetAddressIoSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), client);
+
+            Assert.ThrowsAsync<AddressServiceRequestLimitReachedException>(async () =>
+            {
+                await service.GetAddresses("test");
+            });
+
+        }
+
+        [Test]
+        public void GetAddressViewModelTest()
+        {
+            var model = new GetAddressIOAddressModel{
+                Line1 = "",
+                City = "",
+                Line3 = "",
+                Line4 = "",
+                Line2 = "",
+                County = "",
+                FormattedAddress = new List<string>()
+            };
+
+            model.Should().NotBeNull();
+        }
+
+        [Test]
+        public void GetAddressResultModelTest()
+        {
+            var model = new GetAddressIoResult()
+            {
+                Addresses = new List<GetAddressIOAddressModel>{
+                new GetAddressIOAddressModel
+                {
+                    FormattedAddress = new List<string>()
+                }
+
+                },
+                Latitude = "",
+                Longitude = "",
+                Postcode = nameof(GetAddressIoResult.Postcode)
+            };
+
+            model.MapToPostalAddressModel().First().PostalCode.Should().Be(nameof(GetAddressIoResult.Postcode));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using DFC.App.Account.Application.Common.Models;
+﻿using DFC.App.Account.Application.Common.Models;
 
 namespace DFC.App.Account.Models
 {
