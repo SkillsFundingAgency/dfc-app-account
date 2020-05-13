@@ -116,7 +116,7 @@ namespace DFC.App.Account.Controllers
             //      Which claim is the unique ID of the user - is it TID?
             var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
 
-            var loggedInUrl = await _authClient.GetAuthdUrl();
+            var loggedInUrl = _authClient.GetAuthdUrl();
             return Redirect(loggedInUrl);
         }
 
