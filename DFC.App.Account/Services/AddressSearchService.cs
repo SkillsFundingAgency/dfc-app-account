@@ -1,12 +1,11 @@
 ﻿using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services.Interfaces;
+using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.Personalisation.Common.Net.RestClient;
 
 namespace DFC.App.Account.Services
 {
@@ -56,18 +55,18 @@ namespace DFC.App.Account.Services
         {
             var url = BuildUrlToFindAddresses(postalCode);
 
-            var result = await _restClient.GetAsync<string>(url);
+            var result = await _restClient.GetAsync<IEnumerable<PostalAddressModel>>(url);
 
-            return !string.IsNullOrWhiteSpace(result) ? JsonConvert.DeserializeObject<IEnumerable<PostalAddressModel>>(result) : null;
+            return _restClient.LastResponse.IsSuccess ? result : null;
         }
 
         public async Task<PostalAddressModel> GetAddress(string addressIdentifier)
         {
 
             var url = BuildUrlToRetrieveAddress(addressIdentifier);
-            var result = await _restClient.GetAsync<string>(url);
+            var result = await _restClient.GetAsync<IEnumerable<PostalAddressModel>>(url);
 
-            return !string.IsNullOrWhiteSpace(result) ? (JsonConvert.DeserializeObject<IEnumerable<PostalAddressModel>>(result)).FirstOrDefault() : null;
+            return _restClient.LastResponse.IsSuccess ? result.FirstOrDefault() : null;
         }
     }
 }

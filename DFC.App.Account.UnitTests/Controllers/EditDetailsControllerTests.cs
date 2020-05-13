@@ -119,6 +119,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                     Line1 = "Line1"
                 }
             };
+            editViewModel.SelectedAddress = new List<PostalAddressModel>();
             var identity = editViewModel.Identity;
             var items = editViewModel.Items;
 
@@ -392,7 +393,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var result = await controller.Body(viewModel, new FormCollection(new Dictionary<string, StringValues>
             {
                 {"selectAddress", "selectAddress"},
-                {"select-address", "select-address" }
+                {"select-address", "{\"id\":\"test\"}" }
             })) as ViewResult;
 
             await _addressSearchService.Received().GetAddress(Arg.Any<string>());
@@ -426,7 +427,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var result = await controller.Body(viewModel, new FormCollection(new Dictionary<string, StringValues>
             {
                 {"selectAddress", "selectAddress"},
-                {"select-address", "select-address" }
+                {"select-address", "{\"id\":\"test\"}" }
             })) as ViewResult;
 
             result.Should().NotBeNull();
@@ -458,7 +459,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var result = await controller.Body(viewModel, new FormCollection(new Dictionary<string, StringValues>
             {
                 {"selectAddress", "selectAddress"},
-                {"select-address", "select-address" }
+                {"select-address", "{\"id\":\"test\"}" }
             })) as ViewResult;
 
             result.Should().NotBeNull();

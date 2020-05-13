@@ -2,6 +2,7 @@
 @using DFC.App.Account.Application.Common.Extensions
 @using DFC.App.Account.Application.Common.Models
 @using DFC.App.Account.ViewModels
+@using Newtonsoft.Json
 @model DFC.App.Account.ViewModels.EditDetailsCompositeViewModel
 @*<style>
         .field-validation-valid {
@@ -138,10 +139,10 @@
                                                 @for (Int32 counter = 0; counter < Model.Items.Count; counter++)
                                                 {
                                                     PostalAddressModel item = Model.Items[counter];
-                                                    <label class="block-label" for="@String.Concat("radio-", item.Id)">
-                                                        <input id="@String.Concat("radio-", item.Id)" name="select-address" value="@item.Id" type="radio" />
-                                                        @Html.Raw(item.Text)
-                                                    </label>
+                                            <label class="block-label" for="@String.Concat("radio-", item.Id)">
+                                                <input id="@String.Concat("radio-", item.Id)" name="select-address" value="@JsonConvert.SerializeObject(item)" type="radio" />
+                                                @Html.Raw(item.Text)
+                                            </label>
                                                 }
                                             </div>
                                         </div>

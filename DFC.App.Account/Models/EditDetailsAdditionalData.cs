@@ -1,4 +1,6 @@
-﻿namespace DFC.App.Account.Models
+﻿using DFC.App.Account.Application.Common.Models;
+
+namespace DFC.App.Account.Models
 {
     public class EditDetailsAdditionalData
     {
@@ -7,6 +9,6 @@
         public string SaveDetails { get; set; }
         public bool MarketingOptIn { get; set; }
         public bool MarketResearchOptIn { get; set; }
-        public string SelectedAddress { get; set; }
+        public PostalAddressModel SelectedAddress { get; set; }
     }
 }
