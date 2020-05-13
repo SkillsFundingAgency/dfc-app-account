@@ -3,8 +3,8 @@
 @model DFC.App.Account.ViewComponents.Row.RowModel
 
 <tr>
-    <td class="govuk-!-width-one-half">
+    <td>
         <govukLabel id="@Model.Label" text="@Model.Label" for="Identity_PersonalDetails_@Model.Label"></govukLabel>
     </td>
-    <td>@Html.Raw(Model.LabelValue)</td>
+    <td class="govuk-!-width-one-half">@Html.Raw(Model.LabelValue)</td>
 </tr>
