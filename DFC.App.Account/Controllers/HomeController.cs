@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
@@ -100,12 +99,12 @@ namespace DFC.App.Account.Controllers
         [Route("/your-account/auth")]
         public async Task<IActionResult> Auth(string id_token, string state)
         {
-            JwtSecurityToken validatedToken = null;
+            JwtSecurityToken validatedToken;
             try
             {
                 validatedToken = await _authClient.ValidateToken(id_token);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 // TBC: how to handle invalid token?
                 throw;
