@@ -1,12 +1,15 @@
 ﻿using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
@@ -15,12 +18,15 @@ namespace DFC.App.Account.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService)
+        private readonly IOpenIDConnectClient _authClient;
+
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IOpenIDConnectClient authClient)
         :base(compositeSettings, authService)
         {
             _logger = logger;
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
+            _authClient = authClient;
         }
 
         #region Default Routes
@@ -70,5 +76,48 @@ namespace DFC.App.Account.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region Auth Routes
+
+        // It's important to use the same URL route as the existing Skills Health Check app in production
+        [Route("/your-account/home/register")]
+        public async Task<IActionResult> Register()
+        {
+            var registerUrl = await _authClient.GetRegisterUrl();
+            return Redirect(registerUrl);
+        }
+
+        // It's important to use the same URL route as the existing Skills Health Check app in production
+        [Route("/your-account/home/signin")]
+        public async Task<IActionResult> SignIn()
+        {
+            var signInUrl = await _authClient.GetSignInUrl();
+            return Redirect(signInUrl);
+        }
+
+        // Set this route up in the Azure B2C config on the Azure Portal as the redirect Url
+        // This is where we receive the token upon a successful user authentication
+        [Route("/your-account/auth")]
+        public async Task<IActionResult> Auth(string id_token, string state)
+        {
+            JwtSecurityToken validatedToken = null;
+            try
+            {
+                validatedToken = await _authClient.ValidateToken(id_token);
+            }
+            catch (System.Exception ex)
+            {
+                // TBC: how to handle invalid token?
+                throw;
+            }
+
+            // TBC: How to use validated token now - what claims to stuff in the session?
+            //      Which claim is the unique ID of the user - is it TID?
+            //      Get a claim like this:    var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
+
+            return Redirect("https://localhost:44383/your-account");
+        }
+
+        #endregion
     }
 }
