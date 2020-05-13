@@ -93,19 +93,24 @@ namespace DFC.App.Account.UnitTests.Services
         }
 
         [Test]
-        public void WhenGetAddressCalledAndNoAddressFound_ThenReturnNull()
+        public async Task WhenGetAddressCalledAndNoAddressFound_ThenReturnNull()
         {
-            _restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
+            var client = Substitute.For<IRestClient>();
+
+            client.GetAsync<GetAddressIoResult>(Arg.Any<string>())
+                .ReturnsForAnyArgs(new GetAddressIoResult
+                {
+                    Addresses = new List<GetAddressIOAddressModel>()
+                });
+
+            client.LastResponse = new RestClient.APIResponse(new HttpResponseMessage())
             {
                 IsSuccess = false
             };
 
-            _restClient.GetAsync<string>(Arg.Any<string>())
-                .ReturnsForAnyArgs(JsonConvert.SerializeObject(new List<PostalAddressModel>()));
+            var service = new GetAddressIoSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), client);
 
-            var service = new GetAddressIoSearchService(new OptionsWrapper<AddressSearchServiceSettings>(new AddressSearchServiceSettings()), _restClient);
-
-            var result = service.GetAddress("test");
+            var result = await service.GetAddress("test");
 
             result.Should().BeNull();
 
