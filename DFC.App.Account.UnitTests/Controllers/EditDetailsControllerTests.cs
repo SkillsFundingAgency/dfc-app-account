@@ -18,20 +18,20 @@ namespace DFC.App.Account.UnitTests.Controllers
     public class EditDetailsControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
-        private IAuthService _authService;
+        //private IAuthService _authService;
 
 
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
-            _authService = Substitute.For<IAuthService>();
+            //_authService = Substitute.For<IAuthService>();
         }
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new EditDetailsController(_compositeSettings, _authService);
+            var controller = new EditDetailsController(_compositeSettings/*, _authService*/);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

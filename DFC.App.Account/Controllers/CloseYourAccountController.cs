@@ -9,8 +9,8 @@ namespace DFC.App.Account.Controllers
 {
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
-        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
-            : base(compositeSettings, authService)
+        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings)
+            : base(compositeSettings)
         {
 
         }

@@ -9,8 +9,8 @@ namespace DFC.App.Account.Controllers
 {
     public class ChangePasswordController : CompositeSessionController<ChangePasswordCompositeViewModel>
     {
-        public ChangePasswordController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
-            : base(compositeSettings, authService)
+        public ChangePasswordController(IOptions<CompositeSettings> compositeSettings)
+            : base(compositeSettings)
         {
             
         }

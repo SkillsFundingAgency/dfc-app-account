@@ -2,6 +2,14 @@
 
 <h1>Application Endpoints (@Model.EndPoints.Count)</h1>
 
+<div class="govuk-width-container">
+    <div class="account-info">
+        <a class="account-link" href="/your-account/home/signin" id="signin-link">Sign in</a>
+        <a class="account-link last-link" href="/your-account/home/register" id="createaccount-link">Create account</a>
+    </div>
+</div>
+
+
 @{
     var currentController = string.Empty;
     foreach (var ep in Model.EndPoints)

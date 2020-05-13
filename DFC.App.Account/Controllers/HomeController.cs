@@ -13,8 +13,8 @@ namespace DFC.App.Account.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService)
-        :base(compositeSettings, authService)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings)
+        :base(compositeSettings)
         {
             _logger = logger;
         }
@@ -45,8 +45,6 @@ namespace DFC.App.Account.Controllers
         [Route("/body")]
         public override async Task<IActionResult> Body()
         {
-            var x = await GetCustomerDetails();
-
             return await base.Body();
         }
 

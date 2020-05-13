@@ -16,7 +16,7 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<ErrorController> _logger;
-        private IAuthService _authService;
+        //private IAuthService _authService;
 
 
         [SetUp]
@@ -25,13 +25,13 @@ namespace DFC.App.Account.UnitTests.Controllers
             _logger = Substitute.For<ILogger<ErrorController>>();
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = new Logger<ErrorController>(new LoggerFactory());
-            _authService = Substitute.For<IAuthService>();
+            //_authService = Substitute.For<IAuthService>();
         }
 
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings, _authService);
+            var controller = new ErrorController(_logger, _compositeSettings/*, _authService*/);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

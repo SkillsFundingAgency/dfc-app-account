@@ -16,8 +16,8 @@ namespace DFC.App.Account.Controllers
         
         private readonly IDssReader _dssService;
 
-        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService)
-            : base(compositeSettings, authService)
+        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService)
+            : base(compositeSettings)
         {
             _dssService = dssService;
         }

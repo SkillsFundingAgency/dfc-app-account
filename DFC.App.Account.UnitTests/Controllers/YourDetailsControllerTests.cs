@@ -23,13 +23,14 @@ namespace DFC.App.Account.UnitTests.Controllers
         private ILogger<YourDetailsController> _logger;
         private YourDetailsController _controller;
         private Customer _customer;
-        private IAuthService _authService;
+        //private IAuthService _authService;
+
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
             _dssService = Substitute.For<IDssReader>();
-            _authService = Substitute.For<IAuthService>();
+            //_authService = Substitute.For<IAuthService>();
             _customer = new Customer()
             {
                 Addresses = new []{new Address() {Address1 = "Line 1"}},
@@ -48,7 +49,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenBodyCalled_ReturnCustomer()
         {
             _dssService.GetCustomerData(Arg.Any<string>()).Returns(_customer);
-            _controller = new YourDetailsController(_logger, _compositeSettings, _dssService, _authService);
+            _controller = new YourDetailsController(_logger, _compositeSettings, _dssService/*, _authService*/);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = await _controller.Body("somecustomerid") as ViewResult;
             result.ViewData.Model.As<YourDetailsCompositeViewModel>().CustomerDetails.Should().NotBeNull();

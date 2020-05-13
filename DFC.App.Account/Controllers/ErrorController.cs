@@ -12,8 +12,8 @@ namespace DFC.App.Account.Controllers
     public class ErrorController : CompositeSessionController<ErrorCompositeViewModel>
     {
         private readonly ILogger<ErrorController> _logger;
-        public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService)
-            : base(compositeSettings, authService)
+        public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings)
+            : base(compositeSettings)
         {
             _logger = logger;
         }

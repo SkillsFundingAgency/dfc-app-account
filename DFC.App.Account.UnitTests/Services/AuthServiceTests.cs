@@ -17,7 +17,7 @@ namespace DFC.App.Account.UnitTests.Services
         {
             _dssService = Substitute.For<IDssReader>();
         }
-
+        /*
         [Test]
         public async Task WhenAuthServiceCalledReturnCustomer()
         {
@@ -32,5 +32,6 @@ namespace DFC.App.Account.UnitTests.Services
 
             result.FamilyName.Should().Be("Test");
         }
+        */
     }
 }

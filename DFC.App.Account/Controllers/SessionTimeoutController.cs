@@ -9,8 +9,8 @@ namespace DFC.App.Account.Controllers
 {
     public class SessionTimeoutController : CompositeSessionController<SessionTimeoutCompositeViewModel>
     {
-        public SessionTimeoutController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
-            : base(compositeSettings, authService)
+        public SessionTimeoutController(IOptions<CompositeSettings> compositeSettings)
+            : base(compositeSettings)
         {
         }
         public override async Task<IActionResult> Body()
