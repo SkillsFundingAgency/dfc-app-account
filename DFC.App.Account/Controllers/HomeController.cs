@@ -114,10 +114,10 @@ namespace DFC.App.Account.Controllers
 
             // TBC: How to use validated token now - what claims to stuff in the session?
             //      Which claim is the unique ID of the user - is it TID?
+            // For now we'll temporarily stuff the users' full name in the redirect Url just to demonstrate we are logged in
             var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
-
             var loggedInUrl = _authClient.GetAuthdUrl();
-            return Redirect(loggedInUrl);
+            return Redirect($"{loggedInUrl}?UserFullName={userFullName}");
         }
 
         #endregion
