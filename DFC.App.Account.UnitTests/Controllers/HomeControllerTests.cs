@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
@@ -36,7 +39,11 @@ namespace DFC.App.Account.UnitTests.Controllers
             _authClient = Substitute.For<IOpenIDConnectClient>();
             _authClient.GetRegisterUrl().ReturnsForAnyArgs("http://register");
             _authClient.GetSignInUrl().ReturnsForAnyArgs("http://signin");
+            _authClient.GetAuthdUrl().ReturnsForAnyArgs("http://homepage");
+            _authClient.ValidateToken("badtoken").Throws(new System.Exception("Invalid token"));
+            _authClient.ValidateToken("goodtoken").Returns(Task.FromResult(new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(claims: new Claim[] { new Claim("name", "Mr Test User") } )));
         }
+
         [Test]
         public void WhenHeadCalled_ReturnHtml()
         {
@@ -133,6 +140,24 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectResult>();
             ((RedirectResult)result).Url.Should().Be("http://signin");
+        }
+
+        [Test]
+        public async Task When_AuthCalledWithInvalidToken_ThrowException()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authClient);
+            Func<Task> act = async () => { await controller.Auth("badtoken", "state"); };
+            await act.Should().ThrowAsync<System.Exception>();
+        }
+
+        [Test]
+        public async Task When_AuthCalledWithValidToken_Return_RedirectWithTemporaryUsernameClaim()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authClient);
+            var result = await controller.Auth("goodtoken", "state");
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+            ((RedirectResult)result).Url.Should().Be("http://homepage?UserFullName=Mr Test User");
         }
     }
 }
