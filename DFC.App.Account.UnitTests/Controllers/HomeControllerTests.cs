@@ -32,7 +32,10 @@ namespace DFC.App.Account.UnitTests.Controllers
             _logger = Substitute.For<ILogger<HomeController>>();
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
+            
             _authClient = Substitute.For<IOpenIDConnectClient>();
+            _authClient.GetRegisterUrl().ReturnsForAnyArgs("http://register");
+            _authClient.GetSignInUrl().ReturnsForAnyArgs("http://signin");
         }
         [Test]
         public void WhenHeadCalled_ReturnHtml()
@@ -110,6 +113,26 @@ namespace DFC.App.Account.UnitTests.Controllers
             viewModel.ShcDocuments.Add(new ShcDocument());
             var item = viewModel.ShcDocuments[0];
             item.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task When_RegisterCalled_Return_Redirect()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authClient);
+            var result = await controller.Register();
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+            ((RedirectResult)result).Url.Should().Be("http://register");
+        }
+
+        [Test]
+        public async Task When_SignInCalled_Return_Redirect()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authClient);
+            var result = await controller.SignIn();
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+            ((RedirectResult)result).Url.Should().Be("http://signin");
         }
     }
 }
