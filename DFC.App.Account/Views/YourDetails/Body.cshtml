@@ -18,17 +18,17 @@
                     <div class="govuk-form-group">
                         <table class="check-your-answers" role="presentation">
                             <tbody>
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Title", LabelValue = @Model.CustomerDetails.Title.ToString() })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Title", LabelValue =(int) @Model.CustomerDetails.Title == 99 ? "Not Provided":@Model.CustomerDetails.Title.ToString() })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "First name", LabelValue = @Model.CustomerDetails.GivenName })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "First name", LabelValue = @Model.CustomerDetails.GivenName })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Last name", LabelValue = @Model.CustomerDetails.FamilyName })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Last name", LabelValue = @Model.CustomerDetails.FamilyName })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd MMMM yyyy") })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd MMMM yyyy") })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Gender", LabelValue = Model.CustomerDetails.Gender.GetDisplayName() })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Gender", LabelValue =(int) @Model.CustomerDetails.Gender == 99 ? "Not Provided" : Model.CustomerDetails.Gender.GetDisplayName() })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel()
+                            @await Component.InvokeAsync(nameof(Row), new RowModel()
                                 {
                                     Label = "Address",
                                     LabelValue =

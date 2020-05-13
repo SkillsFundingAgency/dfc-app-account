@@ -10,9 +10,9 @@ namespace DFC.App.Account.Application.Common.Enums
             Email = 1,
             [Display(Name = "Mobile")]
             Mobile = 2,
-            [Display(Name = "Phone")]
+            [Display(Name = "Telephone")]
             Phone = 3,
-            [Display(Name = "Text")]
+            [Display(Name = "SMS")]
             Text = 4,
             [Display(Name = "Post")]
             Post = 5
@@ -20,13 +20,13 @@ namespace DFC.App.Account.Application.Common.Enums
         public enum Gender
         {
             [Display(Name = "Select", Order = 0)]
-            NotKnown = 0,
+            NotProvided = 0,
             [Display(Name = "Female", Order = 1)]
-            Female = 3,
+            Female = 1,
             [Display(Name = "Male", Order = 2)]
             Male = 2,
-            [Display(Name = "Prefer not to say", Order = 3)]
-            NotApplicable = 1
+            [Display(Name = "Not applicable", Order = 3)]
+            NotApplicable = 3
         }
         public enum Title
         {
