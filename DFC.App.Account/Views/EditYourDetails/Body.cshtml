@@ -4,30 +4,7 @@
 @using DFC.App.Account.ViewModels
 @using Newtonsoft.Json
 @model DFC.App.Account.ViewModels.EditDetailsCompositeViewModel
-@*<style>
-        .field-validation-valid {
-            display: none;
-        }
 
-        .validation-summary-valid {
-            display: none;
-        }
-    </style>*@
-<link href="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/css/all.min.css?dD5uI7CUkyXggutYGXwYQg==" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-    $(function () {
-        $('input').keydown(function (e) {
-            if ((e.keyCode || e.which) == 13) {
-                return false;
-            }
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        setInterval(CheckSessionExist, sessionTimeoutIntervalPeriod);
-    });
-</script>
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
 
 
@@ -291,108 +268,6 @@
 </div>
 
 
-<script src="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/js/jquerybundle.min.js?jq/NP1aPZeQDFG2sHhiMEg==" type="text/javascript" nonce="yFoYA0sTl5DRrT10/O0u5HWg"></script>
-<script src="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/js/all.min.js?Uoa/MIvs&#x2B;BY3BaNt9sMilw==" type="text/javascript" nonce="yFoYA0sTl5DRrT10/O0u5HWg"></script>
 
-<script nonce="yFoYA0sTl5DRrT10/O0u5HWg">window.GOVUKFrontend.initAll()</script>
-
-<script src="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/js/dfcdigital.min.js?zzg1RfbkBBhUqRJBIrwI4A==" nonce="yFoYA0sTl5DRrT10/O0u5HWg"></script>
-
-<script>
-
-
-    $(document).ready(function () {
-
-        var form = $(".validationOnClient");
-        var errorSummary = $(".govuk-error-summary");
-        var hiddenClass = "govuk-visually-hidden";
-        var formErrorClass = "govuk-form-group--error";
-        var inputErrorClass = "govuk-input--error";
-
-        function findItem(list, itemToFind) {
-            var itemToRemove = {}
-            $(list).each(function () {
-                if (($(this).attr("id") === $(itemToFind).attr("name"))) {
-                    itemToRemove = this;
-                }
-            });
-            return itemToRemove;
-        }
-
-        function toggleErrorSummary(hasErrors) {
-            toggleFormErrorClass(hasErrors);
-            var hidden = errorSummary.hasClass(hiddenClass);
-
-            if (hasErrors && hidden) {
-                errorSummary.removeClass(hiddenClass);
-            } else if (!hasErrors && !hidden) {
-                errorSummary.addClass(hiddenClass);
-            }
-        }
-
-        function removeItem(item) {
-
-            if ($(item).length > 0) {
-                $(item).remove();
-            }
-        }
-
-
-        function toggleItemErrorClass(item, hasError) {
-            var errorClass = $(item).hasClass(inputErrorClass);
-
-            if (hasError && errorClass) {
-                $(item).addClass(inputErrorClass);
-            } else if (!hasError && !errorClass) {
-                $(item).removeClass(inputErrorClass);
-            }
-        }
-
-        function toggleFormErrorClass(hasErrors) {
-            var errorClass = form.hasClass(formErrorClass);
-
-            if (hasErrors && errorClass) {
-                $(form).addClass(formErrorClass);
-            } else if (!hasErrors && !errorClass) {
-                $(form).removeClass(formErrorClass);
-            }
-        }
-
-        function updateErrorDetails(item, errorMsg, hasError) {
-            var listParent = $("ul.govuk-list.govuk-error-summary__list");
-            var list = $("ul.govuk-list.govuk-error-summary__list").children("li");
-            if (hasError === true) {
-
-                if (list.length > 0) {
-                    removeItem(findItem(list, item));
-                }
-                var itemName = $(item).attr("name");
-                $(listParent).append('<li id="' + $(item).attr("name") + '">' + '<a href="#' + itemName.split(".").join("_") + '">' + errorMsg + '</a></li>');
-                toggleItemErrorClass(item, true);
-
-            } else {
-                toggleItemErrorClass(item, false);
-                if (list.length > 0) {
-                    removeItem(findItem(list, item));
-                }
-            }
-            toggleErrorSummary($("ul.govuk-list.govuk-error-summary__list").children("li").length > 0);
-
-        }
-
-        function focusout(event) {
-            var validationMsg = $(this.parentNode).children("span.govuk-error-message.field-validation-error");
-
-            updateErrorDetails(this, validationMsg.text(), validationMsg.length > 0);
-        }
-
-
-
-        $("form.validationOnClient :input").each(function () {
-            var input = $(this);
-            input.on("blur", focusout);
-        });
-    });
-</script>
 
 
