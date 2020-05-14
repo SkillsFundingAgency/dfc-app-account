@@ -1,0 +1,14 @@
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.ShcDeletedCompositeViewModel
+
+
+<div class="govuk-grid-row govuk-!-margin-top-6">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">Skills health check deleted</h1>
+        </div>
+        <p>You have successfully deleted this Skills health check from your account:</p>
+        <p>Skills health check started @Model.CreatedAt.ToString("dd MMMM yyyy HH:mm")</p>
+        <p><govukLink LinkHref="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.Home" link-text="Return to your account"></govukLink></p>
+    </div>
+</div>

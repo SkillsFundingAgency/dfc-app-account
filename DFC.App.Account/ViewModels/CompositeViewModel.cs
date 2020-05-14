@@ -33,6 +33,7 @@ namespace DFC.App.Account.ViewModels
             public static PageId SessionTimeout { get; } = new PageId("sessionTimeout");
             public static PageId DeleteAccount { get; } = new PageId("delete-account");
             public static PageId ConfirmDelete { get; } = new PageId("confirm-delete");
+            public static PageId ShcDeleted { get; } = new PageId("shc-deleted");
 
         }
 

@@ -16,7 +16,7 @@ using NUnit.Framework;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
-    public class ConfirmDeleteControllerTests
+    public class ShcDeletedControllerTests
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
@@ -30,24 +30,9 @@ namespace DFC.App.Account.UnitTests.Controllers
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
         }
         [Test]
-        public async Task WhenDefaultBodyCalled_ReturnHtml()
-        {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-
-            var result = await controller.Body() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-
-            result.ViewName.Should().BeNull();
-        }
-        [Test]
         public async Task WhenBodyCalledWithoutId_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -62,7 +47,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentsReturnEmpty_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -77,12 +62,12 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentForIdNotFound_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
-            _skillsHealthCheckService.GetShcDocumentsForUser(Arg.Any<string>()).Returns(new List<ShcDocument>{new ShcDocument()});
+            _skillsHealthCheckService.GetShcDocumentsForUser(Arg.Any<string>()).Returns(new List<ShcDocument> { new ShcDocument() });
             var result = await controller.Body("123345") as RedirectResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectResult>();
@@ -92,7 +77,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -101,7 +86,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             {
                 new ShcDocument
                 {
-                    CreatedAt = DateTimeOffset.UtcNow, 
+                    CreatedAt = DateTimeOffset.UtcNow,
                     LinkUrl = "url", DocumentId = "200010216"
                 }
             });
@@ -111,50 +96,6 @@ namespace DFC.App.Account.UnitTests.Controllers
 
             result.ViewName.Should().BeNull();
         }
-        [Test]
-        public void WhenPostBodyCalled_ReturnHtml()
-        {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-            var id = "12345";
-            var result = controller.Body(new ConfirmDeleteCompositeViewModel{DocumentId = id}) as RedirectResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectResult>();
 
-            result.Url.Should().Be($"~/shc-deleted?id={id}");
-        }
-        [Test]
-        public void WhenPostBodyCalledWithNullVm_ReturnHome()
-        {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-            var id = "12345";
-            ConfirmDeleteCompositeViewModel vm = null;
-            var result = controller.Body(vm) as RedirectResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectResult>();
-
-            result.Url.Should().Be($"~/home");
-        }
-        [Test]
-        public void WhenPostBodyCalledWithNullId_ReturnHome()
-        {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-            var result = controller.Body(new ConfirmDeleteCompositeViewModel()) as RedirectResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<RedirectResult>();
-
-            result.Url.Should().Be($"~/home");
-        }
     }
 }
