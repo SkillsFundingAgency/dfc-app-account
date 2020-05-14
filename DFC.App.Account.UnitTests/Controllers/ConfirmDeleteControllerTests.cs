@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.SkillsHealthCheck.Models;
+﻿using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
@@ -13,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -134,7 +134,6 @@ namespace DFC.App.Account.UnitTests.Controllers
             {
                 HttpContext = new DefaultHttpContext()
             };
-            var id = "12345";
             ConfirmDeleteCompositeViewModel vm = null;
             var result = controller.Body(vm) as RedirectResult;
             result.Should().NotBeNull();

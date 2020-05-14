@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.SkillsHealthCheck.Models;
+﻿using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
-using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -28,6 +27,21 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
+        }
+        [Test]
+        public async Task WhenDefaultBodyCalled_ReturnHtml()
+        {
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var result = await controller.Body() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+
+            result.ViewName.Should().BeNull();
         }
         [Test]
         public async Task WhenBodyCalledWithoutId_ReturnHomeHtml()
