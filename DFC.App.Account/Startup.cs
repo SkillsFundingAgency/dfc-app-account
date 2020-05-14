@@ -18,6 +18,9 @@ using System.Diagnostics.CodeAnalysis;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Application.Common.Services;
+using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
+using DFC.App.Account.Services.AzureB2CAuth;
+using DFC.App.Account.Services.Auth.Models;
 
 namespace DFC.App.Account
 {
@@ -51,28 +54,31 @@ namespace DFC.App.Account
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
 
-        //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //.AddJwtBearer(cfg =>
-        //{
-        //    cfg.TokenValidationParameters =
-        //            new TokenValidationParameters
-        //            {
-        //                ValidateIssuer = true,
-        //                ValidateAudience = true,
-        //                ValidateIssuerSigningKey = true,
+            services.AddScoped<IOpenIDConnectClient, AzureB2CAuthClient>();
+            services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
 
-        //                  /*
-        //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
-        //                   * This will mark the User.IsAuthenticated as false
-        //                  */
-        //                ValidateLifetime = true,
-        //                ClockSkew = TimeSpan.FromMinutes(1),
+            //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //.AddJwtBearer(cfg =>
+            //{
+            //    cfg.TokenValidationParameters =
+            //            new TokenValidationParameters
+            //            {
+            //                ValidateIssuer = true,
+            //                ValidateAudience = true,
+            //                ValidateIssuerSigningKey = true,
 
-        //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
-        //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
-        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
-        //            };
-        //});
+            //                  /*
+            //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
+            //                   * This will mark the User.IsAuthenticated as false
+            //                  */
+            //                ValidateLifetime = true,
+            //                ClockSkew = TimeSpan.FromMinutes(1),
+
+            //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
+            //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
+            //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
+            //            };
+            //});
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
