@@ -237,22 +237,38 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        public async Task<IResult> DeleteCustomer()
+        public async Task<IResult> DeleteCustomer(DeleteCustomerRequest deleteRequest)
         {
+            if (deleteRequest == null)
+                throw new UnableToUpdateCustomerDetailsException(
+                    $"Unable To Updated customer details for customer. No details provided.");
             try
             {
-                var request = CreateRequestMessage();
-                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                
-                //await _restClient.GetAsync<Contact>(_dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request)??new Contact();
-                
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(deleteRequest),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                    var result = await _restClient.PatchAsync<DeleteCustomerRequest>(
+                        apiPath: $"{_dssSettings.Value.CustomerApiUrl}{deleteRequest.CustomerId}",
+                        requestMessage: request);
+                }
+
+                if (!_restClient.LastResponse.IsSuccess)
+                {
+                    throw new UnableToUpdateCustomerDetailsException(
+                        $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
+                }
+
                 return Result.Ok();
             }
             catch (Exception e)
             {
-                throw new Exception($"Delete Account failed, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new UnableToUpdateCustomerDetailsException(
+                    $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
-
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using DFC.App.Account.Application.Common.Constants;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -27,6 +29,7 @@ namespace DFC.App.Account.Controllers
         public  async Task<IActionResult> Body(string customerId)
         {
             customerId= customerId ?? "ac78e0b9-950a-407a-9f99-51dc63ce699a";
+            HttpContext.Session.SetString(Constants.SessionCustomerId, customerId);  
             ViewModel.CustomerDetails = await _dssService.GetCustomerData(customerId);
             return View(ViewModel);
         }
