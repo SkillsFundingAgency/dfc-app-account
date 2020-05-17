@@ -25,12 +25,12 @@ namespace DFC.App.Account.Controllers
         [HttpGet,HttpPost]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
-            
-            var customerId= HttpContext.Session.GetString(Constants.SessionCustomerId);
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(Constants.SessionCustomerPasswordValidated)))
+
+            var customerId = "ac78e0b9-950a-407a-9f99-51dc63ce699a"; //HttpContext.Session.GetString(Constants.SessionCustomerId);
+            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(Constants.SessionCustomerPasswordValidated)))
             {
                 throw new UserNotValidatedException("Cant' deleted user, password not validated.");
-            }
+            }*/
             
              var deleteCustomerRequest = new DeleteCustomerRequest()
              {

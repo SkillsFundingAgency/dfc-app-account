@@ -2,6 +2,7 @@
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +17,19 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
+        private IOpenIDConnectClient _openIdConnectClient;
 
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
+            _openIdConnectClient = Substitute.For<IOpenIDConnectClient>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -43,7 +46,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenBodyCalledWithInvalidModelState_ReturnToViewWithError()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -58,7 +61,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenBodyCalled_RedirectToConfirmDelete()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
