@@ -12,5 +12,6 @@
         public string RedirectUrl { get; set; }
         public string AuthdUrl { get; set; }
         public bool LogPersonalInfo { get; set; }
+        public string TokenEndpoint { get; set; }
     }
 }
