@@ -11,7 +11,7 @@ namespace DFC.App.Account.Controllers
    
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
-        private IOpenIDConnectClient _openIdConnectClient;
+        private readonly IOpenIDConnectClient _openIdConnectClient;
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient)
             : base(compositeSettings, authService)
         {
