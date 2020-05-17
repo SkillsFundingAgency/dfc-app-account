@@ -3,8 +3,6 @@ using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
-using DFC.App.Account.Services.DSS.Services;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

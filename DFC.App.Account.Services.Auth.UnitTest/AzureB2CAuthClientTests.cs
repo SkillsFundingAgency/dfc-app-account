@@ -6,7 +6,6 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
-using DFC.App.Account.Application.Common.Interfaces;
 
 namespace DFC.App.Account.Services.Auth.UnitTest
 {

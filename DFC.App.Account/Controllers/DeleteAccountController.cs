@@ -4,12 +4,9 @@ using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Constants;
-using DFC.App.Account.Exception;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Controllers
 {

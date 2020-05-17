@@ -3,11 +3,8 @@ using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.Account.Application.Common;
-using DFC.App.Account.Application.Common.Constants;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Controllers
 {

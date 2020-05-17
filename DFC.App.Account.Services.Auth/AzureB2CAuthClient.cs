@@ -14,7 +14,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
-using Newtonsoft.Json;
 
 namespace DFC.App.Account.Services.AzureB2CAuth
 {

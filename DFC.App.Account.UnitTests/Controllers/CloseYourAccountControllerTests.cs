@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DFC.App.Account.Application.Common;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
@@ -56,6 +57,22 @@ namespace DFC.App.Account.UnitTests.Controllers
             controller.ModelState.AddModelError("password","Invalid password");
             var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
+        }
+
+        [Test]
+        public void WhenBodyCalledWithInvalidPassword_ReturnToViewWithError()
+        {
+            _openIdConnectClient.VerifyPassword("user","password").ReturnsForAnyArgs(Result.Fail("Failed"));
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
+            var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
+            result.ViewData.ModelState.IsValid.Should().BeFalse();
+            result.ViewData.ModelState["Password"].Errors[0].ErrorMessage.Should().Be("Wrong password. Try again.");
         }
 
         [Test]
