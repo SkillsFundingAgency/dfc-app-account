@@ -171,7 +171,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"Body\",\n    \"RegionEndpoint\": \"https://localhost:44355/body/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"Body\",\n    \"RegionEndpoint\": \"https://localhost:44355/body/{0}\",\n    \"HealthCheckRequired\": false,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
 					"raw": "{{RegionRootUrl}}paths/your-account/regions",
@@ -200,7 +200,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"BodyTop\",\n    \"RegionEndpoint\": \"https://localhost:44355/bodytop/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"BodyTop\",\n    \"RegionEndpoint\": \"https://localhost:44355/bodytop/{0}\",\n    \"HealthCheckRequired\": false,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
 					"raw": "{{RegionRootUrl}}paths/your-account/regions",
@@ -229,7 +229,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"SideBarRight\",\n    \"RegionEndpoint\": \"https://localhost:44355/sidebarright/{0}\",\n    \"HealthCheckRequired\": true,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
+					"raw": "{     \n\t\"Path\": \"your-account\",\n\t\"PageRegion\": \"SideBarRight\",\n    \"RegionEndpoint\": \"https://localhost:44355/sidebarright/{0}\",\n    \"HealthCheckRequired\": false,\n    \"OfflineHtml\": \"<H3>Service Unavailable</H3>\",\n    \"IsHealthy\": true,\n    \"IsOnline\": true\n}"
 				},
 				"url": {
 					"raw": "{{RegionRootUrl}}paths/your-account/regions",

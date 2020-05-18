@@ -18,6 +18,7 @@ namespace DFC.App.Account.UnitTests.Services
         public AuthServiceTests()
         {
             _dssService = Substitute.For<IDssReader>();
+            _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
         }
 
         [Test]

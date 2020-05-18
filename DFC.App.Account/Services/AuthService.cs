@@ -27,7 +27,7 @@ namespace DFC.App.Account.Services
 
             //only needed while we stub the Auth Will throw error if unknown customer id
 
-            string userId = _httpContextAccessor.HttpContext.Request.Query["customerid"].ToString();
+            string userId = _httpContextAccessor.HttpContext.Request.Query["customerid"].ToString()??"";
 
             userId = userId == "" ? "ac78e0b9-950a-407a-9f99-51dc63ce699a" : userId;
                             

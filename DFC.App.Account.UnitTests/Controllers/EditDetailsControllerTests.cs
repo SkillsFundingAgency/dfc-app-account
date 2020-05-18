@@ -1,4 +1,5 @@
-﻿using DFC.App.Account.Application.Common.Enums;
+﻿using System;
+using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
@@ -14,6 +15,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Models;
 using Microsoft.Extensions.Primitives;
@@ -43,6 +45,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
             controller.ControllerContext = new ControllerContext
             {
@@ -60,6 +64,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ThenDssCalled()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
             controller.ControllerContext = new ControllerContext
             {
@@ -164,6 +170,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenSaveDataPostedAndFormHasErrors_ThenDateShouldNotSaved()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
                 _dssReader, _dssWriter)
             {
@@ -196,6 +204,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenSaveDataPostedAndFormIsValid_ThenDateShouldBeSaved()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
                 _dssReader, _dssWriter)
             {
@@ -217,6 +227,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenSaveDataPostedAndFormIsValidAndEmailIsUpdated_ThenDateShouldBeSaved()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
                 _dssReader, _dssWriter)
             {

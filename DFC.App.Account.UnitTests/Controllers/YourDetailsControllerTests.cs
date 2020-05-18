@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
@@ -47,6 +48,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnCustomer()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             _dssService.GetCustomerData(Arg.Any<string>()).Returns(_customer);
             _controller = new YourDetailsController(_logger, _compositeSettings, _dssService, _authService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
