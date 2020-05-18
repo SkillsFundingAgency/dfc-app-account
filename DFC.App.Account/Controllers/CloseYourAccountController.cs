@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.Controllers
 {
@@ -12,10 +13,12 @@ namespace DFC.App.Account.Controllers
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
+        private readonly IAuthService _authService;
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient)
             : base(compositeSettings, authService)
         {
             _openIdConnectClient = openIdConnectClient;
+            _authService = authService;
         }
 
         public override async Task<IActionResult> Body()
@@ -24,7 +27,7 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        public IActionResult Body(CloseYourAccountCompositeViewModel model)
+        public async Task<IActionResult> Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
             {

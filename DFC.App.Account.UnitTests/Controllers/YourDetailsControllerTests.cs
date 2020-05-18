@@ -50,7 +50,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _dssService.GetCustomerData(Arg.Any<string>()).Returns(_customer);
             _controller = new YourDetailsController(_logger, _compositeSettings, _dssService, _authService);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-            var result = await _controller.Body("somecustomerid") as ViewResult;
+            var result = await _controller.Body() as ViewResult;
             result.ViewData.Model.As<YourDetailsCompositeViewModel>().CustomerDetails.Should().NotBeNull();
         }
 
