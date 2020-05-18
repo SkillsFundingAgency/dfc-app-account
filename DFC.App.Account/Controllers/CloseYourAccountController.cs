@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.Controllers
 {
@@ -13,12 +12,10 @@ namespace DFC.App.Account.Controllers
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
-        private readonly IAuthService _authService;
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient)
             : base(compositeSettings, authService)
         {
             _openIdConnectClient = openIdConnectClient;
-            _authService = authService;
         }
 
         public override async Task<IActionResult> Body()
@@ -27,7 +24,7 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Body(CloseYourAccountCompositeViewModel model)
+        public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +38,6 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
             
-           // HttpContext.Session.SetString(Constants.SessionCustomerPasswordValidated, "true");
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
             return View("ConfirmDeleteAccount", ViewModel);
