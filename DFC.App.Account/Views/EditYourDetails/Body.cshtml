@@ -214,10 +214,10 @@
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactEmail, new { @class = "govuk-label" })</th>
                     <td class="govuk-table__cell  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)">
-                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactEmail, null, new { @class = "govuk-error-message" })
-                        <span class="govuk-hint">
+                       <span class="govuk-hint">
                             If you change this you'll be signed out. You'll need to activate your new email address before you can sign in.
                         </span>
+                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactEmail, null, new { @class = "govuk-error-message" })
                         @Html.TextBoxFor(model => model.Identity.ContactDetails.ContactEmail,
                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)}" })
                     </td>
@@ -233,10 +233,10 @@
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative, new { @class = "govuk-label" })</th>
                     <td class="govuk-table__cell   @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)">
-                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, null, new { @class = "govuk-error-message" })
                         <span class="govuk-hint">
                             If you remove this phone number, telephone and face-to-face advisers won't be able to contact you on this number anymore.
                         </span>
+                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, null, new { @class = "govuk-error-message" })
                         @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative,
                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)}" })
                     </td>
