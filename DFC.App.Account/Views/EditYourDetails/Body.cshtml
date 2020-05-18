@@ -100,7 +100,7 @@
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.Gender, new { @class = "govuk-label" })</th>
                                 <td class="govuk-table__cell">
                                     @Html.DropDownListFor(m => m.Identity.PersonalDetails.Gender, Html.GetEnumSelectList(Model.Identity.PersonalDetails.Gender.GetType()),
-                                        new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Gender).ToString(), ViewData.ModelState)}" })
+                                        new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Gender).ToString(), ViewData.ModelState)}" })
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -246,7 +246,7 @@
                                 <td class="govuk-table__cell @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)">
                                     @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactPreference, null, new { @class = "govuk-error-message" })
                                     @Html.DropDownListFor(m => m.Identity.ContactDetails.ContactPreference, Html.GetEnumSelectList(Model.Identity.ContactDetails.ContactPreference.GetType()),
-                                        new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}" })
+                                        new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}" })
                                 </td>
                             </tr>
                         </tbody>
