@@ -24,7 +24,7 @@ namespace DFC.App.Account.Controllers
         
         
       [Route("/body/your-details")] 
-        public  async Task<IActionResult> Body()
+        public override async Task<IActionResult> Body()
         {
             var customer = await GetCustomerDetails();
             ViewModel.CustomerDetails = await _dssService.GetCustomerData(customer.CustomerId.ToString());
