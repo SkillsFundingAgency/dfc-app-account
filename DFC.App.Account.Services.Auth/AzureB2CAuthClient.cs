@@ -9,8 +9,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using DFC.App.Account.Application.Common;
+using DFC.App.Account.Application.Common.Interfaces;
 
 namespace DFC.App.Account.Services.AzureB2CAuth
 {
@@ -36,6 +39,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             _settings.AuthorizeUrl = GetUrlWithoutParams(config.AuthorizationEndpoint);
             _settings.JWKsUrl = config.JwksUri;
             _settings.Issuer = config.Issuer;
+            _settings.TokenEndpoint = config.TokenEndpoint;
         }
 
         private async Task LoadJsonWebKeyAsync()
@@ -71,10 +75,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
 
         public async Task<string> GetRegisterUrl()
         {
-            if(_settings.UseOIDCConfigDiscovery)
-            {
-                await LoadOpenIDConnectConfig();
-            }
+            await LoadSettings();
 
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("p", "B2C_1A_account_signup");
@@ -84,6 +85,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             queryParams.Add("scope", "openid");
             queryParams.Add("response_type", "id_token");
             queryParams.Add("prompt", "login");
+            
             string registerUrl = QueryHelpers.AddQueryString(_settings.AuthorizeUrl, queryParams);
             
             return registerUrl;
@@ -110,6 +112,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             return registerUrl;
         }
 
+       
         public async Task<JwtSecurityToken> ValidateToken(string token)
         {
             if (_settings.UseOIDCConfigDiscovery)
@@ -135,9 +138,43 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             return validatedToken as JwtSecurityToken;
         }
 
+        public async Task<IResult> VerifyPassword(string userName, string password)
+        {
+            await LoadSettings();
+
+            var queryParams = new Dictionary<string, string>();
+            queryParams.Add("p", "B2C_1_ROPC_Auth");
+            queryParams.Add("grant_type", "password");
+            queryParams.Add("client_id", _settings.ClientId);
+            queryParams.Add("scope", $"openid {_settings.ClientId}");
+            queryParams.Add("response_type", "token");
+            queryParams.Add("username", userName );
+            queryParams.Add("password", password);
+
+            string verifyPasswordUrl = QueryHelpers.AddQueryString(GetUrlWithoutParams(_settings.TokenEndpoint), queryParams);
+
+           
+           var response = await _restClient.PostAsync<VerifyPasswordResponse>(verifyPasswordUrl,
+               new StringContent("")) as VerifyPasswordResponse;
+           if (!String.IsNullOrEmpty(response?.AccessToken))
+               return Result.Ok();
+
+           return Result.Fail("Invalid Password");
+        }
+
         public string GetAuthdUrl()
         {
             return _settings.AuthdUrl;
         }
+
+
+        private async Task LoadSettings()
+        {
+            if(_settings.UseOIDCConfigDiscovery)
+            {
+                await LoadOpenIDConnectConfig();
+            }
+        }
+
     }
 }

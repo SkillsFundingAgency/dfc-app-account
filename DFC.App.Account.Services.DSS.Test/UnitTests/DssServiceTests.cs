@@ -1,3 +1,4 @@
+using System;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
@@ -10,8 +11,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Exceptions;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {
@@ -206,5 +205,41 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 .Throw<UnableToUpdateCustomerDetailsException>();
 
         }
+
+        [Test]
+        public void When_DeleteCustomerRequestNull_ThrowException()
+        {
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.InternalServerError);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssService = new DssService(_restClient, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1"
+            }));
+
+            _dssService.Invoking(x => x.DeleteCustomer(null)).Should()
+                .Throw<UnableToUpdateCustomerDetailsException>();
+
+        }
+
+        [Test]
+        public async Task When_DeleteCustomerSuccess_ReturnOk()
+        {
+            //Tod-Remove
+            var deleteRequest = new DeleteCustomerRequest()
+            {
+                CustomerId = new Guid( "621b65a6-497e-4e9f-8031-a9a1a54a4b61"),
+                ReasonForTermination = "3",
+                DateOfTermination = DateTime.UtcNow
+            };
+           
+            await _dssService.DeleteCustomer(deleteRequest);
+
+        }
     }
+
+    
+
 }

@@ -2,6 +2,7 @@
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +17,19 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
+        private IDssWriter _dssService;
 
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
+            _dssService = Substitute.For<IDssWriter>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new DeleteAccountController(_compositeSettings, _authService);
+            var controller = new DeleteAccountController(_compositeSettings,_dssService, _authService);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -43,7 +46,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_AccountDeleted()
         {
-            var controller = new DeleteAccountController(_compositeSettings, _authService);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService);
             var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -57,6 +60,5 @@ namespace DFC.App.Account.UnitTests.Controllers
             
         }
 
-        
     }
 }

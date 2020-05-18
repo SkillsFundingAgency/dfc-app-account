@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using DFC.App.Account.Application.Common;
 
 namespace DFC.App.Account.Services.Auth.UnitTest
 {
@@ -87,6 +88,34 @@ namespace DFC.App.Account.Services.Auth.UnitTest
 
                 // Assert
                 await act.Should().ThrowAsync<Exception>();
+            }
+        }
+
+        public class VerifyPassword
+        {
+            [Test]
+            public async Task When_InCorrectPasswordProvided_Return_Failure()
+            {
+                // Arrange
+                var authClient = new AzureB2CAuthClient(Options.Create(new OpenIDConnectSettings()
+                {
+                    OIDCConfigMetaDataUrl = "https://devauthncs.b2clogin.com/devauthncs.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_signin_invitation",
+                    LogPersonalInfo = true,
+                    UseOIDCConfigDiscovery = false,
+                    AuthorizeUrl = "",
+                    ClientId = "99999999-0000-42de-ad41-f15c5b4d9b51",
+                    Issuer = "",
+                    JWK = "",
+                    TokenEndpoint = "http://www.something.com"
+                }));
+
+                // Act
+                var result = await authClient.VerifyPassword("something","password");
+
+                // Assert
+                result.Should().Be(Result.Fail("Invalid Password"));
+
+                
             }
         }
     }

@@ -27,6 +27,7 @@ namespace DFC.App.Account.Controllers
         public  async Task<IActionResult> Body(string customerId)
         {
             customerId= customerId ?? "ac78e0b9-950a-407a-9f99-51dc63ce699a";
+           // HttpContext.Session.SetString(Constants.SessionCustomerId, customerId);  
             ViewModel.CustomerDetails = await _dssService.GetCustomerData(customerId);
             return View(ViewModel);
         }

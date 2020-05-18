@@ -12,6 +12,8 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using DFC.App.Account.Application.Common;
+using DFC.App.Account.Application.Common.Interfaces;
 using DFC.App.Account.Services.DSS.Exceptions;
 
 namespace DFC.App.Account.Services.DSS.Services
@@ -235,23 +237,38 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-
-        public async Task<Contact> DeleteCustomer(string customerId, HttpRequestMessage request)
+        public async Task<IResult> DeleteCustomer(DeleteCustomerRequest deleteRequest)
         {
+            if (deleteRequest == null)
+                throw new UnableToUpdateCustomerDetailsException(
+                    $"Unable To Updated customer details for customer. No details provided.");
             try
             {
-                request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
-                return await _restClient.GetAsync<Contact>(
-                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request)??new Contact();
+                using (var request = CreateRequestMessage())
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(deleteRequest),
+                        Encoding.UTF8,
+                        MediaTypeNames.Application.Json);
+                    request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                    var result = await _restClient.PatchAsync<DeleteCustomerRequest>(
+                        apiPath: $"{_dssSettings.Value.CustomerApiUrl}{deleteRequest.CustomerId}",
+                        requestMessage: request);
+                }
+
+                if (!_restClient.LastResponse.IsSuccess)
+                {
+                    throw new UnableToUpdateCustomerDetailsException(
+                        $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
+                }
+
+                return Result.Ok();
             }
             catch (Exception e)
             {
-                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
-                    return new Contact();
-                else
-                    throw new DssException($"Failure Contact, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
+                throw new UnableToUpdateCustomerDetailsException(
+                    $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
-
         }
     }
 }

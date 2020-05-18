@@ -13,4 +13,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
+  </ItemGroup>
+
 </Project>

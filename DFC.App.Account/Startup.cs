@@ -79,6 +79,7 @@ namespace DFC.App.Account
             //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
             //            };
             //});
+            services.AddSession();
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
@@ -101,6 +102,7 @@ namespace DFC.App.Account
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
+            app.UseSession();  
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler(errorApp =>
