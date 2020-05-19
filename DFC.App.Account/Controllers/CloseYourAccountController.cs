@@ -24,7 +24,7 @@ namespace DFC.App.Account.Controllers
         }
 
         [HttpPost]
-        public IActionResult Body(CloseYourAccountCompositeViewModel model)
+        public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +38,6 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
             
-           // HttpContext.Session.SetString(Constants.SessionCustomerPasswordValidated, "true");
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
             return View("ConfirmDeleteAccount", ViewModel);
