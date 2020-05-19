@@ -83,6 +83,9 @@
         },
         "ShcSettingsLinkUrl": {
             "type": "string"
+        },
+        "OIDCSettingsPwdVerificationClientId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -275,6 +278,10 @@
                             {
                                 "name": "ShcSettings__LinkUrl",
                                 "value": "[parameters('ShcSettingsLinkUrl')]"
+                            },
+                            {
+                                "name": "OIDCSettings__PwdVerificationClientId",
+                                "value": "[parameters('OIDCSettingsPwdVerificationClientId')]"
                             }
                         ]
                     }

@@ -67,6 +67,9 @@
         },
         "ShcSettingsLinkUrl": {
             "value": "__ShcSettingsLinkUrl__"
-        }
+        },
+        "OIDCSettingsPwdVerificationClientId": {
+            "value": "__OIDCSettingsPwdVerificationClientId__"
+        }        
     }
 }
