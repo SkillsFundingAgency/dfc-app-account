@@ -72,6 +72,7 @@ namespace DFC.App.Account.Application.Common.Models
         [ConditionalRequired(DependsOn = "HomePostCode", ErrorMessage = "First line of your address is required")]
         [RegularExpression(ServiceCommon.RegexPatterns.Other.AddressString, ErrorMessage = "First line of your address contains invalid characters")]
         [StringLength(80, ErrorMessage = "First line of your address is too long (max. 80)")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "First line of your address is required")]
         [Display(Name = "First line of your address", Order = 11)]
         public string AddressLine1 { get; set; }
 
