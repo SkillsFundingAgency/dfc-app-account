@@ -5,6 +5,7 @@
         public string OIDCConfigMetaDataUrl { get; set; }
         public bool UseOIDCConfigDiscovery { get; set; }
         public string ClientId { get; set; }
+        public string PwdVerificationClientId { get; set; }
         public string AuthorizeUrl { get; set; }
         public string JWKsUrl { get; set; }
         public string JWK { get; set; }

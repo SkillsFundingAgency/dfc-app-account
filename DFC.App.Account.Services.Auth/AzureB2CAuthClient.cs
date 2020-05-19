@@ -145,8 +145,8 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("p", "B2C_1_ROPC_Auth");
             queryParams.Add("grant_type", "password");
-            queryParams.Add("client_id", _settings.ClientId);
-            queryParams.Add("scope", $"openid {_settings.ClientId}");
+            queryParams.Add("client_id", _settings.PwdVerificationClientId);
+            queryParams.Add("scope", $"openid {_settings.PwdVerificationClientId}");
             queryParams.Add("response_type", "token");
             queryParams.Add("username", userName );
             queryParams.Add("password", password);
