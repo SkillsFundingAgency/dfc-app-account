@@ -4,5 +4,6 @@
     {
         public const string SessionCustomerId = "customerid";
         public const string SessionCustomerPasswordValidated = "customerpasswordvalidated";
+        public const int ClosureReasonCustomerChoice = 1;
     }
 }
