@@ -24,11 +24,10 @@ namespace DFC.App.Account.Controllers
         
         
       [Route("/body/your-details")] 
-        public  async Task<IActionResult> Body(string customerId)
+        public override async Task<IActionResult> Body()
         {
-            customerId= customerId ?? "ac78e0b9-950a-407a-9f99-51dc63ce699a";
-           // HttpContext.Session.SetString(Constants.SessionCustomerId, customerId);  
-            ViewModel.CustomerDetails = await _dssService.GetCustomerData(customerId);
+            var customer = await GetCustomerDetails();
+            ViewModel.CustomerDetails = await _dssService.GetCustomerData(customer.CustomerId.ToString());
             return View(ViewModel);
         }
     }

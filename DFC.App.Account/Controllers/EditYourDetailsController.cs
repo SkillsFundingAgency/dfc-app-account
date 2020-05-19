@@ -38,8 +38,8 @@ namespace DFC.App.Account.Controllers
         [Route("/body/edit-your-details")]
         public override async Task<IActionResult> Body()
         {
-            //remove after auth configured
-            var customerDetails = await _dssReader.GetCustomerData("ac78e0b9-950a-407a-9f99-51dc63ce699a");
+            var customer = await GetCustomerDetails();
+            var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
             ViewModel.Identity = MapCustomerToCitizenIdentity(customerDetails);
 
             return await base.Body();
@@ -49,6 +49,7 @@ namespace DFC.App.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Body(EditDetailsCompositeViewModel viewModel, IFormCollection formCollection)
         {
+            var customer = await GetCustomerDetails();
             var additionalData = GetEditDetailsAdditionalData(formCollection);
             viewModel.Identity.MarketingPreferences = new MarketingPreferences
             {
@@ -69,7 +70,7 @@ namespace DFC.App.Account.Controllers
             else if (!string.IsNullOrWhiteSpace(additionalData.SaveDetails))
             {
 
-                var customerDetails = await _dssReader.GetCustomerData("ac78e0b9-950a-407a-9f99-51dc63ce699a");
+                var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
                 if (ModelState.IsValid)
                 {
                     try
