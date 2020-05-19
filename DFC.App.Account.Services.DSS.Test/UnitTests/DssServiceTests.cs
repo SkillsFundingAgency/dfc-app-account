@@ -231,7 +231,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             var deleteRequest = new DeleteCustomerRequest()
             {
                 CustomerId = new Guid( "621b65a6-497e-4e9f-8031-a9a1a54a4b61"),
-                ReasonForTermination = "3",
+                ReasonForTermination = 1,
                 DateOfTermination = DateTime.UtcNow
             };
            

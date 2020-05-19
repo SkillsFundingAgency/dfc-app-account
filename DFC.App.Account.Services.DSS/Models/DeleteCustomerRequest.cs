@@ -6,6 +6,6 @@ namespace DFC.App.Account.Services.DSS.Models
     {
         public Guid CustomerId { get; set; }
         public DateTime DateOfTermination { get; set; }
-        public string ReasonForTermination { get; set; }
+        public int ReasonForTermination { get; set; }
     }
 }

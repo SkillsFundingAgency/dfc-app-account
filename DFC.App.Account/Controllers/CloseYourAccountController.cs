@@ -20,6 +20,8 @@ namespace DFC.App.Account.Controllers
 
         public override async Task<IActionResult> Body()
         {
+            var customer = await GetCustomerDetails();
+            ViewModel.CustomerId = customer.CustomerId;
             return View(ViewModel);
         }
 
