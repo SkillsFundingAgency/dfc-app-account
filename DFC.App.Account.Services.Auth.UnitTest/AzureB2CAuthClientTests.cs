@@ -99,14 +99,8 @@ namespace DFC.App.Account.Services.Auth.UnitTest
                 // Arrange
                 var authClient = new AzureB2CAuthClient(Options.Create(new OpenIDConnectSettings()
                 {
-                    OIDCConfigMetaDataUrl = "https://devauthncs.b2clogin.com/devauthncs.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_signin_invitation",
-                    LogPersonalInfo = true,
-                    UseOIDCConfigDiscovery = false,
-                    AuthorizeUrl = "",
-                    ClientId = "99999999-0000-42de-ad41-f15c5b4d9b51",
-                    Issuer = "",
-                    JWK = "",
-                    TokenEndpoint = "http://www.something.com"
+                    TokenEndpoint = "http://www.something.com",
+                    PwdVerificationClientId = "some id"
                 }));
 
                 // Act
