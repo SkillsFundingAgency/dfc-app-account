@@ -31,7 +31,7 @@
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-grid-column-three-quarters">
                 <govukHeadingH1 text="Edit your details"></govukHeadingH1>
 
                 <form id="@Model.GetElementId("form","editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt validationOnClient @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" method="post">
@@ -407,12 +407,6 @@
                 toggleErrorSummary($("ul.govuk-list.govuk-error-summary__list").children("li").length > 0);
 
             }
-
-
-            $("form.validationOnClient :input").each(function () {
-                var input = $(this);
-                input.on("blur", focusout);
-            });
         });
     </script>
 
