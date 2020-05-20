@@ -140,8 +140,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
 
         public async Task<IResult> VerifyPassword(string userName, string password)
         {
-            await LoadOpenIDConnectConfig();
-
+            var tokenEndPoint = _settings.TokenEndpoint;
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("p", "B2C_1_ROPC_Auth");
             queryParams.Add("grant_type", "password");
