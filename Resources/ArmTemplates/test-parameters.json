@@ -58,6 +58,9 @@
         },
         "OIDCSettingsPwdVerificationClientId": {
             "value": "fake-2ea33fcf-b1d0-42c3-a2b8-69bf2915f5ae"
+        },
+        "OIDCSettingsTokenEndPoint": {
+            "value": "https://foo"
         }        
     }
 }

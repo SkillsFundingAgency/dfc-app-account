@@ -86,6 +86,9 @@
         },
         "OIDCSettingsPwdVerificationClientId": {
             "type": "string"
+        },
+        "OIDCSettingsTokenEndPoint": {
+            "type": "string"
         }
     },
     "variables": {
@@ -282,6 +285,10 @@
                             {
                                 "name": "OIDCSettings__PwdVerificationClientId",
                                 "value": "[parameters('OIDCSettingsPwdVerificationClientId')]"
+                            },
+                            {
+                                "name": "OIDCSettings__TokenEndPoint",
+                                "value": "[parameters('OIDCSettingsTokenEndPoint')]"
                             }
                         ]
                     }

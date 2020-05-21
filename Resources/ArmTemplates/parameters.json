@@ -70,6 +70,9 @@
         },
         "OIDCSettingsPwdVerificationClientId": {
             "value": "__OIDCSettingsPwdVerificationClientId__"
-        }        
+        },
+        "OIDCSettingsTokenEndPoint": {
+            "value": "__OIDCSettingsTokenEndPoint__"
+        }       
     }
 }
