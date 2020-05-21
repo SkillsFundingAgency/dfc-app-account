@@ -1,12 +1,16 @@
+using DFC.App.Account.Application.Common.Services;
 using DFC.App.Account.Helpers;
 using DFC.App.Account.Models;
+using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
+using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -14,13 +18,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using DFC.App.Account.Models.AddressSearch;
-using DFC.App.Account.Services.Interfaces;
-using DFC.App.Account.Application.Common.Services;
-using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
-using DFC.App.Account.Services.AzureB2CAuth;
-using DFC.App.Account.Services.Auth.Models;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account
 {
@@ -53,43 +55,53 @@ namespace DFC.App.Account
             services.Configure<AddressSearchServiceSettings>(
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
+            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
 
-            services.AddScoped<IOpenIDConnectClient, AzureB2CAuthClient>();
-            services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters =
+                        new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.FromMinutes(1),
 
-            //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //.AddJwtBearer(cfg =>
-            //{
-            //    cfg.TokenValidationParameters =
-            //            new TokenValidationParameters
-            //            {
-            //                ValidateIssuer = true,
-            //                ValidateAudience = true,
-            //                ValidateIssuerSigningKey = true,
+                            ValidIssuer = Configuration["AuthSettings:Issuer"],
+                            ValidAudience = Configuration["AuthSettings:ClientId"],
+                            IssuerSigningKey =
+                                new SymmetricSecurityKey(
+                                    Encoding.ASCII.GetBytes(Configuration["AuthSettings:ClientSecret"])),
+                        };
+                    cfg.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var cc = context.Request.Headers;
+                            return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context =>
+                        {
+                            Console.WriteLine(context);
 
-            //                  /*
-            //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
-            //                   * This will mark the User.IsAuthenticated as false
-            //                  */
-            //                ValidateLifetime = true,
-            //                ClockSkew = TimeSpan.FromMinutes(1),
+                            return Task.CompletedTask;
+                        },
+                        OnMessageReceived = context =>
+                        {
+                            return Task.CompletedTask;
+                        }
 
-            //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
-            //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
-            //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
-            //            };
-            //});
+                    };
+                });
+
             services.AddSession();
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                     new HyphenControllerTransformer()));
             });
-            //services.AddRazorPages()
-            //    .AddViewOptions(options =>
-            //    {
-            //        options.HtmlHelperOptions.ClientValidationEnabled = false;
-            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

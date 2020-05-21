@@ -1,12 +1,4 @@
-﻿using DFC.App.Account.Services.Auth.Models;
-using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
-using DFC.Personalisation.Common.Net.RestClient;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
@@ -14,8 +6,16 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
+using DFC.App.Account.Services.Auth.Interfaces;
+using DFC.App.Account.Services.Auth.Models;
+using DFC.Personalisation.Common.Net.RestClient;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
-namespace DFC.App.Account.Services.AzureB2CAuth
+namespace DFC.App.Account.Services.Auth
 {
     public class AzureB2CAuthClient : IOpenIDConnectClient
     {
@@ -28,6 +28,13 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             _settings = settings.Value;
         }
 
+        public AzureB2CAuthClient(IOptions<OpenIDConnectSettings> settings, IRestClient client)
+        {
+            _restClient = client;
+            _settings = settings.Value;
+        }
+
+
         private string GetUrlWithoutParams(string url)
         {
             return new UriBuilder(url) { Query = string.Empty }.ToString();
@@ -39,6 +46,7 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             _settings.AuthorizeUrl = GetUrlWithoutParams(config.AuthorizationEndpoint);
             _settings.JWKsUrl = config.JwksUri;
             _settings.Issuer = config.Issuer;
+            _settings.EndSessionUrl = config.EndSessionEndpoint;
             _settings.TokenEndpoint = config.TokenEndpoint;
         }
 
@@ -72,53 +80,12 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             
             return rsaKey;
         }
-
-        public async Task<string> GetRegisterUrl()
-        {
-            await LoadSettings();
-
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("p", "B2C_1A_account_signup");
-            queryParams.Add("client_id", _settings.ClientId);
-            queryParams.Add("nonce", "defaultNonce");
-            queryParams.Add("redirect_uri", _settings.RedirectUrl);
-            queryParams.Add("scope", "openid");
-            queryParams.Add("response_type", "id_token");
-            queryParams.Add("prompt", "login");
-            
-            string registerUrl = QueryHelpers.AddQueryString(_settings.AuthorizeUrl, queryParams);
-            
-            return registerUrl;
-        }
-
-        public async Task<string> GetSignInUrl()
-        {
-            if (_settings.UseOIDCConfigDiscovery)
-            {
-                await LoadOpenIDConnectConfig();
-            }
-
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("p", "B2C_1A_signin_invitation");
-            queryParams.Add("client_id", _settings.ClientId);
-            queryParams.Add("nonce", "defaultNonce");
-            queryParams.Add("redirect_uri", _settings.RedirectUrl);
-            queryParams.Add("scope", "openid");
-            queryParams.Add("response_type", "id_token");
-            queryParams.Add("response_mode", "query");
-            queryParams.Add("prompt", "login");
-            string registerUrl = QueryHelpers.AddQueryString(_settings.AuthorizeUrl, queryParams);
-
-            return registerUrl;
-        }
-
        
         public async Task<JwtSecurityToken> ValidateToken(string token)
         {
             if (_settings.UseOIDCConfigDiscovery)
             {
                 await LoadOpenIDConnectConfig();
-                await LoadJsonWebKeyAsync();
             }
 
             // Do we include Personally Identifiable Information in any exceptions or logging?
@@ -140,6 +107,12 @@ namespace DFC.App.Account.Services.AzureB2CAuth
 
         public async Task<IResult> VerifyPassword(string userName, string password)
         {
+            if (_settings.UseOIDCConfigDiscovery)
+            {
+                await LoadOpenIDConnectConfig();
+                await LoadJsonWebKeyAsync();
+            }
+
             var tokenEndPoint = _settings.TokenEndpoint;
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("p", "B2C_1_ROPC_Auth");
@@ -153,27 +126,11 @@ namespace DFC.App.Account.Services.AzureB2CAuth
             string verifyPasswordUrl = QueryHelpers.AddQueryString(GetUrlWithoutParams(_settings.TokenEndpoint), queryParams);
 
            
-           var response = await _restClient.PostAsync<VerifyPasswordResponse>(verifyPasswordUrl,
-               new StringContent("")) as VerifyPasswordResponse;
+           var response = await _restClient.PostAsync<VerifyPasswordResponse>(verifyPasswordUrl, new StringContent(""));
            if (!String.IsNullOrEmpty(response?.AccessToken))
                return Result.Ok();
 
            return Result.Fail("Invalid Password");
         }
-
-        public string GetAuthdUrl()
-        {
-            return _settings.AuthdUrl;
-        }
-
-
-        private async Task LoadSettings()
-        {
-            if(_settings.UseOIDCConfigDiscovery)
-            {
-                await LoadOpenIDConnectConfig();
-            }
-        }
-
     }
 }

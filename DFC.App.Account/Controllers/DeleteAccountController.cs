@@ -1,16 +1,18 @@
-﻿using System;
+﻿using DFC.App.Account.Application.Common.Constants;
 using DFC.App.Account.Models;
-using DFC.App.Account.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Constants;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
+using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
+    [Authorize]
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
@@ -20,7 +22,7 @@ namespace DFC.App.Account.Controllers
             _dssService = dssService;
         }
 
-        [HttpGet,HttpPost]
+        [HttpGet, HttpPost]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
 

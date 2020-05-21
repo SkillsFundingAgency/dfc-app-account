@@ -1,24 +1,27 @@
-﻿using System;
+﻿using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Exceptions;
+using DFC.App.Account.Services.DSS.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Enums;
-using DFC.App.Account.Services.DSS.Exceptions;
-using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
 {
+    [Authorize]
     public class EditYourDetailsController : CompositeSessionController<EditDetailsCompositeViewModel>
     {
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
@@ -35,7 +38,7 @@ namespace DFC.App.Account.Controllers
             _dssWriter = dssWriter;
         }
 
-        [Route("/body/edit-your-details")]
+        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
         public override async Task<IActionResult> Body()
         {
             var customer = await GetCustomerDetails();
@@ -45,8 +48,8 @@ namespace DFC.App.Account.Controllers
             return await base.Body();
         }
 
-        [Route("/body/edit-your-details")]
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<IActionResult> Body(EditDetailsCompositeViewModel viewModel, IFormCollection formCollection)
         {
             var customer = await GetCustomerDetails();

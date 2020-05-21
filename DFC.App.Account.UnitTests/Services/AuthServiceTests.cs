@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
@@ -35,5 +36,26 @@ namespace DFC.App.Account.UnitTests.Services
 
             result.FamilyName.Should().Be("Test");
         }
+
+        [Test]
+        public void AuthSettingsTest()
+        {
+            var auth = new AuthSettings
+            {
+                SignOutUrl = "t",
+                SignInUrl = "t",
+                ClientId = "t",
+                ClientSecret = "t",
+                Issuer = "t",
+                RegisterUrl = "t",
+            };
+
+            auth.SignOutUrl.Should().NotBeNullOrEmpty();
+            auth.SignInUrl.Should().NotBeNullOrEmpty();
+            auth.ClientId.Should().NotBeNullOrEmpty();
+            auth.ClientSecret.Should().NotBeNullOrEmpty();
+            auth.Issuer.Should().NotBeNullOrEmpty();
+            auth.RegisterUrl.Should().NotBeNullOrEmpty();
+        } 
     }
 }
