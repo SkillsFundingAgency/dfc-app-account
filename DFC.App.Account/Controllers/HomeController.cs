@@ -58,7 +58,8 @@ namespace DFC.App.Account.Controllers
         {
             var x = await GetCustomerDetails();
             //Hard coded value - Needs removing upon account, and DSS integration
-            ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
+            //Test LLAId with docs:200010216
+            ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
             return await base.Body();
         }
 

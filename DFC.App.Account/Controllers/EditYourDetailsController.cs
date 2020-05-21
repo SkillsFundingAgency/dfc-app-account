@@ -267,7 +267,6 @@ namespace DFC.App.Account.Controllers
                 address.Address4 = identity.PersonalDetails.AddressLine4;
                 address.Address5 = identity.PersonalDetails.AddressLine5;
                 address.PostCode = identity.PersonalDetails.HomePostCode;
-                address.AlternativePostCode = identity.PersonalDetails.AlternativePostCode;
                 address.LastModifiedDate = DateTimeOffset.Now;
                 address.EffectiveFrom = DateTimeOffset.Now;
             }
@@ -281,7 +280,6 @@ namespace DFC.App.Account.Controllers
                     Address4 = identity.PersonalDetails.AddressLine4,
                     Address5 = identity.PersonalDetails.AddressLine5,
                     PostCode = identity.PersonalDetails.HomePostCode,
-                    AlternativePostCode = identity.PersonalDetails.AlternativePostCode,
                     LastModifiedDate = DateTimeOffset.Now,
                     EffectiveFrom = DateTimeOffset.Now,
 
@@ -320,7 +318,6 @@ namespace DFC.App.Account.Controllers
                     AddressLine5 = currentAddress?.Address5,
                     HomePostCode = currentAddress?.PostCode,
                     AddressId = currentAddress?.AddressId,
-                    AlternativePostCode = currentAddress?.AlternativePostCode,
                     DateOfBirth = customer.DateofBirth,
                     DateOfBirthDay = customer.DateofBirth?.Day.ToString(),
                     DateOfBirthMonth = customer.DateofBirth?.Month.ToString(),
