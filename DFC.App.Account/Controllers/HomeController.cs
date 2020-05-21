@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DFC.App.Account.Controllers
 {
@@ -24,7 +25,7 @@ namespace DFC.App.Account.Controllers
         }
 
         #region Default Routes
-
+        [Authorize]
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
         [Route("/head/{controller}")]
         [Route("/head")]
@@ -32,19 +33,21 @@ namespace DFC.App.Account.Controllers
         {
             return base.Head();
         }
+        [Authorize]
         [Route("/bodytop/{controller}")]
         [Route("/bodytop")]
         public override IActionResult BodyTop()
         {
             return base.BodyTop();
         }
+        [Authorize]
         [Route("/breadcrumb/{controller}")]
         [Route("/breadcrumb")]
         public override IActionResult Breadcrumb()
         {
             return base.Breadcrumb();
         }
-
+        [Authorize]
         [Route("/body/{controller}")]
         [Route("/body")]
 
@@ -54,7 +57,7 @@ namespace DFC.App.Account.Controllers
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
             return await base.Body();
         }
-
+        [Authorize]
         [Route("/bodyfooter/{controller}")]
         [Route("/bodyfooter")]
 
@@ -74,6 +77,7 @@ namespace DFC.App.Account.Controllers
 
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/register")]
+        [Route("/body/{controller}/register")]
         public IActionResult Register()
         {
             return Redirect(_authSettings.RegisterUrl + "?redirecturl=/your-account");
@@ -81,6 +85,7 @@ namespace DFC.App.Account.Controllers
 
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/signin")]
+        [Route("/body/{controller}/signin")]
         public IActionResult SignIn()
         {
             return Redirect(_authSettings.SignInUrl+"?redirecturl=/your-account");
@@ -88,6 +93,7 @@ namespace DFC.App.Account.Controllers
 
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/signout")]
+        [Route("/body/{controller}/signout")]
         public IActionResult SignOut()
         {
             return Redirect(_authSettings.SignOutUrl);
