@@ -178,14 +178,7 @@
 
                                             }
                                         }
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AlternativePostCode).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AlternativePostCode, new { @class = "govuk-label" })
-                                            <span class="govuk-hint">If your address is not in England, provide an alternative postcode.</span>
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AlternativePostCode, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AlternativePostCode,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AlternativePostCode).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <p>or enter your address manually:</p>
+                                    <p>or enter your address manually:</p>
                                         <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine1).ToString(), ViewData.ModelState)" id="form-address">
                                             @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine1, new { @class = "govuk-label" })
                                             @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine1, null, new { @class = "govuk-error-message" })
