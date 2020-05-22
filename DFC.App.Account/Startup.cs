@@ -23,6 +23,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Protocols;
 
 namespace DFC.App.Account
 {
@@ -56,7 +57,8 @@ namespace DFC.App.Account
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
-
+            var authSettings = new AuthSettings();
+            Configuration.GetSection("AuthSettings").Bind(authSettings);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
                 {
@@ -69,11 +71,11 @@ namespace DFC.App.Account
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.FromMinutes(1),
 
-                            ValidIssuer = Configuration["AuthSettings:Issuer"],
-                            ValidAudience = Configuration["AuthSettings:ClientId"],
+                            ValidIssuer = authSettings.Issuer,
+                            ValidAudience = authSettings.ClientId,
                             IssuerSigningKey =
                                 new SymmetricSecurityKey(
-                                    Encoding.ASCII.GetBytes(Configuration["AuthSettings:ClientSecret"])),
+                                    Encoding.ASCII.GetBytes(authSettings.ClientSecret)),
                         };
                     cfg.Events = new JwtBearerEvents
                     {
