@@ -43,7 +43,7 @@ namespace DFC.App.Account
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
-            services.AddScoped<IAddressSearchService, GetAddressIoSearchService>();
+            services.AddScoped<IAddressSearchService, AddressSearchService>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
