@@ -77,19 +77,10 @@ namespace DFC.App.Account
                         };
                     cfg.Events = new JwtBearerEvents
                     {
-                        OnTokenValidated = context =>
+                        OnChallenge = context =>
                         {
-                            var cc = context.Request.Headers;
-                            return Task.CompletedTask;
-                        },
-                        OnAuthenticationFailed = context =>
-                        {
-                            Console.WriteLine(context);
-
-                            return Task.CompletedTask;
-                        },
-                        OnMessageReceived = context =>
-                        {
+                            context.Response.Redirect("/auth/signin");
+                            context.HandleResponse();
                             return Task.CompletedTask;
                         }
 
