@@ -1,19 +1,19 @@
-﻿using System.Threading.Tasks;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
- 
-     
-     public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
+
+    //[Authorize]
+    public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
     {
-        
+
         private readonly IDssReader _dssService;
 
         public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService)
@@ -21,7 +21,7 @@ namespace DFC.App.Account.Controllers
         {
             _dssService = dssService;
         }
-        
+
         
       [Route("/body/your-details")] 
         public override async Task<IActionResult> Body()

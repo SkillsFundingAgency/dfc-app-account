@@ -1,36 +1,29 @@
 ﻿using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
-using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
     public class HomeController : CompositeSessionController<HomeCompositeViewModel>
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        private readonly IOpenIDConnectClient _authClient;
-
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IOpenIDConnectClient authClient)
+        private readonly AuthSettings _authSettings;
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings)
         :base(compositeSettings, authService)
         {
-            _logger = logger;
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
-            _authClient = authClient;
+            _authSettings = authSettings.Value;
         }
 
         #region Default Routes
-
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
         [Route("/head/{controller}")]
         [Route("/head")]
@@ -50,19 +43,17 @@ namespace DFC.App.Account.Controllers
         {
             return base.Breadcrumb();
         }
-
+        //[Authorize]
         [Route("/body/{controller}")]
         [Route("/body")]
 
         public override async Task<IActionResult> Body()
         {
-            var x = await GetCustomerDetails();
             //Hard coded value - Needs removing upon account, and DSS integration
             //Test LLAId with docs:200010216
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
             return await base.Body();
         }
-
         [Route("/bodyfooter/{controller}")]
         [Route("/bodyfooter")]
 
@@ -82,45 +73,27 @@ namespace DFC.App.Account.Controllers
 
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/register")]
-        public async Task<IActionResult> Register()
+        [Route("/body/{controller}/register")]
+        public IActionResult Register()
         {
-            var registerUrl = await _authClient.GetRegisterUrl();
-            return Redirect(registerUrl);
+            return Redirect(_authSettings.RegisterUrl + "?redirecturl=/your-account");
         }
 
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/signin")]
-        public async Task<IActionResult> SignIn()
+        [Route("/body/{controller}/signin")]
+        public IActionResult SignIn()
         {
-            var signInUrl = await _authClient.GetSignInUrl();
-            return Redirect(signInUrl);
+            return Redirect(_authSettings.SignInUrl+"?redirecturl=/your-account");
         }
 
-        // Set this route up in the Azure B2C config on the Azure Portal as the redirect Url
-        // This is where we receive the token upon a successful user authentication
-        [Route("/your-account/auth")]
-        public async Task<IActionResult> Auth(string id_token, string state)
+        // It's important to use the same URL route as the existing Skills Health Check app in production
+        [Route("/your-account/home/signout")]
+        [Route("/body/{controller}/signout")]
+        public IActionResult SignOut()
         {
-            JwtSecurityToken validatedToken;
-            try
-            {
-                validatedToken = await _authClient.ValidateToken(id_token);
-            }
-            catch (System.Exception ex)
-            {
-                // TBC: how to handle invalid token?
-                _logger.LogError(ex, "Failed to validate auth token.");
-                throw;
-            }
-
-            // TBC: How to use validated token now - what claims to stuff in the session?
-            //      Which claim is the unique ID of the user - is it TID?
-            // For now we'll temporarily stuff the users' full name in the redirect Url just to demonstrate we are logged in
-            var userFullName = validatedToken.Claims.First(claim => claim.Type == "name").Value;
-            var loggedInUrl = _authClient.GetAuthdUrl();
-            return Redirect($"{loggedInUrl}?UserFullName={userFullName}");
+            return Redirect(_authSettings.SignOutUrl);
         }
-
         #endregion
     }
 }

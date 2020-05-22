@@ -1,14 +1,14 @@
 ﻿using DFC.App.Account.Models;
+using DFC.App.Account.Services;
+using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.App.Account.Services;
-using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
-   
+    //[Authorize]
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
@@ -25,7 +25,7 @@ namespace DFC.App.Account.Controllers
             return View(ViewModel);
         }
 
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
