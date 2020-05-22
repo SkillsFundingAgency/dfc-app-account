@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace DFC.App.Account.Controllers
 {
@@ -25,7 +24,6 @@ namespace DFC.App.Account.Controllers
         }
 
         #region Default Routes
-        [Authorize]
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
         [Route("/head/{controller}")]
         [Route("/head")]
@@ -33,21 +31,19 @@ namespace DFC.App.Account.Controllers
         {
             return base.Head();
         }
-        [Authorize]
         [Route("/bodytop/{controller}")]
         [Route("/bodytop")]
         public override IActionResult BodyTop()
         {
             return base.BodyTop();
         }
-        [Authorize]
         [Route("/breadcrumb/{controller}")]
         [Route("/breadcrumb")]
         public override IActionResult Breadcrumb()
         {
             return base.Breadcrumb();
         }
-        [Authorize]
+        //[Authorize]
         [Route("/body/{controller}")]
         [Route("/body")]
 
@@ -57,7 +53,6 @@ namespace DFC.App.Account.Controllers
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
             return await base.Body();
         }
-        [Authorize]
         [Route("/bodyfooter/{controller}")]
         [Route("/bodyfooter")]
 
