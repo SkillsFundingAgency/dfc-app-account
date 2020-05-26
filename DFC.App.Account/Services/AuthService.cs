@@ -29,7 +29,7 @@ namespace DFC.App.Account.Services
 
             string userId = _httpContextAccessor.HttpContext.Request.Query["customerid"].ToString()??"";
 
-            userId = userId == "" ? "ac78e0b9-950a-407a-9f99-51dc63ce699a" : userId;
+            userId = userId == "" ? "07f05f9b-fdf4-4d2d-93f2-a43f99c95a91" : userId;
                             
 
             return await _dssReader.GetCustomerData(userId);
