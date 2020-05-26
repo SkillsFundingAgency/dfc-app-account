@@ -23,6 +23,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
+using DFC.App.Account.Services.Auth;
+using DFC.App.Account.Services.Auth.Interfaces;
+using DFC.App.Account.Services.Auth.Models;
 using Microsoft.IdentityModel.Protocols;
 
 namespace DFC.App.Account
@@ -57,7 +60,11 @@ namespace DFC.App.Account
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
+            services.AddScoped<IOpenIDConnectClient, AzureB2CAuthClient>();
+            services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
+            
             var authSettings = new AuthSettings();
+
             Configuration.GetSection("AuthSettings").Bind(authSettings);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
