@@ -82,6 +82,15 @@
         },       
         "AuthSettingsClientId": {
             "value": "__AuthSettingsClientId__"
-        }      
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "value": "__AddressSearchServiceSettingsBaseUrl__"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "value": "__AddressSearchServiceSettingsKey__"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "value": "__AddressSearchServiceSettingsAddressIdentifierPattern__"
+        }            
     }
 }

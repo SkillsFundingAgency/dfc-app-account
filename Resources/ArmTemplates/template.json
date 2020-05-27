@@ -98,6 +98,15 @@
         },       
         "AuthSettingsClientId": {
             "type": "string"
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "type": "string"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "type": "string"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "type": "string"
         }
     },
     "variables": {
@@ -313,15 +322,31 @@
                             },
                             {
                                 "name": "AuthSettings__SignInUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignInUrl')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignIn')]"
                             },
                             {
                                 "name": "AuthSettings__SignOutUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignOutUrl')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/signOut')]"
                             },
                             {
                                 "name": "AuthSettings__RegisterUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/RegisterUrl')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/register')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__FindAddressesBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Find/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__RetrieveAddressBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Retrieve/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__Key",
+                                "value": "[parameters('AddressSearchServiceSettingsKey')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__AddressIdentifierPattern",
+                                "value": "[parameters('AddressSearchServiceSettingsAddressIdentifierPattern')]"
                             }
                         ]
                     }

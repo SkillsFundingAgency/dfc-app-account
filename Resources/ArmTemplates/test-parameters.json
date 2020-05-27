@@ -70,6 +70,15 @@
         },       
         "AuthSettingsClientId": {
             "value": "AuthSettingsClientId"
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "value": "MyBaseUrl"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "value": "MyGuidLoqateKey"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "value": "MyRegexPattern"
         }             
     }
 }
