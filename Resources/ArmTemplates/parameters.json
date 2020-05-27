@@ -73,6 +73,15 @@
         },
         "OIDCSettingsTokenEndPoint": {
             "value": "__OIDCSettingsTokenEndPoint__"
-        }       
+        },
+        "AuthSettingsIssuer": {
+            "value": "__AuthSettingsIssuer__"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "__AuthSettingsClientSecret__"
+        },       
+        "AuthSettingsClientId": {
+            "value": "__AuthSettingsClientId__"
+        }      
     }
 }

@@ -89,6 +89,15 @@
         },
         "OIDCSettingsTokenEndPoint": {
             "type": "string"
+        },
+        "AuthSettingsIssuer": {
+            "type": "string"
+        },
+        "AuthSettingsClientSecret": {
+            "type": "string"
+        },       
+        "AuthSettingsClientId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -289,6 +298,30 @@
                             {
                                 "name": "OIDCSettings__TokenEndPoint",
                                 "value": "[parameters('OIDCSettingsTokenEndPoint')]"
+                            },
+                            {
+                                "name": "AuthSettings__Issuer",
+                                "value": "[parameters('AuthSettingsIssuer')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientSecret",
+                                "value": "[parameters('AuthSettingsClientSecret')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientId",
+                                "value": "[parameters('AuthSettingsClientId')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignInUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignInUrl')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignOutUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignOutUrl')]"
+                            },
+                            {
+                                "name": "AuthSettings__RegisterUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/RegisterUrl')]"
                             }
                         ]
                     }

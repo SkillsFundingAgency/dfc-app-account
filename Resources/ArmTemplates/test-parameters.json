@@ -61,6 +61,15 @@
         },
         "OIDCSettingsTokenEndPoint": {
             "value": "https://foo"
-        }        
+        },
+        "AuthSettingsIssuer": {
+            "value": "IAmAnIssuer"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "ThisIsAClientSecret"
+        },       
+        "AuthSettingsClientId": {
+            "value": "AuthSettingsClientId"
+        }             
     }
 }
