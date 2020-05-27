@@ -73,6 +73,24 @@
         },
         "OIDCSettingsTokenEndPoint": {
             "value": "__OIDCSettingsTokenEndPoint__"
-        }       
+        },
+        "AuthSettingsIssuer": {
+            "value": "__AuthSettingsIssuer__"
+        },
+        "AuthSettingsClientSecret": {
+            "value": "__AuthSettingsClientSecret__"
+        },       
+        "AuthSettingsClientId": {
+            "value": "__AuthSettingsClientId__"
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "value": "__AddressSearchServiceSettingsBaseUrl__"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "value": "__AddressSearchServiceSettingsKey__"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "value": "__AddressSearchServiceSettingsAddressIdentifierPattern__"
+        }            
     }
 }

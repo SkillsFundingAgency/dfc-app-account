@@ -89,6 +89,24 @@
         },
         "OIDCSettingsTokenEndPoint": {
             "type": "string"
+        },
+        "AuthSettingsIssuer": {
+            "type": "string"
+        },
+        "AuthSettingsClientSecret": {
+            "type": "string"
+        },       
+        "AuthSettingsClientId": {
+            "type": "string"
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "type": "string"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "type": "string"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "type": "string"
         }
     },
     "variables": {
@@ -289,6 +307,46 @@
                             {
                                 "name": "OIDCSettings__TokenEndPoint",
                                 "value": "[parameters('OIDCSettingsTokenEndPoint')]"
+                            },
+                            {
+                                "name": "AuthSettings__Issuer",
+                                "value": "[parameters('AuthSettingsIssuer')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientSecret",
+                                "value": "[parameters('AuthSettingsClientSecret')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientId",
+                                "value": "[parameters('AuthSettingsClientId')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignInUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignIn')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignOutUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/signOut')]"
+                            },
+                            {
+                                "name": "AuthSettings__RegisterUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/register')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__FindAddressesBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Find/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__RetrieveAddressBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Retrieve/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__Key",
+                                "value": "[parameters('AddressSearchServiceSettingsKey')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__AddressIdentifierPattern",
+                                "value": "[parameters('AddressSearchServiceSettingsAddressIdentifierPattern')]"
                             }
                         ]
                     }
