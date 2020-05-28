@@ -102,7 +102,6 @@ namespace DFC.App.Account.Controllers
                             viewModel.Identity.PersonalDetails.DateOfBirth = null;
                         }
 
-                        var existingEmail = customerDetails.Contact.EmailAddress;
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
 
                         await _dssWriter.UpdateCustomerData(updatedDetails);
@@ -120,7 +119,7 @@ namespace DFC.App.Account.Controllers
                         customerDetails.Contact.LastModifiedDate = DateTime.UtcNow;
                         await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
-                        if (existingEmail != viewModel.Identity.ContactDetails.ContactEmail)
+                        if (!string.IsNullOrEmpty(viewModel.Identity.ContactDetails.ContactEmail))
                         {
                             //Auth endpoint needed here
                             return new RedirectResult("/your-account/your-details?logout=true", false);
@@ -238,7 +237,8 @@ namespace DFC.App.Account.Controllers
 
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
-            customer.Contact.EmailAddress = identity.ContactDetails.ContactEmail;
+            customer.Contact.EmailAddress = customer.Contact.EmailAddress == identity.ContactDetails.ContactEmail ? "" : identity.ContactDetails.ContactEmail;
+            
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
             customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
