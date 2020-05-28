@@ -15,7 +15,7 @@ namespace DFC.App.Account.Application.Common.Extensions
         public static string GetClass(string fieldName, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelState)
         {
 
-            return modelState.ContainsKey(fieldName) && modelState[fieldName].Errors.Count > 0 ? "error" : String.Empty;
+            return modelState.ContainsKey(fieldName) && modelState[fieldName].Errors.Count > 0 ? "govuk-form-group--error" : String.Empty;
                 
         }
 
@@ -48,7 +48,7 @@ namespace DFC.App.Account.Application.Common.Extensions
             }
             else
             {
-                return "error";
+                return "govuk-form-group--error";
             }
         }
 

@@ -488,7 +488,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var viewModel = new EditDetailsCompositeViewModel();
            viewModel.GetErrorClass("test", controller.ViewData.ModelState).Should().NotBeNullOrEmpty();
         }
-
+        
         [Test]
         public void WhenGetErrorClassCalledWithError_ReturnEmptyString()
         {
@@ -501,6 +501,34 @@ namespace DFC.App.Account.UnitTests.Controllers
             var viewModel = new EditDetailsCompositeViewModel();
             viewModel.GetErrorClass("test", controller.ViewData.ModelState).Should().BeNullOrEmpty();
         }
+
+        [Test]
+        public void WhenGetFormGroupErrorClassCalledWithError_ReturnClass()
+        {
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+            controller.ModelState.AddModelError("test", "test");
+            var viewModel = new EditDetailsCompositeViewModel();
+            viewModel.GetFormGroupErrorClass("test", controller.ViewData.ModelState).Should().NotBeNullOrEmpty();
+        }
+
+        [Test]
+        public void WhenGetFormGroupErrorClassCalledWithError_ReturnEmptyString()
+        {
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+
+            var viewModel = new EditDetailsCompositeViewModel();
+            viewModel.GetFormGroupErrorClass("test", controller.ViewData.ModelState).Should().BeNullOrEmpty();
+        }
+
+
         private EditDetailsCompositeViewModel GetViewModel()
         {
             var editViewModel = new EditDetailsCompositeViewModel();

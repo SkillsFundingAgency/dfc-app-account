@@ -3,30 +3,7 @@
 @using DFC.App.Account.ViewModels
 @using Newtonsoft.Json
 @model DFC.App.Account.ViewModels.EditDetailsCompositeViewModel
-@*<style>
-        .field-validation-valid {
-            display: none;
-        }
 
-        .validation-summary-valid {
-            display: none;
-        }
-    </style>*@
-<link href="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/css/all.min.css?dD5uI7CUkyXggutYGXwYQg==" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-    $(function () {
-        $('input').keydown(function (e) {
-            if ((e.keyCode || e.which) == 13) {
-                return false;
-            }
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        setInterval(CheckSessionExist, sessionTimeoutIntervalPeriod);
-    });
-</script>
 <partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
 <div class="govuk-main-wrapper">
     <div class="govuk-width-container">
@@ -34,7 +11,7 @@
             <div class="govuk-grid-column-three-quarters">
                 <govukHeadingH1 text="Edit your details"></govukHeadingH1>
 
-                <form id="@Model.GetElementId("form","editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt validationOnClient @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" method="post">
+                <form id="@Model.GetElementId("form","editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt validationOnClient " method="post">
 
                     <table class="govuk-table" aria-describedby="personal-details-table">
                         <govukHeadingH2 text="Your personal details"></govukHeadingH2>
@@ -43,7 +20,7 @@
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.Title, new { @class = "govuk-label" })</th>
                                 <td class="govuk-table__cell">
                                     @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.Title).ToString(), ViewData.ModelState)
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Title).ToString(), ViewData.ModelState))">
                                         @Html.ValidationMessageFor(m => m.Identity.PersonalDetails.Title, null, new { @class = "govuk-error-message" })
                                         @Html.DropDownListFor(m => m.Identity.PersonalDetails.Title, Html.GetEnumSelectList(Model.Identity.PersonalDetails.Title.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Title).ToString(), ViewData.ModelState)}" })
@@ -56,8 +33,7 @@
                                     @Html.LabelFor(m => m.Identity.PersonalDetails.GivenName, new { @class = "govuk-label" })
                                 </th>
                                 <td class="govuk-table__cell">
-                                    @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.GivenName).ToString(), ViewData.ModelState)
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.GivenName).ToString(), ViewData.ModelState))">
                                         @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.GivenName, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.GivenName,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.GivenName).ToString(), ViewData.ModelState)}" })
@@ -68,7 +44,7 @@
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.FamilyName, new { @class = "govuk-label" })</th>
                                 <td class="govuk-table__cell">
                                     @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState)
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState))">
                                         @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.FamilyName, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.FamilyName,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState)}" })
@@ -76,40 +52,47 @@
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
+                                @{
+                                    var dobError = HtmlExtensions.GetDOBClass(Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirth).ToString(),
+                                        Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthDay).ToString(),
+                                        Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthMonth).ToString(),
+                                        Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthYear).ToString(),
+                                        ViewData.ModelState);
+                                    var dobInputError = string.IsNullOrEmpty(dobError) ? "" : "govuk-input--error";
+                                }
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirth, new { @class = "govuk-label" })</th>
-                                <td class="govuk-table__cell @HtmlExtensions.GetDOBClass(Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirth).ToString(),
-                                                 Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthDay).ToString(),
-                                                 Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthMonth).ToString(),
-                                                 Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthYear).ToString(),
-                                                 ViewData.ModelState)">
-                                    @Html.HiddenFor(model => model.Identity.PersonalDetails.DateOfBirth)
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirth, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthDay, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthMonth, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthYear, null, new { @class = "govuk-error-message" })
+                                <td class="govuk-table__cell">
 
-                                    <p class="govuk-hint">For example, 31 03 1980</p>
-                                    
-                                    <div class="govuk-date-input">
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthDay, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthDay,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthDay).ToString(), ViewData.ModelState)}" })
+                                    <div class="govuk-form-group  @dobError">
+                                        @Html.HiddenFor(model => model.Identity.PersonalDetails.DateOfBirth)
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirth, null, new { @class = "govuk-error-message" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthDay, null, new { @class = "govuk-error-message" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthMonth, null, new { @class = "govuk-error-message" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthYear, null, new { @class = "govuk-error-message" })
+
+                                        <p class="govuk-hint">For example, 31 03 1980</p>
+
+                                        <div class="govuk-date-input">
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthDay, new { @class = "govuk-label" })
+                                                    @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthDay,
+                                                        new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {dobInputError}" })
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthMonth, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthMonth,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthMonth).ToString(), ViewData.ModelState)}" })
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthMonth, new { @class = "govuk-label" })
+                                                    @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthMonth,
+                                                        new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {dobInputError}" })
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthYear, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthYear,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-4 {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.DateOfBirthYear).ToString(), ViewData.ModelState)}" })
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthYear, new { @class = "govuk-label" })
+                                                    @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthYear,
+                                                        new { @class = $"govuk-input govuk-date-input__input govuk-input--width-4 {dobInputError}" })
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -118,105 +101,105 @@
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.Gender, new { @class = "govuk-label" })</th>
                                 <td class="govuk-table__cell">
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Gender).ToString(), ViewData.ModelState))">
                                         @Html.DropDownListFor(m => m.Identity.PersonalDetails.Gender, Html.GetEnumSelectList(Model.Identity.PersonalDetails.Gender.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Gender).ToString(), ViewData.ModelState)}" })
                                     </div>
-</td>
+                                </td>
                             </tr>
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header"><span class="govuk-label">Address</span></th>
-                                <td class="govuk-table__cell @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.HomePostCode).ToString(), ViewData.ModelState)">
+                                <td class="govuk-table__cell">
                                     @Html.LabelFor(m => m.Identity.PersonalDetails.HomePostCode, new { @class = "govuk-label" })
                                     <span class="govuk-hint">Use your postcode to find your address. <br />For example, SW1A 1AA.</span>
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.HomePostCode).ToString(), ViewData.ModelState))">
                                         @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.HomePostCode, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.HomePostCode,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.HomePostCode).ToString(), ViewData.ModelState)}" })
                                     </div>
-                                        <br />
+                                    <br />
                                     <div class="govuk-form-group">
                                         <input id="EditYourDetails-FindAddress-btn" class="govuk-button" type="submit" value="Find Address" name="FindAddress">
                                     </div>
 
-                                        @if (Model != null && (!(Model.Items == null || Model.Items.Count == 0) || !string.IsNullOrEmpty(Model.Identity.PersonalDetails.FindAddressServiceResult)))
+                                    @if (Model != null && (!(Model.Items == null || Model.Items.Count == 0) || !string.IsNullOrEmpty(Model.Identity.PersonalDetails.FindAddressServiceResult)))
+                                    {
+                                        if (!string.IsNullOrEmpty(Model.Identity.PersonalDetails.FindAddressServiceResult))
                                         {
-                                            if (!string.IsNullOrEmpty(Model.Identity.PersonalDetails.FindAddressServiceResult))
-                                            {
-                                                <div class="govuk-form-group">
-                                                    <span class="govuk-hint">
-                                                        @Html.Raw(Model.Identity.PersonalDetails.FindAddressServiceResult)
-                                                    </span>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="govuk-form-group">
-                                                    <label class="govuk-label govuk-visually-hidden" for="select-address">Select your address</label>
-                                                    <fieldset>
-                                                        <div class="govuk-radios">
-                                                            <div class="govuk-radios__item">
-                                                                <legend class="govuk-visually-hidden">Select your address</legend>
-                                                                @for (Int32 counter = 0; counter < Model.Items.Count; counter++)
-                                                                {
-                                                                    PostalAddressModel item = Model.Items[counter];
-                                                                    <label class="block-label" for="@String.Concat("radio-", item.Id)">
-                                                                        <input id="@String.Concat("radio-", item.Id)" name="select-address" value="@JsonConvert.SerializeObject(item)" type="radio" />
-                                                                        @Html.Raw(item.Text)
-                                                                    </label>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </fieldset>
-                                                    <br />
-                                                    <div class="govuk-form-group">
-                                                        <button id="EditYourDetails-SelectAddress-btn" class="govuk-button" type="submit" value="Select Address" name="selectAddress" data-module="govuk-button">
-                                                            Select address
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                            }
+                                            <div class="govuk-form-group">
+                                                <span class="govuk-hint">
+                                                    @Html.Raw(Model.Identity.PersonalDetails.FindAddressServiceResult)
+                                                </span>
+                                            </div>
                                         }
-                                    <p>or enter your address manually:</p>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine1).ToString(), ViewData.ModelState)" id="form-address">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine1, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine1, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine1,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine1).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine2).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine2, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine2, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine2,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine2).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine3).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine3, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine3, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine3,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine3).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine4).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine4, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine4, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine4,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine4).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine5).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine5, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine5, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine5,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine5).ToString(), ViewData.ModelState)}" })
-                                        </div>
-                                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.Town).ToString(), ViewData.ModelState)">
-                                            @Html.LabelFor(m => m.Identity.PersonalDetails.Town, new { @class = "govuk-label" })
-                                            @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.Town, null, new { @class = "govuk-error-message" })
-                                            @Html.TextBoxFor(model => model.Identity.PersonalDetails.Town,
-                                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Town).ToString(), ViewData.ModelState)}" })
-                                        </div>
+                                        else
+                                        {
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label govuk-visually-hidden" for="select-address">Select your address</label>
+                                                <fieldset>
+                                                    <div class="govuk-radios">
+                                                        <div class="govuk-radios__item">
+                                                            <legend class="govuk-visually-hidden">Select your address</legend>
+                                                            @for (Int32 counter = 0; counter < Model.Items.Count; counter++)
+                                                            {
+                                                                PostalAddressModel item = Model.Items[counter];
+                                                                <label class="block-label" for="@String.Concat("radio-", item.Id)">
+                                                                    <input id="@String.Concat("radio-", item.Id)" name="select-address" value="@JsonConvert.SerializeObject(item)" type="radio" />
+                                                                    @Html.Raw(item.Text)
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <br />
+                                                <div class="govuk-form-group">
+                                                    <button id="EditYourDetails-SelectAddress-btn" class="govuk-button" type="submit" value="Select Address" name="selectAddress" data-module="govuk-button">
+                                                        Select address
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                                        <input type="hidden" name="Identity.PersonalDetails.AddressId" value="@Model.Identity.PersonalDetails.AddressId" />
+                                        }
+                                    }
+                                    <p>or enter your address manually:</p>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine1).ToString(), ViewData.ModelState)" id="form-address">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine1, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine1, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine1,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine1).ToString(), ViewData.ModelState)}" })
+                                    </div>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine2).ToString(), ViewData.ModelState)">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine2, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine2, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine2,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine2).ToString(), ViewData.ModelState)}" })
+                                    </div>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine3).ToString(), ViewData.ModelState)">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine3, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine3, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine3,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine3).ToString(), ViewData.ModelState)}" })
+                                    </div>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine4).ToString(), ViewData.ModelState)">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine4, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine4, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine4,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine4).ToString(), ViewData.ModelState)}" })
+                                    </div>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine5).ToString(), ViewData.ModelState)">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.AddressLine5, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.AddressLine5, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.AddressLine5,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.AddressLine5).ToString(), ViewData.ModelState)}" })
+                                    </div>
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.Town).ToString(), ViewData.ModelState)">
+                                        @Html.LabelFor(m => m.Identity.PersonalDetails.Town, new { @class = "govuk-label" })
+                                        @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.Town, null, new { @class = "govuk-error-message" })
+                                        @Html.TextBoxFor(model => model.Identity.PersonalDetails.Town,
+                                            new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Town).ToString(), ViewData.ModelState)}" })
+                                    </div>
+
+                                    <input type="hidden" name="Identity.PersonalDetails.AddressId" value="@Model.Identity.PersonalDetails.AddressId" />
                                 </td>
                             </tr>
                         </tbody>
@@ -227,11 +210,11 @@
                         <tbody class="govuk-table__body">
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactEmail, new { @class = "govuk-label" })</th>
-                                <td class="govuk-table__cell  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)">
+                                <td class="govuk-table__cell">
                                     <span class="govuk-hint">
                                         If you change this you'll be signed out. You'll need to activate your new email address before you can sign in.
                                     </span>
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)">
                                         @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactEmail, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.ContactEmail,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)}" })
@@ -240,8 +223,8 @@
                             </tr>
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumber, new { @class = "govuk-label" })</th>
-                                <td class="govuk-table__cell  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)">
-                                    <div class="govuk-form-group">
+                                <td class="govuk-table__cell  ">
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)">
                                         @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumber, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumber,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)}" })
@@ -250,11 +233,11 @@
                             </tr>
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative, new { @class = "govuk-label" })</th>
-                                <td class="govuk-table__cell   @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)">
+                                <td class="govuk-table__cell   ">
                                     <span class="govuk-hint">
                                         If you remove this phone number, telephone and face-to-face advisers won't be able to contact you on this number anymore.
                                     </span>
-                                    <div class="govuk-form-group">
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)">
                                         @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)}" })
@@ -263,8 +246,8 @@
                             </tr>
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactPreference, new { @class = "govuk-label" })</th>
-                                <td class="govuk-table__cell @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)">
-                                    <div class="govuk-form-group">
+                                <td class="govuk-table__cell ">
+                                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)">
                                         @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactPreference, null, new { @class = "govuk-error-message" })
                                         @Html.DropDownListFor(m => m.Identity.ContactDetails.ContactPreference, Html.GetEnumSelectList(Model.Identity.ContactDetails.ContactPreference.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}" })
@@ -314,93 +297,3 @@
         </div>
     </div>
 </div>
-    <script src="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/js/jquerybundle.min.js?jq/NP1aPZeQDFG2sHhiMEg==" type="text/javascript" nonce="yFoYA0sTl5DRrT10/O0u5HWg"></script>
-    <script src="https://dev-cdn.nationalcareersservice.org.uk/nationalcareers_toolkit/js/all.min.js?Uoa/MIvs&#x2B;BY3BaNt9sMilw==" type="text/javascript" nonce="yFoYA0sTl5DRrT10/O0u5HWg"></script>
-
-    <script nonce="yFoYA0sTl5DRrT10/O0u5HWg">window.GOVUKFrontend.initAll()</script>
-
-<script>
-
-
-        $(document).ready(function () {
-
-            var form = $(".validationOnClient");
-            var errorSummary = $(".govuk-error-summary");
-            var hiddenClass = "govuk-visually-hidden";
-            var formErrorClass = "govuk-form-group--error";
-            var inputErrorClass = "govuk-input--error";
-
-            function findItem(list, itemToFind) {
-                var itemToRemove = {}
-                $(list).each(function () {
-                    if (($(this).attr("id") === $(itemToFind).attr("name"))) {
-                        itemToRemove = this;
-                    }
-                });
-                return itemToRemove;
-            }
-
-            function toggleErrorSummary(hasErrors) {
-                toggleFormErrorClass(hasErrors);
-                var hidden = errorSummary.hasClass(hiddenClass);
-
-                if (hasErrors && hidden) {
-                    errorSummary.removeClass(hiddenClass);
-                } else if (!hasErrors && !hidden) {
-                    errorSummary.addClass(hiddenClass);
-                }
-            }
-
-            function removeItem(item) {
-
-                if ($(item).length > 0) {
-                    $(item).remove();
-                }
-            }
-
-
-            function toggleItemErrorClass(item, hasError) {
-                var errorClass = $(item).hasClass(inputErrorClass);
-
-                if (hasError && errorClass) {
-                    $(item).addClass(inputErrorClass);
-                } else if (!hasError && !errorClass) {
-                    $(item).removeClass(inputErrorClass);
-                }
-            }
-
-            function toggleFormErrorClass(hasErrors) {
-                var errorClass = form.hasClass(formErrorClass);
-
-                if (hasErrors && errorClass) {
-                    $(form).addClass(formErrorClass);
-                } else if (!hasErrors && !errorClass) {
-                    $(form).removeClass(formErrorClass);
-                }
-            }
-
-            function updateErrorDetails(item, errorMsg, hasError) {
-                var listParent = $("ul.govuk-list.govuk-error-summary__list");
-                var list = $("ul.govuk-list.govuk-error-summary__list").children("li");
-                if (hasError === true) {
-
-                    if (list.length > 0) {
-                        removeItem(findItem(list, item));
-                    }
-                    var itemName = $(item).attr("name");
-                    $(listParent).append('<li id="' + $(item).attr("name") + '">' + '<a href="#' + itemName.split(".").join("_") + '">' + errorMsg + '</a></li>');
-                    toggleItemErrorClass(item, true);
-
-                } else {
-                    toggleItemErrorClass(item, false);
-                    if (list.length > 0) {
-                        removeItem(findItem(list, item));
-                    }
-                }
-                toggleErrorSummary($("ul.govuk-list.govuk-error-summary__list").children("li").length > 0);
-
-            }
-        });
-    </script>
-
-
