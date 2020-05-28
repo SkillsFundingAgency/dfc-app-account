@@ -8,5 +8,7 @@
         public string SignInUrl { get; set; }
         public string SignOutUrl { get; set; }
         public string RegisterUrl { get; set; }
+        public string ResetPasswordUrl { get; set; }
+        
     }
 }

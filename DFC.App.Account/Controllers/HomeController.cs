@@ -49,6 +49,7 @@ namespace DFC.App.Account.Controllers
 
         public override async Task<IActionResult> Body()
         {
+            ViewModel.ResetPasswordUrl = _authSettings.ResetPasswordUrl;
             //Hard coded value - Needs removing upon account, and DSS integration
             //Test LLAId with docs:200010216
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
