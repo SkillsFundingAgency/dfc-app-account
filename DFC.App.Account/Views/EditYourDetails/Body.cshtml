@@ -11,7 +11,7 @@
             <div class="govuk-grid-column-three-quarters">
                 <govukHeadingH1 text="Edit your details"></govukHeadingH1>
 
-                <form id="@Model.GetElementId("form","editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt validationOnClient " method="post">
+                <form id="@Model.GetElementId("form","editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt" method="post">
 
                     <table class="govuk-table" aria-describedby="personal-details-table">
                         <govukHeadingH2 text="Your personal details"></govukHeadingH2>
@@ -25,7 +25,7 @@
                                         @Html.DropDownListFor(m => m.Identity.PersonalDetails.Title, Html.GetEnumSelectList(Model.Identity.PersonalDetails.Title.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Title).ToString(), ViewData.ModelState)}" })
                                     </div>
-
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -38,17 +38,18 @@
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.GivenName,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.GivenName).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.FamilyName, new { @class = "govuk-label" })</th>
                                 <td class="govuk-table__cell">
-                                    @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState)
                                     <div class="govuk-form-group @(Model.GetFormGroupErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState))">
                                         @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.FamilyName, null, new { @class = "govuk-error-message" })
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.FamilyName,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.FamilyName).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -94,6 +95,7 @@
                                                         new { @class = $"govuk-input govuk-date-input__input govuk-input--width-4 {dobInputError}" })
                                                 </div>
                                             </div>
+                                            <div class="govuk-form-group"> </div>
                                         </div>
                                     </div>
                                 </td>
@@ -105,6 +107,7 @@
                                         @Html.DropDownListFor(m => m.Identity.PersonalDetails.Gender, Html.GetEnumSelectList(Model.Identity.PersonalDetails.Gender.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Gender).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -198,6 +201,7 @@
                                         @Html.TextBoxFor(model => model.Identity.PersonalDetails.Town,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.PersonalDetails.Town).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
 
                                     <input type="hidden" name="Identity.PersonalDetails.AddressId" value="@Model.Identity.PersonalDetails.AddressId" />
                                 </td>
@@ -219,6 +223,7 @@
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.ContactEmail,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -229,6 +234,7 @@
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumber,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -242,6 +248,7 @@
                                         @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative,
                                             new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
                                 </td>
                             </tr>
                             <tr class="govuk-table__row">
@@ -252,6 +259,7 @@
                                         @Html.DropDownListFor(m => m.Identity.ContactDetails.ContactPreference, Html.GetEnumSelectList(Model.Identity.ContactDetails.ContactPreference.GetType()),
                                             new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}" })
                                     </div>
+                                    <div class="govuk-form-group"> </div>
 
                                 </td>
                             </tr>
