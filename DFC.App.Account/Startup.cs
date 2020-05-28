@@ -64,6 +64,7 @@ namespace DFC.App.Account
             services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
             
             var authSettings = new AuthSettings();
+            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
             Configuration.GetSection("AuthSettings").Bind(authSettings);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -77,7 +78,6 @@ namespace DFC.App.Account
                             ValidateIssuerSigningKey = true,
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.FromMinutes(1),
-
                             ValidIssuer = authSettings.Issuer,
                             ValidAudience = authSettings.ClientId,
                             IssuerSigningKey =
@@ -90,6 +90,14 @@ namespace DFC.App.Account
                         {
                             context.Response.Redirect("/auth/signin");
                             context.HandleResponse();
+                            return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Redirect(appPath + "/session-timeout");
+                            }
                             return Task.CompletedTask;
                         }
 
@@ -149,7 +157,7 @@ namespace DFC.App.Account
 
                 endpoints.MapControllerRoute("shcDeleted", appPath + "/shc-deleted", new { controller = "shcDeleted", action = "body" });
                 endpoints.MapControllerRoute("shcDeletedBody", "/body/shc-deleted", new { controller = "shcDeleted", action = "body" });
-
+                
                 endpoints.MapControllers();
             });
 

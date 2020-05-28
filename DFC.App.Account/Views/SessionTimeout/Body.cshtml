@@ -1,5 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using DFC.App.Account.ViewModels
+@model DFC.App.Account.ViewModels.SessionTimeoutCompositeViewModel
+@if (null == Model)
+{
+    <title>@CompositeViewModel.AppTitle</title>
 }
+else
+{
+    <title>@Model.PageTitle</title>
+}
+<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-panel__title">Your session has timed out</h1>
+
+            <p>
+                We've signed you out for security reasons. <a href="@Model.SignInUrl">Sign in</a> again to continue.
+            </p>
+
+        </div>
+    </div>
+</div>
