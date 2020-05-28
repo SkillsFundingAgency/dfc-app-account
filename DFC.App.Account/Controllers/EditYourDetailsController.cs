@@ -7,6 +7,7 @@ using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -20,7 +21,7 @@ using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class EditYourDetailsController : CompositeSessionController<EditDetailsCompositeViewModel>
     {
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
