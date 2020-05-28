@@ -3,6 +3,7 @@ using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -43,7 +44,7 @@ namespace DFC.App.Account.Controllers
         {
             return base.Breadcrumb();
         }
-        //[Authorize]
+        [Authorize]
         [Route("/body/{controller}")]
         [Route("/body")]
 

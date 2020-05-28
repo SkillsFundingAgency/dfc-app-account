@@ -2,13 +2,14 @@
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
