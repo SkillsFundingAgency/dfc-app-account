@@ -17,7 +17,7 @@ else
         <div class="govuk-grid-column-two-thirds">
             <partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
 
-            <form id="@Model.GetElementId("form","closeYourAccount")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group validationOnClient @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" method="post">
+            <form id="@Model.GetElementId("form","closeYourAccount")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group validationOnClient " method="post">
 
                 @Html.HiddenFor(model => model.CustomerId)
                 <govukHeadingH1 text="@Model.PageHeading"></govukHeadingH1>
@@ -42,8 +42,8 @@ else
 
                 <h2 class="heading-medium">Confirm account closure</h2>
                 <p>Enter your password to close your account.</p>
-                <div class="govuk-form-group">  
-                     @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)>  
+                     
                     <govukLabel id="lablepassword" text="Password" for="password"></govukLabel>
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "govuk-error-message" })
 
