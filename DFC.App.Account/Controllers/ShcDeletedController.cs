@@ -21,13 +21,11 @@ namespace DFC.App.Account.Controllers
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
         }
-        [Microsoft.AspNetCore.Mvc.HttpGet]
         public override async Task<IActionResult> Body()
         {
             return await base.Body();
         }
-        [Microsoft.AspNetCore.Mvc.HttpGet]
-        [Microsoft.AspNetCore.Mvc.Route("/body/[controller]/{*id}")]
+        [Route("/body/[controller]/{*id}")]
         public async Task<IActionResult> Body(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
