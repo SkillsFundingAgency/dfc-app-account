@@ -266,7 +266,7 @@
                             },
                             {
                                 "name": "DssSettings__AccountsTouchpointId",
-                                "value": "9000000000"
+                                "value": "0000000997"
                             },
                             {
                                 "name": "CompositeSettings__Path",
@@ -331,6 +331,10 @@
                             {
                                 "name": "AuthSettings__RegisterUrl",
                                 "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/register')]"
+                            },
+                            {
+                                "name": "AuthSettings__resetPassword",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/resetPassword')]"
                             },
                             {
                                 "name": "AddressSearchServiceSettings__FindAddressesBaseUrl",
