@@ -19,6 +19,8 @@ namespace DFC.App.Account
                 }).ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddApplicationInsights(hostingContext.Configuration.GetSection("APPINSIGHTS_INSTRUMENTATIONKEY").Value);
+                    builder.AddFilter<Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider>
+                        ("", LogLevel.Information);
                 });
     }
 }

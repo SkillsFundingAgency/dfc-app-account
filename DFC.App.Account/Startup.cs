@@ -44,7 +44,7 @@ namespace DFC.App.Account
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration.GetSection("APPINSIGHTS_INSTRUMENTATIONKEY").Value);
+            services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
