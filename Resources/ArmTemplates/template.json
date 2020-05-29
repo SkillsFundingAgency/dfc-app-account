@@ -250,11 +250,11 @@
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiVersion",
-                                "value": "v1"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiUrl",
-                                "value": "[concat(parameters('apimDSSProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses')]"
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses/')]"
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiVersion",
