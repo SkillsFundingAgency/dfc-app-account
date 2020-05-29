@@ -26,27 +26,27 @@ namespace DFC.App.Account.Controllers
 
         #region Default Routes
         // The home page uses MVC default routes, so we need non "/[controller]" attribute routed versions of the endpoints just for here
-        [Route("/head/{controller}")]
-        [Route("/head")]
+        [Route("/head/{controller}/{id?}")]
+        [Route("/head/{id?}")]
         public override IActionResult Head()
         {
             return base.Head();
         }
-        [Route("/bodytop/{controller}")]
-        [Route("/bodytop")]
+        [Route("/bodytop/{controller}/{id?}")]
+        [Route("/bodytop/{id?}")]
         public override IActionResult BodyTop()
         {
             return base.BodyTop();
         }
-        [Route("/breadcrumb/{controller}")]
-        [Route("/breadcrumb")]
+        [Route("/breadcrumb/{controller}/{id?}")]
+        [Route("/breadcrumb/{id?}")]
         public override IActionResult Breadcrumb()
         {
             return base.Breadcrumb();
         }
         [Authorize]
-        [Route("/body/{controller}")]
-        [Route("/body")]
+        [Route("/body/{controller}/{id?}")]
+        [Route("/body/{id?}")]
 
         public override async Task<IActionResult> Body()
         {
@@ -56,8 +56,9 @@ namespace DFC.App.Account.Controllers
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
             return await base.Body();
         }
-        [Route("/bodyfooter/{controller}")]
-        [Route("/bodyfooter")]
+        [Route("/bodyfooter/{controller}/{id?}")]
+        [Route("/bodyfooter/{id?}")]
+
 
         public override IActionResult BodyFooter()
         {
