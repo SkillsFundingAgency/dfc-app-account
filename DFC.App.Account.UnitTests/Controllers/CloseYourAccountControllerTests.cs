@@ -83,11 +83,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public  void  WhenBodyCalled_RedirectToConfirmDelete()
         {
-            var timeoutCompositeViewModel = new TimeoutCompositeViewModel()
-            {
-                PageHeading = "PageHeading",
-                PageTitle = "Title"
-            };
+            
             var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
