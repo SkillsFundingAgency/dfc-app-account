@@ -266,7 +266,7 @@
                             },
                             {
                                 "name": "DssSettings__AccountsTouchpointId",
-                                "value": "9000000000"
+                                "value": "0000000997"
                             },
                             {
                                 "name": "CompositeSettings__Path",
@@ -322,15 +322,19 @@
                             },
                             {
                                 "name": "AuthSettings__SignInUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/SignIn')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn')]"
                             },
                             {
                                 "name": "AuthSettings__SignOutUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/signOut')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/signOut')]"
                             },
                             {
                                 "name": "AuthSettings__RegisterUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), 'auth/register')]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
+                            },
+                            {
+                                "name": "AuthSettings__resetPassword",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/resetPassword')]"
                             },
                             {
                                 "name": "AddressSearchServiceSettings__FindAddressesBaseUrl",

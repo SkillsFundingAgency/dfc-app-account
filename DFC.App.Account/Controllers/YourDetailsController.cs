@@ -2,6 +2,7 @@
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace DFC.App.Account.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     public class YourDetailsController : CompositeSessionController<YourDetailsCompositeViewModel>
     {
 

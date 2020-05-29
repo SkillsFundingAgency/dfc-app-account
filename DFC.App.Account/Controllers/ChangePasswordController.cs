@@ -4,10 +4,11 @@ using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DFC.App.Account.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ChangePasswordController : CompositeSessionController<ChangePasswordCompositeViewModel>
     {
         public ChangePasswordController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)

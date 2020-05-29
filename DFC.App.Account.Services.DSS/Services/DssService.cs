@@ -115,8 +115,8 @@ namespace DFC.App.Account.Services.DSS.Services
                 }
                 else
                 {
-                    result = (await _restClient.PatchAsync<IList<Contact>>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()) + 
-                                                                            customerData.Contact.ContactId, requestMessage: request)).FirstOrDefault();
+                    result = (await _restClient.PatchAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()) + 
+                                                                            customerData.Contact.ContactId, requestMessage: request));
                 }
             }
 
