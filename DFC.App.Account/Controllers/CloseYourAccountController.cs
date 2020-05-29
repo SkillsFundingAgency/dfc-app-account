@@ -26,7 +26,7 @@ namespace DFC.App.Account.Controllers
             return View(ViewModel);
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         public  IActionResult Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
