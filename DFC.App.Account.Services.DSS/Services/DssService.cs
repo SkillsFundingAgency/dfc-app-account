@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
 using DFC.App.Account.Services.DSS.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.Services.DSS.Services
 {
@@ -22,8 +23,9 @@ namespace DFC.App.Account.Services.DSS.Services
     {
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
+        private readonly ILogger<DssService> _logger;
 
-        public DssService(IOptions<DssSettings> settings)
+        public DssService(IOptions<DssSettings> settings, ILogger<DssService> logger)
         {
             Throw.IfNull(settings, nameof(settings));
             Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiUrl, nameof(settings.Value.CustomerApiUrl));
@@ -32,10 +34,10 @@ namespace DFC.App.Account.Services.DSS.Services
             Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiVersion, nameof(settings.Value.CustomerApiVersion));
             _restClient = new RestClient();
             _dssSettings = settings;
-
+            _logger = logger;
         }
 
-        public DssService(IRestClient restClient, IOptions<DssSettings> settings)
+        public DssService(IRestClient restClient, IOptions<DssSettings> settings, ILogger<DssService> logger)
         {
             Throw.IfNull(restClient, nameof(restClient));
             Throw.IfNull(settings, nameof(settings));
@@ -45,7 +47,7 @@ namespace DFC.App.Account.Services.DSS.Services
             Throw.IfNullOrWhiteSpace(settings.Value.CustomerApiVersion, nameof(settings.Value.CustomerApiVersion));
             _restClient = restClient;
             _dssSettings = settings;
-
+            _logger = logger;
         }
 
         public async Task<Customer> CreateCustomerData(Customer customerData)
@@ -151,6 +153,9 @@ namespace DFC.App.Account.Services.DSS.Services
                 }
                 else
                 {
+                    var x  = await _restClient.PatchAsync<object>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
+                                                                            address.AddressId, requestMessage: request);
+                    _logger.LogError(x.ToString());
                     result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
                                                                                                  address.AddressId, requestMessage: request);
                 }
