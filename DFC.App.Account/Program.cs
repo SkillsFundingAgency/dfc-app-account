@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account
 {
@@ -15,6 +16,9 @@ namespace DFC.App.Account
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddApplicationInsights(hostingContext.Configuration.GetSection("APPINSIGHTS_INSTRUMENTATIONKEY").Value);
                 });
     }
 }
