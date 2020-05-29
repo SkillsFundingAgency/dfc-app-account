@@ -23,6 +23,12 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
+            _authSettings = Options.Create(new AuthSettings()
+            {
+                SignInUrl = "",
+                SignOutUrl = ""
+            });
+
         }
 
         [Test]
