@@ -15,6 +15,7 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
+        private IOptions<AuthSettings> _authSettings;
 
 
         [SetUp]
@@ -27,7 +28,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new SessionTimeoutController(_compositeSettings, _authService);
+            var controller = new SessionTimeoutController(_compositeSettings, _authService,_authSettings);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
