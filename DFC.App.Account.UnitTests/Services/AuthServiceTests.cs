@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
@@ -32,7 +33,10 @@ namespace DFC.App.Account.UnitTests.Services
 
             var service = new AuthService(_dssService,_httpContextAccessor);
 
-            var result = await service.GetCustomer(new ClaimsPrincipal());
+            var result = await service.GetCustomer(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim("CustomerId", "test")
+            })));
 
             result.FamilyName.Should().Be("Test");
         }
