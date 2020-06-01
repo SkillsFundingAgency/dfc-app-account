@@ -77,7 +77,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             
             var result =  await controller.Body(deleteAccountCompositeViewModel) as RedirectResult;
             result.Should().BeOfType<RedirectResult>();
-            result.Url.Should().Be("~/home/signOut?redirect=/your-account/Delete-Account/AccountClosed");
+            result.Url.Should().Be("~/home/signOut?accountClosed=true");
 
         }
 
