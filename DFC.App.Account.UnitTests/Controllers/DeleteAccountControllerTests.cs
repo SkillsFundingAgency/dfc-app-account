@@ -43,7 +43,20 @@ namespace DFC.App.Account.UnitTests.Controllers
 
             result.Url.Should().Be("~/home");
         }
+        [Test]
+        public async Task WhenAccountClosedCalled_ReturnHtml()
+        {
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
 
+            var result = await controller.AccountClosed() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
 
         [Test]
         public async Task WhenBodyCalled_AccountDeleted()
