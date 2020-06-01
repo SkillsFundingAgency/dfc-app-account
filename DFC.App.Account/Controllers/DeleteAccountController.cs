@@ -22,18 +22,30 @@ namespace DFC.App.Account.Controllers
             _dssService = dssService;
         }
 
-        [HttpGet, HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> Body()
+        {
+            return RedirectTo($"{CompositeViewModel.PageId.Home}");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
+            var customer = await GetCustomerDetails();
 
-             var deleteCustomerRequest = new DeleteCustomerRequest()
-             {
-                 CustomerId = model.CustomerId,
-                 DateOfTermination = DateTime.UtcNow,
-                 ReasonForTermination = Constants.ClosureReasonCustomerChoice
-             };
-             await _dssService.DeleteCustomer(deleteCustomerRequest);
-             return View(ViewModel);
+            if (customer.CustomerId != model.CustomerId)
+            {
+                return RedirectTo($"{CompositeViewModel.PageId.Home}");
+            }
+
+            var deleteCustomerRequest = new DeleteCustomerRequest()
+            {
+                CustomerId = customer.CustomerId,
+                DateOfTermination = DateTime.UtcNow,
+                ReasonForTermination = Constants.ClosureReasonCustomerChoice
+            };
+            await _dssService.DeleteCustomer(deleteCustomerRequest);
+            return View(ViewModel);
         }
 
     }
