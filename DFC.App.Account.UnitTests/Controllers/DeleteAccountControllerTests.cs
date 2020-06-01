@@ -38,11 +38,10 @@ namespace DFC.App.Account.UnitTests.Controllers
                 HttpContext = new DefaultHttpContext()
             };
 
-            var result = await controller.Body() as ViewResult;
+            var result = await controller.Body() as RedirectResult;
             result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            
-            result.ViewName.Should().BeNull();
+
+            result.Url.Should().Be("~/home");
         }
 
 
@@ -52,9 +51,12 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService);
-            
-            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel();
 
+
+            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
+            {
+                CustomerId = Guid.Parse("c2e27821-cc60-4d3d-b4f0-cbe20867897c")
+            };
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -64,6 +66,29 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.Should().BeOfType<ViewResult>();
             result.ViewName = "AccountDeleted";
             
+        }
+
+        [Test]
+        public async Task WhenPostBodyCalledAndModelIdDoesNotMatchLoggedInId_ThenRedirectToHome()
+        {
+            var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService);
+
+            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
+            {
+                CustomerId = Guid.Empty
+            };
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var result = await controller.Body(deleteAccountCompositeViewModel) as RedirectResult;
+            result.Should().NotBeNull();
+            result.Url.Should().Be("~/home");
+
         }
 
     }
