@@ -176,13 +176,23 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
+        public async Task When_SignOutCalledWithAccountClosed_Return_Redirect()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
+            var result = controller.SignOut(true);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+            ((RedirectResult)result).Url.Should().Be($"signout?redirectUrl={_authSettings.Value.Issuer}/your-account/Delete-Account/AccountClosed");
+        }
+
+        [Test]
         public async Task When_SignOutCalled_Return_Redirect()
         {
             var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
-            var result = controller.SignOut("test");
+            var result = controller.SignOut(false);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectResult>();
-            ((RedirectResult)result).Url.Should().Be("signout?redirectUrl=test");
+            ((RedirectResult)result).Url.Should().Be("signout");
         }
 
 

@@ -93,9 +93,9 @@ namespace DFC.App.Account.Controllers
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/signout")]
         [Route("/body/{controller}/signout")]
-        public IActionResult SignOut(string redirect)
+        public IActionResult SignOut(bool accountClosed)
         {
-            return Redirect($"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}{redirect}");
+            return Redirect(accountClosed ? $"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}/your-account/Delete-Account/AccountClosed" : _authSettings.SignOutUrl);
         }
         #endregion
     }

@@ -48,7 +48,7 @@ namespace DFC.App.Account.Controllers
                 ReasonForTermination = Constants.ClosureReasonCustomerChoice
             };
             await _dssService.DeleteCustomer(deleteCustomerRequest);
-            return RedirectTo($"{CompositeViewModel.PageId.Home}/signOut?redirect=/your-account/Delete-Account/AccountClosed");
+            return RedirectTo($"{CompositeViewModel.PageId.Home}/signOut?accountClosed=true");
         }
         
         [HttpGet]
