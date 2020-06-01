@@ -7,7 +7,7 @@
         <div class="govuk-phase-banner">
             <div class="govuk-header__navigation--end">
                 <div>
-                    <span class="your-name" id="bannerUserName">@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value</span>
+                    <span class="your-name" id="bannerUserName">@Model.Name</span>
                     <a class="account-link" href="/your-account/home/signout" id="signout-link">Sign out</a>
                 </div>
                 <div>

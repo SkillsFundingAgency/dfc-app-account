@@ -34,9 +34,9 @@ namespace DFC.App.Account.Controllers
         }
         [Route("/bodytop/{controller}/{id?}")]
         [Route("/bodytop/{id?}")]
-        public override IActionResult BodyTop()
+        public override async Task<IActionResult> BodyTop()
         {
-            return base.BodyTop();
+            return await base.BodyTop();
         }
         [Route("/breadcrumb/{controller}/{id?}")]
         [Route("/breadcrumb/{id?}")]
@@ -93,9 +93,9 @@ namespace DFC.App.Account.Controllers
         // It's important to use the same URL route as the existing Skills Health Check app in production
         [Route("/your-account/home/signout")]
         [Route("/body/{controller}/signout")]
-        public IActionResult SignOut()
+        public IActionResult SignOut(string redirect)
         {
-            return Redirect(_authSettings.SignOutUrl);
+            return Redirect($"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}{redirect}");
         }
         #endregion
     }

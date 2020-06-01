@@ -62,10 +62,10 @@ namespace DFC.App.Account.UnitTests.Controllers
                 HttpContext = new DefaultHttpContext()
             };
             
-            var result =  await controller.Body(deleteAccountCompositeViewModel) as ViewResult;
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName = "AccountDeleted";
-            
+            var result =  await controller.Body(deleteAccountCompositeViewModel) as RedirectResult;
+            result.Should().BeOfType<RedirectResult>();
+            result.Url.Should().Be("~/home/signOut?redirect=/your-account/Delete-Account/AccountClosed");
+
         }
 
         [Test]

@@ -150,7 +150,7 @@ namespace DFC.App.Account
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 
                 endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new {controller = "deleteAccount", action = "body"});
-                endpoints.MapControllerRoute("deleteAccountBody",  "/body/delete-account", new {controller = "deleteAccount", action = "body"});
+               // endpoints.MapControllerRoute("deleteAccountBody",  "/body/delete-account", new {controller = "deleteAccount", action = "body"});
 
                 endpoints.MapControllerRoute("confirmDelete", appPath + "/confirm-delete", new { controller = "confirmDelete", action = "body" });
                 endpoints.MapControllerRoute("confirmDeleteBody", "/body/confirm-delete", new { controller = "confirmDelete", action = "body" });

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    [Authorize]
+    
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
@@ -22,13 +22,16 @@ namespace DFC.App.Account.Controllers
             _dssService = dssService;
         }
 
+        [Authorize]
         [HttpGet]
+        [Route("/body/delete-account")]
         public async Task<IActionResult> Body()
         {
             return RedirectTo($"{CompositeViewModel.PageId.Home}");
         }
-
+        [Authorize]
         [HttpPost]
+        [Route("/body/delete-account")]
         public async Task<IActionResult> Body(DeleteAccountCompositeViewModel model)
         {
             var customer = await GetCustomerDetails();
@@ -45,7 +48,14 @@ namespace DFC.App.Account.Controllers
                 ReasonForTermination = Constants.ClosureReasonCustomerChoice
             };
             await _dssService.DeleteCustomer(deleteCustomerRequest);
-            return View(ViewModel);
+            return RedirectTo($"{CompositeViewModel.PageId.Home}/signOut?redirect=/your-account/Delete-Account/AccountClosed");
+        }
+        
+        [HttpGet]
+        [Route("/body/delete-account/AccountClosed")]
+        public async Task<IActionResult> AccountClosed()
+        {
+            return await base.Body();
         }
 
     }

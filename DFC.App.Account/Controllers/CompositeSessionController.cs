@@ -34,8 +34,14 @@ namespace DFC.App.Account.Controllers
 
         [HttpGet]
         [Route("/bodytop/[controller]/{id?}")]
-        public virtual IActionResult BodyTop()
+        public virtual async Task<IActionResult> BodyTop()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var customer = await _authService.GetCustomer(User);
+                ViewModel.Name = $"{customer.GivenName} {customer.FamilyName}";
+            }
+
             return View(ViewModel);
         }
 
