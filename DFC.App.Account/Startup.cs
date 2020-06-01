@@ -77,7 +77,7 @@ namespace DFC.App.Account
                             ValidateAudience = true,
                             ValidateIssuerSigningKey = true,
                             ValidateLifetime = true,
-                            ClockSkew = TimeSpan.FromMinutes(1),
+                            ClockSkew = TimeSpan.Zero,
                             ValidIssuer = authSettings.Issuer,
                             ValidAudience = authSettings.ClientId,
                             IssuerSigningKey =
@@ -86,20 +86,22 @@ namespace DFC.App.Account
                         };
                     cfg.Events = new JwtBearerEvents
                     {
-                        OnChallenge = context =>
-                        {
-                            context.Response.Redirect("/auth/signin");
-                            context.HandleResponse();
-                            return Task.CompletedTask;
-                        },
                         OnAuthenticationFailed = context =>
                         {
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
+                            context.Response.Redirect(appPath + "/session-timeout");
+                            return Task.CompletedTask;
+                        },
+                       OnChallenge = context =>
+                        {
+                           // if (context?.AuthenticateFailure is SecurityTokenExpiredException)
                                 context.Response.Redirect(appPath + "/session-timeout");
-                            }
+                            //else
+                             //   context.Response.Redirect("/auth/signin");
+
+                            context.HandleResponse();
                             return Task.CompletedTask;
                         }
+                        
 
                     };
                 });
