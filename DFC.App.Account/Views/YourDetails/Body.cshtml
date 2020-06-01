@@ -23,7 +23,7 @@
 
                             @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Last name", LabelValue = @Model.CustomerDetails.FamilyName })
 
-                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth.Value.ToString("dd MMMM yyyy") })
+                            @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth?.ToString("dd MMMM yyyy") })
 
                             @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Gender", LabelValue =(int) @Model.CustomerDetails.Gender == 99 ? "Not Provided" : Model.CustomerDetails.Gender.GetDisplayName() })
 

@@ -28,7 +28,7 @@ namespace DFC.App.Account.Controllers
 
         [HttpPost]
         [Route("/body/close-your-account")]
-        public  IActionResult Body(CloseYourAccountCompositeViewModel model)
+        public  async Task<IActionResult> Body(CloseYourAccountCompositeViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -36,12 +36,13 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
 
-            if (_openIdConnectClient.VerifyPassword("gbaryah@gmail.com", model.Password).Result.IsFailure)
+            var customer = await GetCustomerDetails();
+
+            if (_openIdConnectClient.VerifyPassword(customer.Contact.EmailAddress, model.Password).Result.IsFailure)
             {
                 ModelState.AddModelError("Password", "Wrong password. Try again.");
                 return View(ViewModel);
             }
-            
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
             return View("ConfirmDeleteAccount", ViewModel);

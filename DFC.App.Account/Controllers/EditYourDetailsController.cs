@@ -120,7 +120,7 @@ namespace DFC.App.Account.Controllers
                         customerDetails.Contact.LastModifiedDate = DateTime.UtcNow;
                         await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
-                        if (!string.IsNullOrEmpty(viewModel.Identity.ContactDetails.ContactEmail))
+                        if (!string.IsNullOrEmpty(updatedDetails.Contact.EmailAddress))
                         {
                             //Auth endpoint needed here
                             return new RedirectResult("/your-account/your-details?logout=true", false);

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
@@ -84,13 +86,45 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
         [Test]
-        public void WhenBodyTopCalled_ReturnHtml()
+        public async Task WhenBodyTopCalled_ReturnHtml()
         {
             var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
-            var result = controller.BodyTop() as ViewResult;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            var result = await controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
+        }
+        [Test]
+        public async Task WhenBodyTopCalled_ReturnHtmlWithUserName()
+        {
+            var customer = new Customer()
+            {
+                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
+                FamilyName = "familyName",
+                GivenName = "givenName"
+            };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    HttpContext = { User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim("CustomerId", "test")
+                    },"testType"))}
+                }
+            };
+            var result = await controller.BodyTop() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+            var model = result.ViewData.Model as CompositeViewModel;
+            model.Name.Should().Be("givenName familyName");
         }
         [Test]
         public void WhenBodyFooterCalled_ReturnHtml()
@@ -142,13 +176,23 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
-        public void When_SignOutCalled_Return_Redirect()
+        public async Task When_SignOutCalledWithAccountClosed_Return_Redirect()
         {
             var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
-            var result = controller.SignOut();
+            var result = controller.SignOut(true);
             result.Should().NotBeNull();
             result.Should().BeOfType<RedirectResult>();
-            ((RedirectResult)result).Url.Should().Be(_authSettings.Value.SignOutUrl);
+            ((RedirectResult)result).Url.Should().Be($"signout?redirectUrl={_authSettings.Value.Issuer}/your-account/Delete-Account/AccountClosed");
+        }
+
+        [Test]
+        public async Task When_SignOutCalled_Return_Redirect()
+        {
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _skillsHealthCheckService, _authSettings);
+            var result = controller.SignOut(false);
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectResult>();
+            ((RedirectResult)result).Url.Should().Be("signout");
         }
 
 

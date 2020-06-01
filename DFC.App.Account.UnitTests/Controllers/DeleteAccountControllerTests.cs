@@ -38,13 +38,25 @@ namespace DFC.App.Account.UnitTests.Controllers
                 HttpContext = new DefaultHttpContext()
             };
 
-            var result = await controller.Body() as ViewResult;
+            var result = await controller.Body() as RedirectResult;
+            result.Should().NotBeNull();
+
+            result.Url.Should().Be("~/home");
+        }
+        [Test]
+        public async Task WhenAccountClosedCalled_ReturnHtml()
+        {
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var result = await controller.AccountClosed() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
-            
             result.ViewName.Should().BeNull();
         }
-
 
         [Test]
         public async Task WhenBodyCalled_AccountDeleted()
@@ -52,18 +64,44 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService);
-            
-            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel();
 
+
+            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
+            {
+                CustomerId = Guid.Parse("c2e27821-cc60-4d3d-b4f0-cbe20867897c")
+            };
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
             
-            var result =  await controller.Body(deleteAccountCompositeViewModel) as ViewResult;
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName = "AccountDeleted";
-            
+            var result =  await controller.Body(deleteAccountCompositeViewModel) as RedirectResult;
+            result.Should().BeOfType<RedirectResult>();
+            result.Url.Should().Be("~/home/signOut?accountClosed=true");
+
+        }
+
+        [Test]
+        public async Task WhenPostBodyCalledAndModelIdDoesNotMatchLoggedInId_ThenRedirectToHome()
+        {
+            var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService);
+
+            var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
+            {
+                CustomerId = Guid.Empty
+            };
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var result = await controller.Body(deleteAccountCompositeViewModel) as RedirectResult;
+            result.Should().NotBeNull();
+            result.Url.Should().Be("~/home");
+
         }
 
     }
