@@ -88,16 +88,23 @@ namespace DFC.App.Account
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            context.Response.Redirect(appPath + "/session-timeout");
+                            
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                                context.Response.Redirect(appPath + "/session-timeout");
+                            }
+                            else
+                            {
+                                context.Response.Redirect("/auth/signin");
+                            }
                             return Task.CompletedTask;
+                            
+                            
                         },
                        OnChallenge = context =>
                         {
-                           // if (context?.AuthenticateFailure is SecurityTokenExpiredException)
-                                context.Response.Redirect(appPath + "/session-timeout");
-                            //else
-                             //   context.Response.Redirect("/auth/signin");
-
+                            context.Response.Redirect("/auth/signin");
                             context.HandleResponse();
                             return Task.CompletedTask;
                         }

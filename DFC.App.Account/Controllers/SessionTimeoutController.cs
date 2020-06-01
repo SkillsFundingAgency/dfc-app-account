@@ -21,15 +21,8 @@ namespace DFC.App.Account.Controllers
             
             try
             {
-                if (!HttpContext.User.Identity.IsAuthenticated)
-                {
-                    ViewModel.SignInUrl = _authSettings.SignInUrl;
-                    return await base.Body();
-                }
-                else
-                {
-                    return RedirectTo(_authSettings.SignInUrl);
-                }
+                ViewModel.SignInUrl = _authSettings.SignInUrl; 
+                return await base.Body();
 
             }
             catch (System.Exception ex)
