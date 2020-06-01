@@ -57,7 +57,7 @@ namespace DFC.App.Account.ViewModels
 
         public string PageTitle { get; set;}
         public string PageHeading { get; set;}
-
+        public string Name { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 
         protected CompositeViewModel(PageId pageId, string pageHeading)
