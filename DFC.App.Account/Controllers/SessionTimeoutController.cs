@@ -21,6 +21,7 @@ namespace DFC.App.Account.Controllers
             
             try
             {
+
                 ViewModel.SignInUrl = _authSettings.SignInUrl; 
                 return await base.Body();
 

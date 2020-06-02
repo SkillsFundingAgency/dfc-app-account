@@ -91,7 +91,6 @@ namespace DFC.App.Account
                             
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
-                                context.Response.Headers.Add("Token-Expired", "true");
                                 context.Response.Redirect(appPath + "/session-timeout");
                             }
                             else
