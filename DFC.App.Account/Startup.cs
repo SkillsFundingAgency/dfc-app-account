@@ -77,7 +77,7 @@ namespace DFC.App.Account
                             ValidateAudience = true,
                             ValidateIssuerSigningKey = true,
                             ValidateLifetime = true,
-                            ClockSkew = TimeSpan.FromMinutes(1),
+                            ClockSkew = TimeSpan.Zero,
                             ValidIssuer = authSettings.Issuer,
                             ValidAudience = authSettings.ClientId,
                             IssuerSigningKey =
@@ -86,20 +86,28 @@ namespace DFC.App.Account
                         };
                     cfg.Events = new JwtBearerEvents
                     {
-                        OnChallenge = context =>
-                        {
-                            context.Response.Redirect("/auth/signin");
-                            context.HandleResponse();
-                            return Task.CompletedTask;
-                        },
                         OnAuthenticationFailed = context =>
                         {
+                            
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
                                 context.Response.Redirect(appPath + "/session-timeout");
                             }
+                            else
+                            {
+                                context.Response.Redirect("/auth/signin");
+                            }
+                            return Task.CompletedTask;
+                            
+                            
+                        },
+                       OnChallenge = context =>
+                        {
+                            context.Response.Redirect("/auth/signin");
+                            context.HandleResponse();
                             return Task.CompletedTask;
                         }
+                        
 
                     };
                 });
@@ -150,7 +158,6 @@ namespace DFC.App.Account
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 
                 endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new {controller = "deleteAccount", action = "body"});
-               // endpoints.MapControllerRoute("deleteAccountBody",  "/body/delete-account", new {controller = "deleteAccount", action = "body"});
 
                 endpoints.MapControllerRoute("confirmDelete", appPath + "/confirm-delete", new { controller = "confirmDelete", action = "body" });
                 endpoints.MapControllerRoute("confirmDeleteBody", "/body/confirm-delete", new { controller = "confirmDelete", action = "body" });

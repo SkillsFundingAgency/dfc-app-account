@@ -15,12 +15,12 @@ namespace DFC.App.Account.Controllers
         {
             _authSettings = authSettings.Value;
         }
-        
+
         public override async Task<IActionResult> Body()
         {
             ViewModel.SignInUrl = _authSettings.SignInUrl;
             return await base.Body();
         }
-       
+
     }
 }
