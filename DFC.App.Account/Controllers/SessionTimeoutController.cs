@@ -18,18 +18,8 @@ namespace DFC.App.Account.Controllers
 
         public override async Task<IActionResult> Body()
         {
-            
-            try
-            {
-
-                ViewModel.SignInUrl = _authSettings.SignInUrl; 
-                return await base.Body();
-
-            }
-            catch (System.Exception ex)
-            {
-                return RedirectTo(_authSettings.SignInUrl);
-            }
+            ViewModel.SignInUrl = _authSettings.SignInUrl;
+            return await base.Body();
         }
 
     }
