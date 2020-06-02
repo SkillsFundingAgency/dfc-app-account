@@ -145,7 +145,7 @@ namespace DFC.App.Account.Services.DSS.Services
                     JsonConvert.SerializeObject(address));
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
 
-
+                var x = JsonConvert.SerializeObject(address);
                 if (string.IsNullOrEmpty(address.AddressId))
                 {
                     result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()),
@@ -153,11 +153,8 @@ namespace DFC.App.Account.Services.DSS.Services
                 }
                 else
                 {
-                    var x  = await _restClient.PatchAsync<object>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
-                                                                            address.AddressId, requestMessage: request);
-                    _logger.LogError(x.ToString());
                     result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
-                                                                                                 address.AddressId, requestMessage: request);
+                                                                            address.AddressId, requestMessage: request);
                 }
             }
 
