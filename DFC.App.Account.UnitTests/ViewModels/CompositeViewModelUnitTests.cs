@@ -194,7 +194,7 @@ namespace DFC.App.Account.UnitTests.ViewModels
             page.ShowBreadCrumb=false;
 
             // Assert.
-            page.ShowBreadCrumb.Should().Be(true);
+            page.ShowBreadCrumb.Should().Be(false);
         }
         
     }
