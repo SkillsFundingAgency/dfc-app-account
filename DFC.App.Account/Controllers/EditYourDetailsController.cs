@@ -104,9 +104,8 @@ namespace DFC.App.Account.Controllers
                         }
 
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-
                         await _dssWriter.UpdateCustomerData(updatedDetails);
-
+                        
                         var addressToUpdate = string.IsNullOrEmpty(viewModel.Identity.PersonalDetails.AddressId)
                             ? updatedDetails.Addresses.FirstOrDefault(x => string.IsNullOrEmpty(x.AddressId))
                             : updatedDetails.Addresses.FirstOrDefault(x =>
@@ -199,9 +198,8 @@ namespace DFC.App.Account.Controllers
                         viewModel.Identity.PersonalDetails.AddressLine2 = additionalData.SelectedAddress.Line2;
                         viewModel.Identity.PersonalDetails.AddressLine3 = additionalData.SelectedAddress.Line3;
                         viewModel.Identity.PersonalDetails.AddressLine4 = additionalData.SelectedAddress.Line4;
-                        viewModel.Identity.PersonalDetails.AddressLine5 = additionalData.SelectedAddress.Line5;
-                        viewModel.Identity.PersonalDetails.HomePostCode = additionalData.SelectedAddress.PostalCode;
                         viewModel.Identity.PersonalDetails.Town = additionalData.SelectedAddress.City;
+                        viewModel.Identity.PersonalDetails.HomePostCode = additionalData.SelectedAddress.PostalCode;
                     }
                 }
                 catch
@@ -245,7 +243,7 @@ namespace DFC.App.Account.Controllers
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
-            customer.OptInMarketResearch = identity.MarketingPreferences.MarketingOptIn;
+            customer.OptInUserResearch = identity.MarketingPreferences.MarketingOptIn;
 
             customer.DateofBirth = identity.PersonalDetails.DateOfBirth;
             customer.FamilyName = identity.PersonalDetails.FamilyName;
@@ -268,7 +266,7 @@ namespace DFC.App.Account.Controllers
                 address.Address2 = identity.PersonalDetails.AddressLine2;
                 address.Address3 = identity.PersonalDetails.AddressLine3;
                 address.Address4 = identity.PersonalDetails.AddressLine4;
-                address.Address5 = identity.PersonalDetails.AddressLine5;
+                address.Address5 = identity.PersonalDetails.Town;
                 address.PostCode = identity.PersonalDetails.HomePostCode;
                 address.LastModifiedDate = DateTimeOffset.Now;
                 address.EffectiveFrom = DateTimeOffset.Now;
@@ -281,7 +279,7 @@ namespace DFC.App.Account.Controllers
                     Address2 = identity.PersonalDetails.AddressLine2,
                     Address3 = identity.PersonalDetails.AddressLine3,
                     Address4 = identity.PersonalDetails.AddressLine4,
-                    Address5 = identity.PersonalDetails.AddressLine5,
+                    Address5 = identity.PersonalDetails.Town,
                     PostCode = identity.PersonalDetails.HomePostCode,
                     LastModifiedDate = DateTimeOffset.Now,
                     EffectiveFrom = DateTimeOffset.Now,
@@ -318,7 +316,7 @@ namespace DFC.App.Account.Controllers
                     AddressLine2 = currentAddress?.Address2,
                     AddressLine3 = currentAddress?.Address3,
                     AddressLine4 = currentAddress?.Address4,
-                    AddressLine5 = currentAddress?.Address5,
+                    Town = currentAddress?.Address5,
                     HomePostCode = currentAddress?.PostCode,
                     AddressId = currentAddress?.AddressId,
                     DateOfBirth = customer.DateofBirth,

@@ -48,7 +48,7 @@
 
                                 @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Email address", LabelValue = $"<a href ='mailto:{@Model.CustomerDetails.Contact.EmailAddress}'>{@Model.CustomerDetails.Contact.EmailAddress}</a>" })
 
-                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.MobileNumber })
+                                @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.HomeNumber })
 
                                 @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Alternative phone number", LabelValue = Model.CustomerDetails.Contact == null ? "" : @Model.CustomerDetails.Contact.AlternativeNumber })
 

@@ -83,12 +83,7 @@ namespace DFC.App.Account.Application.Common.Models
         [StringLength(80, ErrorMessage = "Fourth line of your address is too long (max. 80)")]
         [Display(Name = "Fourth line of your address", Order = 14)]
         public string AddressLine4 { get; set; }
-
-        [RegularExpression(ServiceCommon.RegexPatterns.Other.AddressString, ErrorMessage = "Fifth line of your address contains invalid characters")]
-        [StringLength(80, ErrorMessage = "Fifth line of your address is too long (max. 80)")]
-        [Display(Name = "Fifth line of your address", Order = 15)]
-        public string AddressLine5 { get; set; }
-
+        
         public string AddressId { get; set; }
 
         [BFPOAddress(DependsOn = "HomePostCode", DependsOnPropertyForAttribute = "HomePostCode",

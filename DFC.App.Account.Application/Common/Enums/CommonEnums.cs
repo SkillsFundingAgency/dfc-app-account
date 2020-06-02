@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace DFC.App.Account.Application.Common.Enums
 {
@@ -20,7 +21,8 @@ namespace DFC.App.Account.Application.Common.Enums
         public enum Gender
         {
             [Display(Name = "Select", Order = 0)]
-            NotProvided = 0,
+            [JsonProperty("not provided")]
+            NotProvided = 99,
             [Display(Name = "Female", Order = 1)]
             Female = 1,
             [Display(Name = "Male", Order = 2)]
@@ -31,7 +33,8 @@ namespace DFC.App.Account.Application.Common.Enums
         public enum Title
         {
             [Display(Name = "Select", Order = 0)]
-            NotKnown = 0,
+            [JsonProperty("not provided")]
+            NotProvided = 99,
             [Display(Name = "Miss", Order = 1)]
             Miss = 3,
             [Display(Name = "Mr", Order = 2)]
