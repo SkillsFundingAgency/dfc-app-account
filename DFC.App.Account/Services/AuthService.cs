@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Exception;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace DFC.App.Account.Services
 {

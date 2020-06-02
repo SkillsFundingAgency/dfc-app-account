@@ -1,4 +1,5 @@
-﻿using DFC.App.Account.Models;
+﻿using System.Collections.Generic;
+using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -49,6 +50,14 @@ namespace DFC.App.Account.Controllers
         [Route("/breadcrumb/[controller]/{id?}")]
         public virtual IActionResult Breadcrumb()
         {
+            var pagesThatDontNeedBreadCrumbs = new List<CompositeViewModel.PageId>
+            {
+                CompositeViewModel.PageId.Home, CompositeViewModel.PageId.DeleteAccount,
+                CompositeViewModel.PageId.CloseYourAccount, CompositeViewModel.PageId.SessionTimeout
+            };
+
+            ViewModel.ShowBreadCrumb = !pagesThatDontNeedBreadCrumbs.Contains(ViewModel.Id);
+            
             return View(ViewModel);
         }
 
