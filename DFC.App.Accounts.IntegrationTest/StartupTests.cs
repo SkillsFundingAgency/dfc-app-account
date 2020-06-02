@@ -32,7 +32,6 @@ namespace DFC.App.Accounts.IntegrationTest
                         )));
             _client = _factory.CreateClient();
         }
-
         [OneTimeTearDown]
         public void TearDown()
         {

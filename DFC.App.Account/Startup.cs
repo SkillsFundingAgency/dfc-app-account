@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using DFC.App.Account.Services.Auth;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.Services.Auth.Models;
-using Microsoft.IdentityModel.Protocols;
 
 namespace DFC.App.Account
 {
