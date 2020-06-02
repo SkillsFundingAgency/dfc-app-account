@@ -3,6 +3,7 @@ using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -18,9 +19,6 @@ namespace DFC.App.Account.Controllers
             _logger = logger;
         }
 
-        public override async Task<IActionResult> Body()
-        {
-            return await base.Body();
-        }
+        
     }
 }
