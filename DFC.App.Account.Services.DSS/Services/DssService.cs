@@ -272,5 +272,21 @@ namespace DFC.App.Account.Services.DSS.Services
                     $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
         }
+
+        public async Task<IList<ActionPlan>> GetActionPlans(string customerId)
+        {
+            try
+            {
+                var request = CreateRequestMessage();
+                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+                return await _restClient.GetAsync<IList<ActionPlan>>($"{_dssSettings.Value.CustomerApiUrl}{customerId}//ActionPlans",
+                    request);
+            }
+            catch (Exception e)
+            {
+                throw new DssException($"Failure Action Plans: {e.InnerException}");
+            }
+
+        }
     }
 }
