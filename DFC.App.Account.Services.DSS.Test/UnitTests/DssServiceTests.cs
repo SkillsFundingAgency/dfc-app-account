@@ -290,12 +290,26 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         public void When_GetActionPlansWithException_Return_Exception()
         {
             var restClient = Substitute.For<IRestClient>();
+            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            
+
             restClient.GetAsync<IList<ActionPlan>>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<IList<ActionPlan>>(x => { throw new DssException("Failure Action Plans");});
             
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
             _dssService.Invoking(sut => sut.GetActionPlans("993cfb94-12b7-41c4-b32d-7be9331174f1"))
                 .Should().Throw<DssException>();
+
+        }
+        [Test]
+        public void When_GetActionPlansWithNoContent_Return_EmptyList()
+        {
+            var restClient = Substitute.For<IRestClient>();
+            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+            _dssService = new DssService(restClient, _dssSettings, _logger);
+            var result = _dssService.GetActionPlans("somecustomerid");
+
+            result.Result.Count.Should().Be(0);
 
         }
     }

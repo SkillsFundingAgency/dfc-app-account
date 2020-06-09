@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -279,12 +280,16 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 var request = CreateRequestMessage();
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                return await _restClient.GetAsync<IList<ActionPlan>>($"{_dssSettings.Value.CustomerApiUrl}{customerId}//ActionPlans",
+                var result= await _restClient.GetAsync<IList<ActionPlan>>($"{_dssSettings.Value.CustomerApiUrl}{customerId}//ActionPlans",
                     request);
+
+                return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
+                    ? new List<ActionPlan>()
+                    : result;
             }
             catch (Exception e)
             {
-                throw new DssException($"Failure Action Plans: {e.InnerException}");
+                throw new DssException($"Failure Action Plans, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 
         }
