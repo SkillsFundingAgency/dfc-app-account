@@ -25,6 +25,7 @@ namespace DFC.App.Account.Services.DSS.Services
         private readonly IRestClient _restClient;
         private readonly IOptions<DssSettings> _dssSettings;
         private readonly ILogger<DssService> _logger;
+        private const string CustomerIdTag = "{customerId}";   
 
         public DssService(IOptions<DssSettings> settings, ILogger<DssService> logger)
         {
@@ -113,12 +114,12 @@ namespace DFC.App.Account.Services.DSS.Services
 
                 if (string.IsNullOrEmpty(customerData.Contact.ContactId))
                 {
-                    result = await _restClient.PostAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()), 
+                    result = await _restClient.PostAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()), 
                         requestMessage: request);
                 }
                 else
                 {
-                    result = (await _restClient.PatchAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerData.CustomerId.ToString()) + 
+                    result = (await _restClient.PatchAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()) + 
                                                                             customerData.Contact.ContactId, requestMessage: request));
                 }
             }
@@ -149,12 +150,12 @@ namespace DFC.App.Account.Services.DSS.Services
                 var x = JsonConvert.SerializeObject(address);
                 if (string.IsNullOrEmpty(address.AddressId))
                 {
-                    result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()),
+                    result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()),
                         requestMessage: request);
                 }
                 else
                 {
-                    result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId.ToString()) +
+                    result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()) +
                                                                             address.AddressId, requestMessage: request);
                 }
             }
@@ -210,7 +211,7 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-                return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace("{customerId}", customerId), request);
+                return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId), request);
             }
             catch (Exception e)
             {
@@ -228,7 +229,7 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
                 return await _restClient.GetAsync<Contact>(
-                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace("{customerId}", customerId), request)??new Contact();
+                    _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerId), request)??new Contact();
             }
             catch (Exception e)
             {
@@ -279,8 +280,8 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 var request = CreateRequestMessage();
-                request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                var result= await _restClient.GetAsync<IList<ActionPlan>>($"{_dssSettings.Value.CustomerApiUrl}{customerId}//ActionPlans",
+                request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+                var result= await _restClient.GetAsync<IList<ActionPlan>>(_dssSettings.Value.ActionPlansApiUrl.Replace(CustomerIdTag,customerId),
                     request);
 
                 return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent

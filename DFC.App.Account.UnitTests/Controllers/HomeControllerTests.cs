@@ -12,6 +12,7 @@ using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -27,7 +28,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IAuthService _authService;
         private ISkillsHealthCheckService _skillsHealthCheckService;
         private IOptions<AuthSettings> _authSettings;
-
+        private IOptions<ActionPlansSettings> _actionPlansSettings;
+        
         [SetUp]
         public void Init()
         {
@@ -43,6 +45,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 SignInUrl = "signin",
                 SignOutUrl = "signout"
             });
+            _actionPlansSettings = Options.Create(new ActionPlansSettings() {Url ="/actionj-plans"});
         }
 
         [Test]

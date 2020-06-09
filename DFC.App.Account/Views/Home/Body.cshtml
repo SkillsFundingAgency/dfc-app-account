@@ -64,14 +64,13 @@
                     </thead>
                     <tbody class="govuk-table__body">
                         @{
-                            if (Model.ShcDocuments.Count > 0)
+                            if (Model.ActionPlans.Count > 0)
                             {
-                                foreach (var doc in Model.ShcDocuments)
+                                foreach (var actionPlan in Model.ActionPlans)
                                 {
                                     <tr class="govuk-table__row">
-                                        <td class="govuk-table-cell">Started @doc.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
-                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"skills-health-check-{@doc.DocumentId}")" link-href="@doc.LinkUrl" link-text="View"></govUkLink></td>
-                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ConfirmDelete?id=@doc.DocumentId" id="@Model.GetElementId("govUkLink", $"confirm-delete-{@doc.DocumentId}")" link-text="Delete"></govUkLink></td>
+                                        <td class="govuk-table-cell">Created @actionPlan.DateActionPlanCreated.ToString("dd MMMM yyyy HH:mm")</td>
+                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"action-plan-{actionPlan.ActionPlanId}")" link-href="@Model.ActionPlansUrl/@actionPlan.ActionPlanId" link-text="View"></govUkLink></td>
                                     </tr>
                                 }
 
@@ -79,7 +78,7 @@
                             else
                             {
                                 <tr class="govuk-table__row">
-                                    <td class="govuk-table-cell">No skills health checks found.</td>
+                                    <td class="govuk-table-cell">No action plans found.</td>
                                     <td class="govuk-table__cell govuk-table__cell--numeric"></td>
                                     <td class="govuk-table__cell govuk-table__cell--numeric"></td>
                                 </tr>

@@ -11,6 +11,9 @@
         public string CustomerAddressDetailsApiUrl { get; set; }
         public string CustomerAddressDetailsApiVersion { get; set; }
 
+        public string ActionPlansApiUrl { get; set; }
+        public string ActionPlansApiVersion { get; set; }
+
         public string AccountsTouchpointId { get; set; }
         public string ApiKey { get; set; }
     }

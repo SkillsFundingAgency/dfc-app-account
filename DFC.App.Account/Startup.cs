@@ -55,6 +55,7 @@ namespace DFC.App.Account
             services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ActionPlansSettings>(Configuration.GetSection(nameof(ActionPlansSettings)));
             services.Configure<AddressSearchServiceSettings>(
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
@@ -102,7 +103,8 @@ namespace DFC.App.Account
                         },
                        OnChallenge = context =>
                         {
-                            context.Response.Redirect("/auth/signin");
+                           context.Response.Redirect("/auth/signin");
+                           // context.Response.Redirect(appPath + "/session-timeout");
                             context.HandleResponse();
                             return Task.CompletedTask;
                         }
