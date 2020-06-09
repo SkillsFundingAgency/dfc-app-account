@@ -269,6 +269,18 @@
                                 "value": "0000000997"
                             },
                             {
+                                "name": "DssSettings__ActionPlansApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/actionplans/api/Customers/{customerId}/ActionPlans/')]"
+                            },
+                            {
+                                "name": "DssSettings__ActionPlansApiVersion",
+                                "value": "v3"
+                            },
+                            {
+                                "name": "ActionPlansSettings__Url",
+                                "value": "/action-plans"
+                            },
+                            {
                                 "name": "CompositeSettings__Path",
                                 "value": "/your-account"
                             },
