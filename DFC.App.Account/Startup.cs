@@ -1,5 +1,4 @@
 using DFC.App.Account.Application.Common.Services;
-using DFC.App.Account.Helpers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
@@ -26,6 +25,7 @@ using System.Threading.Tasks;
 using DFC.App.Account.Services.Auth;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.Services.Auth.Models;
+using DFC.Personalisation.Common.Helpers;
 
 namespace DFC.App.Account
 {
@@ -55,6 +55,7 @@ namespace DFC.App.Account
             services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ActionPlansSettings>(Configuration.GetSection(nameof(ActionPlansSettings)));
             services.Configure<AddressSearchServiceSettings>(
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
@@ -102,9 +103,9 @@ namespace DFC.App.Account
                         },
                        OnChallenge = context =>
                         {
-                            context.Response.Redirect("/auth/signin");
-                            context.HandleResponse();
-                            return Task.CompletedTask;
+                           context.Response.Redirect("/auth/signin");
+                           context.HandleResponse();
+                           return Task.CompletedTask;
                         }
                         
 
