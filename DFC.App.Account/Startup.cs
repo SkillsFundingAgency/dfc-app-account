@@ -104,9 +104,8 @@ namespace DFC.App.Account
                        OnChallenge = context =>
                         {
                            context.Response.Redirect("/auth/signin");
-                           // context.Response.Redirect(appPath + "/session-timeout");
-                            context.HandleResponse();
-                            return Task.CompletedTask;
+                           context.HandleResponse();
+                           return Task.CompletedTask;
                         }
                         
 
