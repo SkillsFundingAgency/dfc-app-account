@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using Dfc.ProviderPortal.Packages;
+﻿using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
@@ -12,7 +10,6 @@ using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.Controllers
 {

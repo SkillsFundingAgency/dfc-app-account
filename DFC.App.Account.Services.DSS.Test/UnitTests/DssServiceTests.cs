@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
@@ -12,11 +11,9 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
 using DFC.App.Account.Services.DSS.Exceptions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {
