@@ -70,7 +70,7 @@
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table-cell">Created @actionPlan.DateActionPlanCreated.ToString("dd MMMM yyyy HH:mm")</td>
                                         <td class="govuk-table__cell govuk-table__cell--numeric">
-                                            <govUkLink id="@Model.GetElementId("govUkLink", $"action-plan-{actionPlan.ActionPlanId}")" link-href="@Model.ActionPlansUrl/@actionPlan.ActionPlanId" link-text="View"></govUkLink>
+                                            <govUkLink id="@Model.GetElementId("govUkLink", $"action-plan-{actionPlan.ActionPlanId}")" link-href="@Model.ActionPlansUrl/@actionPlan.ActionPlanId/@actionPlan.InteractionId" link-text="View"></govUkLink>
                                         </td>
                                     </tr>
                                 }
