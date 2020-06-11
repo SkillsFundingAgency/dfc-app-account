@@ -95,7 +95,7 @@ namespace DFC.App.Account
                             }
                             else
                             {
-                                context.Response.Redirect("/auth/signin");
+                                context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
                             
@@ -103,7 +103,7 @@ namespace DFC.App.Account
                         },
                        OnChallenge = context =>
                         {
-                           context.Response.Redirect("/auth/signin");
+                           context.Response.Redirect(authSettings.SignInUrl);
                            context.HandleResponse();
                            return Task.CompletedTask;
                         }
