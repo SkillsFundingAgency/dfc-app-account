@@ -1,5 +1,4 @@
 using DFC.App.Account.Application.Common.Services;
-using DFC.App.Account.Helpers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
@@ -26,6 +25,7 @@ using System.Threading.Tasks;
 using DFC.App.Account.Services.Auth;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.Services.Auth.Models;
+using DFC.Personalisation.Common.Helpers;
 
 namespace DFC.App.Account
 {

@@ -1,4 +1,4 @@
-﻿using DFC.App.Account.Helpers;
+﻿using DFC.Personalisation.Common.Helpers;
 using FluentAssertions;
 using NUnit.Framework;
 
