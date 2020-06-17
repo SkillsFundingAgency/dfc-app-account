@@ -5,42 +5,80 @@
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-               
+
                 <govukHeadingH1 text="Your account"></govukHeadingH1>
-                <p>
-                    On 1 August 2019 we made changes to remove CVs and action plan documents. You will still be able to access your Skills health check results and manage your account details from this page.
-                </p>
-                @*TODO: Add Inset text to CommonUI Library*@
-                <div class="govuk-inset-text">
-                    If you need further help or advice, you can speak to a careers adviser by calling 0800 100 900.
-                </div>
+                <p>You can use your account to: </p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>manage your action plan online</li>
+                    <li>update your personal details and password</li>
+                </ul>
+                @*
                 <govUkHeadingH3 text="Skills health checks"></govUkHeadingH3>
+                <table class="govuk-table" aria-describedby="govuk-table">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Name</th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
+                </tr>
+                </thead>
+
+            <tbody class="govuk-table__body">
+                @{
+                    if (Model.ShcDocuments.Count > 0)
+                    {
+                        foreach (var doc in Model.ShcDocuments)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table-cell">Started @doc.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"skills-health-check-{@doc.DocumentId}")" link-href="@doc.LinkUrl" link-text="View"></govUkLink></td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ConfirmDelete?id=@doc.DocumentId" id="@Model.GetElementId("govUkLink", $"confirm-delete-{@doc.DocumentId}")" link-text="Delete"></govUkLink></td>
+                            </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table-cell">No skills health checks found.</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+                *@
+                <govUkHeadingH3 text="Your career action plans"></govUkHeadingH3>
+                <p>
+                    View and update the career actions and goals that you agreed with your careers adviser.
+                </p>
                 <table class="govuk-table" aria-describedby="govuk-table">
                     <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Action plan</th>
                             <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
                             <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
                         @{
-                            if (Model.ShcDocuments.Count > 0)
+                            if (Model.ActionPlans.Count > 0)
                             {
-                                foreach (var doc in Model.ShcDocuments)
+                                foreach (var actionPlan in Model.ActionPlans)
                                 {
                                     <tr class="govuk-table__row">
-                                        <td class="govuk-table-cell">Started @doc.CreatedAt.ToString("dd MMMM yyyy HH:mm")</td>
-                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink id="@Model.GetElementId("govUkLink", $"skills-health-check-{@doc.DocumentId}")" link-href="@doc.LinkUrl" link-text="View"></govUkLink></td>
-                                        <td class="govuk-table__cell govuk-table__cell--numeric"><govUkLink link-href="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.ConfirmDelete?id=@doc.DocumentId" id="@Model.GetElementId("govUkLink", $"confirm-delete-{@doc.DocumentId}")" link-text="Delete"></govUkLink></td>
+                                        <td class="govuk-table-cell">Created @actionPlan.DateActionPlanCreated.ToString("dd MMMM yyyy HH:mm")</td>
+                                        <td class="govuk-table__cell govuk-table__cell--numeric">
+                                            <govUkLink id="@Model.GetElementId("govUkLink", $"action-plan-{actionPlan.ActionPlanId}")" link-href="@Model.ActionPlansUrl/@actionPlan.ActionPlanId/@actionPlan.InteractionId" link-text="View"></govUkLink>
+                                        </td>
                                     </tr>
                                 }
-
                             }
                             else
                             {
                                 <tr class="govuk-table__row">
-                                    <td class="govuk-table-cell">No skills health checks found.</td>
+                                    <td class="govuk-table-cell">No action plans found.</td>
                                     <td class="govuk-table__cell govuk-table__cell--numeric"></td>
                                     <td class="govuk-table__cell govuk-table__cell--numeric"></td>
                                 </tr>
@@ -65,7 +103,7 @@
                         </li>
                     </ul>
                 </div>
-                <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml" />
+                <partial name="~/ViewComponents/SpeakToAdviser/SpeakToAdvisorComponent.cshtml"/>
             </div>
         </div>
     </div>

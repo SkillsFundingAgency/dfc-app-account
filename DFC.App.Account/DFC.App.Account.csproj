@@ -15,6 +15,7 @@
     <Folder Include="Setup\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DFC.Personalisation.Common" Version="0.1.26" />
     <PackageReference Include="DFC.Personalisation.CommonUI" Version="0.2.30" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />

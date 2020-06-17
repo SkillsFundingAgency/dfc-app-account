@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
@@ -11,9 +9,6 @@ using DFC.App.Account.Services.Auth.Models;
 using DFC.Personalisation.Common.Net.RestClient;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 
 namespace DFC.App.Account.Services.Auth
 {

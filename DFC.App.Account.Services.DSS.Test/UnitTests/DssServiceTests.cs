@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
@@ -10,11 +11,9 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
 using DFC.App.Account.Services.DSS.Exceptions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {
@@ -249,6 +248,66 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         }
     }
 
-    
 
+    public class ActionPlanTest
+    {
+        private IDssReader _dssService;
+        private RestClient _restClient;
+        private IOptions<DssSettings> _dssSettings;
+        private ILogger<DssService> _logger;
+        
+        [SetUp]
+        public void Setup()
+        {
+            _logger = Substitute.For<ILogger<DssService>>();
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerActionPlanDetailsDetails(), statusToReturn: HttpStatusCode.Created);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssSettings = Options.Create(new DssSettings()
+            {
+                ApiKey = "0000dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk/api/Customers/",
+                AccountsTouchpointId = "9000000000",
+                CustomerApiVersion = "V2",
+                CustomerAddressDetailsApiUrl = "https://this.is.anApi.org.uk/api/Customers/{customerId}/Addresses",
+                CustomerAddressDetailsApiVersion = "V2",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk/customers/{customerId}/ContactDetails/",
+                CustomerContactDetailsApiVersion = "V2"
+            });
+        }
+
+        [Test]
+        public void When_GetActionPlans_Return_ActionPlans()
+        {
+            _dssService = new DssService(_restClient, _dssSettings, _logger);
+            var result = _dssService.GetActionPlans("somecustomerid");
+            result.Should().NotBe(null);
+        }
+
+        [Test]
+        public void When_GetActionPlansWithException_Return_Exception()
+        {
+            var restClient = Substitute.For<IRestClient>();
+            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            
+
+            restClient.GetAsync<IList<ActionPlan>>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<IList<ActionPlan>>(x => { throw new DssException("Failure Action Plans");});
+            
+            _dssService = new DssService(restClient, _dssSettings, _logger);
+
+            _dssService.Invoking(sut => sut.GetActionPlans("993cfb94-12b7-41c4-b32d-7be9331174f1"))
+                .Should().Throw<DssException>();
+
+        }
+        [Test]
+        public void When_GetActionPlansWithNoContent_Return_EmptyList()
+        {
+            var restClient = Substitute.For<IRestClient>();
+            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.NoContent));
+            _dssService = new DssService(restClient, _dssSettings, _logger);
+            var result = _dssService.GetActionPlans("somecustomerid");
+
+            result.Result.Count.Should().Be(0);
+
+        }
+    }
 }

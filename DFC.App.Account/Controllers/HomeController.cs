@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using DFC.App.Account.Services.DSS.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
@@ -16,12 +17,16 @@ namespace DFC.App.Account.Controllers
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
         private readonly AuthSettings _authSettings;
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings)
+        private readonly IDssReader _dssReader;
+        private readonly ActionPlansSettings _actionPlansSettings;
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings)
         :base(compositeSettings, authService)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
             _authSettings = authSettings.Value;
+            _dssReader = dssReader;
+            _actionPlansSettings = actionPlansSettings.Value;
         }
 
         #region Default Routes
@@ -50,10 +55,13 @@ namespace DFC.App.Account.Controllers
 
         public override async Task<IActionResult> Body()
         {
+            var customer = await GetCustomerDetails();
             ViewModel.ResetPasswordUrl = _authSettings.ResetPasswordUrl;
+            ViewModel.ActionPlansUrl = _actionPlansSettings.Url;
             //Hard coded value - Needs removing upon account, and DSS integration
             //Test LLAId with docs:200010216
             ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
+            ViewModel.ActionPlans = await _dssReader.GetActionPlans(customer.CustomerId.ToString());
             return await base.Body();
         }
         [Route("/bodyfooter/{controller}/{id?}")]

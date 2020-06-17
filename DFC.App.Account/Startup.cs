@@ -55,6 +55,7 @@ namespace DFC.App.Account
             services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ActionPlansSettings>(Configuration.GetSection(nameof(ActionPlansSettings)));
             services.Configure<AddressSearchServiceSettings>(
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
@@ -94,7 +95,7 @@ namespace DFC.App.Account
                             }
                             else
                             {
-                                context.Response.Redirect("/auth/signin");
+                                context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
                             
@@ -102,9 +103,9 @@ namespace DFC.App.Account
                         },
                        OnChallenge = context =>
                         {
-                            context.Response.Redirect("/auth/signin");
-                            context.HandleResponse();
-                            return Task.CompletedTask;
+                           context.Response.Redirect(authSettings.SignInUrl);
+                           context.HandleResponse();
+                           return Task.CompletedTask;
                         }
                         
 

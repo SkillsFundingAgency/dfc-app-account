@@ -1,6 +1,7 @@
 ﻿using System;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using System.Collections.Generic;
+using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.ViewModels
 {
@@ -14,6 +15,8 @@ namespace DFC.App.Account.ViewModels
         }
 
         public List<ShcDocument> ShcDocuments { get; set; }
+        public IList<ActionPlan> ActionPlans { get; set; }
         public String ResetPasswordUrl { get; set; }
+        public String ActionPlansUrl { get; set; }
     }
 }
