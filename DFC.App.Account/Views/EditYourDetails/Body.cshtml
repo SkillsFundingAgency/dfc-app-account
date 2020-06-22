@@ -62,41 +62,7 @@
                             }
                             <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirth, new { @class = "govuk-label" })</th>
                             <td class="govuk-table__cell">
-
-                                <div class="govuk-form-group  @dobError">
-                                    @Html.HiddenFor(model => model.Identity.PersonalDetails.DateOfBirth)
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirth, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthDay, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthMonth, null, new { @class = "govuk-error-message" })
-                                    @Html.ValidationMessageFor(model => model.Identity.PersonalDetails.DateOfBirthYear, null, new { @class = "govuk-error-message" })
-
-                                    <p class="govuk-hint">For example, 31 03 1980</p>
-
-                                    <div class="govuk-date-input">
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthDay, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthDay,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {dobInputError}" })
-                                            </div>
-                                        </div>
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthMonth, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthMonth,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-2 {dobInputError}" })
-                                            </div>
-                                        </div>
-                                        <div class="govuk-date-input__item">
-                                            <div class="govuk-form-group">
-                                                @Html.LabelFor(m => m.Identity.PersonalDetails.DateOfBirthYear, new { @class = "govuk-label" })
-                                                @Html.TextBoxFor(m => m.Identity.PersonalDetails.DateOfBirthYear,
-                                                    new { @class = $"govuk-input govuk-date-input__input govuk-input--width-4 {dobInputError}" })
-                                            </div>
-                                        </div>
-                                        <div class="govuk-form-group"> </div>
-                                    </div>
-                                </div>
+                                @Model.Identity.PersonalDetails.DateOfBirth?.ToString("dd MMMM yyyy")
                             </td>
                         </tr>
                         <tr class="govuk-table__row">
