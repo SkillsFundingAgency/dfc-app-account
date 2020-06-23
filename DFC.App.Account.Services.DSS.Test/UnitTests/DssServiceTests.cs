@@ -271,7 +271,9 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 CustomerAddressDetailsApiUrl = "https://this.is.anApi.org.uk/api/Customers/{customerId}/Addresses",
                 CustomerAddressDetailsApiVersion = "V2",
                 CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk/customers/{customerId}/ContactDetails/",
-                CustomerContactDetailsApiVersion = "V2"
+                CustomerContactDetailsApiVersion = "V2",
+                ActionPlansApiUrl="SomeAPI",
+                ActionPlansApiVersion = "V2"
             });
         }
 
