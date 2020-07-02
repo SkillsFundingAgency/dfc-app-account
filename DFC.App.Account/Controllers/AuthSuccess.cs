@@ -18,7 +18,7 @@ namespace DFC.App.Account.Controllers
         {
             
         }
-        
+        [Authorize]
         [Route("/authsuccess/{url}")]
         public IActionResult RedirectUrl(string url)
         {
