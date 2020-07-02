@@ -34,6 +34,7 @@ namespace DFC.App.Account.ViewModels
             public static PageId DeleteAccount { get; } = new PageId("delete-account");
             public static PageId ConfirmDelete { get; } = new PageId("confirm-delete");
             public static PageId ShcDeleted { get; } = new PageId("shc-deleted");
+            public static PageId AuthSuccess { get; } = new PageId("auth-success");
 
         }
 
