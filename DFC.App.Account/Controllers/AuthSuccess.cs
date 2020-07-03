@@ -15,10 +15,10 @@ namespace DFC.App.Account.Controllers
             
         }
         [Authorize]
-        [Route("/authsuccess/{url}")]
-        public IActionResult RedirectUrl(string url)
+        [Route("/authsuccess")]
+        public IActionResult RedirectUrl(string redirectUrl)
         {
-            return Redirect(url);
+            return Redirect(redirectUrl);
         }
 
        
