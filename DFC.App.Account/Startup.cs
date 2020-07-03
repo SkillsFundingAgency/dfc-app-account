@@ -164,7 +164,10 @@ namespace DFC.App.Account
 
                 endpoints.MapControllerRoute("shcDeleted", appPath + "/shc-deleted", new { controller = "shcDeleted", action = "body" });
                 endpoints.MapControllerRoute("shcDeletedBody", "/body/shc-deleted", new { controller = "shcDeleted", action = "body" });
-                
+
+                endpoints.MapControllerRoute("authSuccess", appPath + "/authSuccess", new { controller = "AuthSuccess", action = "body" });
+                endpoints.MapControllerRoute("authSuccessBody", "/body/authSuccess", new { controller = "AuthSuccess", action = "body" });
+
                 endpoints.MapControllers();
             });
 
