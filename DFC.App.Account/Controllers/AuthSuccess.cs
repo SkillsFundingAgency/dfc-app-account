@@ -1,4 +1,6 @@
-﻿using DFC.App.Account.Models;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +17,13 @@ namespace DFC.App.Account.Controllers
             
         }
         [Authorize]
-        [Route("/authsuccess/{url}")]
-        public IActionResult RedirectUrl(string url)
+        [Route("/body/authsuccess")]
+        public override async Task<IActionResult> Body()
         {
+            Request.Query.TryGetValue("redirectUrl", out var redirectUrl);
+            var url = string.IsNullOrEmpty(redirectUrl.ToList().FirstOrDefault())
+                ? "/your-account"
+                : redirectUrl.ToList().FirstOrDefault();
             return Redirect(url);
         }
 
