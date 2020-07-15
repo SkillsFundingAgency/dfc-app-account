@@ -14,8 +14,8 @@ namespace DFC.App.Account.Services.DSS.Models
             public string SubcontractorId { get; set; }
             public DateTime DateActionPlanCreated { get; set; }
             public string CustomerCharterShownToCustomer { get; set; }
-            public DateTime DateAndTimeCharterShown { get; set; }
-            public DateTime DateActionPlanSentToCustomer { get; set; }
+            public DateTime? DateAndTimeCharterShown { get; set; }
+            public DateTime? DateActionPlanSentToCustomer { get; set; }
             public string ActionPlanDeliveryMethod { get; set; }
             public DateTime? DateActionPlanAcknowledged { get; set; }
             public string CurrentSituation { get; set; }
