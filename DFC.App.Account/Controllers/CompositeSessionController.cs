@@ -52,8 +52,7 @@ namespace DFC.App.Account.Controllers
         {
             var pagesThatDontNeedBreadCrumbs = new List<CompositeViewModel.PageId>
             {
-                CompositeViewModel.PageId.Home, CompositeViewModel.PageId.DeleteAccount,
-                CompositeViewModel.PageId.CloseYourAccount, CompositeViewModel.PageId.SessionTimeout
+                CompositeViewModel.PageId.Home, CompositeViewModel.PageId.DeleteAccount, CompositeViewModel.PageId.SessionTimeout
             };
 
             ViewModel.ShowBreadCrumb = !pagesThatDontNeedBreadCrumbs.Contains(ViewModel.Id);
