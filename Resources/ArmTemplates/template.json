@@ -345,7 +345,7 @@
                                 "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
                             },
                             {
-                                "name": "AuthSettings__resetPassword",
+                                "name": "AuthSettings__ResetPasswordUrl",
                                 "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/resetPassword')]"
                             },
                             {
