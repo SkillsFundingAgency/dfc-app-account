@@ -78,7 +78,7 @@ namespace DFC.App.Account.Controllers
                 {
                     try
                     {
-
+                        
                         string dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
                         string dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
                         string dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
@@ -102,7 +102,7 @@ namespace DFC.App.Account.Controllers
                         {
                             viewModel.Identity.PersonalDetails.DateOfBirth = null;
                         }
-
+                        
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
                         await _dssWriter.UpdateCustomerData(updatedDetails);
                         
@@ -237,7 +237,6 @@ namespace DFC.App.Account.Controllers
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
             customer.Contact.EmailAddress = customer.Contact.EmailAddress == identity.ContactDetails.ContactEmail ? "" : identity.ContactDetails.ContactEmail;
-            
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
             customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;

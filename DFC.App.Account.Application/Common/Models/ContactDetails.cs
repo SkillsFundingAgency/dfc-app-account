@@ -8,7 +8,7 @@ namespace DFC.App.Account.Application.Common.Models
     {
         [StringLength(100, ErrorMessage = "Email address is too long (max. 100)")]
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
-        [Required(ErrorMessage = "Enter email address")]
+       // [Required(ErrorMessage = "Enter email address")]
         [Display(Name = "Email address", Order = 17)]
         public string ContactEmail { get; set; }
 
