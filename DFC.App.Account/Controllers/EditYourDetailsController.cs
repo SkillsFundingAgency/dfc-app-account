@@ -102,9 +102,9 @@ namespace DFC.App.Account.Controllers
                         {
                             viewModel.Identity.PersonalDetails.DateOfBirth = null;
                         }
-                        
+
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-                        await _dssWriter.UpdateCustomerData(updatedDetails);
+                        //await _dssWriter.UpdateCustomerData(updatedDetails);
                         
                         var addressToUpdate = string.IsNullOrEmpty(viewModel.Identity.PersonalDetails.AddressId)
                             ? updatedDetails.Addresses.FirstOrDefault(x => string.IsNullOrEmpty(x.AddressId))
@@ -116,14 +116,14 @@ namespace DFC.App.Account.Controllers
                             //await _dssWriter.UpsertCustomerAddressData(addressToUpdate, updatedDetails.CustomerId);
                         }
 
-                        customerDetails.Contact.LastModifiedDate = DateTime.UtcNow;
-                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
+                        updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
 
-                        if (!string.IsNullOrEmpty(updatedDetails.Contact.EmailAddress))
+                        if (updatedDetails.Contact.PreferredContactMethod == CommonEnums.Channel.Mobile)
                         {
-                            //Auth endpoint needed here
-                            return new RedirectResult("/your-account/your-details?logout=true", false);
+                            updatedDetails.Contact.MobileNumber = updatedDetails.Contact.AlternativeNumber;
                         }
+
+                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
                         return new RedirectResult("/your-account/your-details", false);
                     }
@@ -236,7 +236,6 @@ namespace DFC.App.Account.Controllers
 
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
-            customer.Contact.EmailAddress = customer.Contact.EmailAddress == identity.ContactDetails.ContactEmail ? "" : identity.ContactDetails.ContactEmail;
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
             customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;

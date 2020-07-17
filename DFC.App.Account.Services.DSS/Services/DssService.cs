@@ -96,31 +96,30 @@ namespace DFC.App.Account.Services.DSS.Services
             return result;
         }
 
-        public async Task<Contact> UpsertCustomerContactData(Customer customerData)
+        public async Task UpsertCustomerContactData(Customer customerData)
         {
             if (customerData == null)
-                return null;
-            Contact result;
-            using (var request = CreateRequestMessage())
+                return;
+            
+            var request = CreateRequestMessage();
+
+            request.Content = new StringContent(
+                JsonConvert.SerializeObject(customerData.Contact),
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json);
+            request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
+
+
+            if (string.IsNullOrEmpty(customerData.Contact.ContactId))
             {
-                request.Content = new StringContent(
-                    JsonConvert.SerializeObject(customerData.Contact),
-                    Encoding.UTF8,
-                    MediaTypeNames.Application.Json);
-                request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
-
-
-                if (string.IsNullOrEmpty(customerData.Contact.ContactId))
-                {
-                    result = await _restClient.PostAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()), 
-                        requestMessage: request);
-                }
-                else
-                {
-                    result = (await _restClient.PatchAsync<Contact>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()) + 
-                                                                            customerData.Contact.ContactId, requestMessage: request));
-                }
+                 await _restClient.PostAsync<object>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()), 
+                    requestMessage: request);
             }
+            else
+            {
+                await _restClient.PatchAsync<object>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()) + customerData.Contact.ContactId, requestMessage: request);
+            }
+            
 
             if (_restClient.LastResponse.Content.Contains(
                 $"Contact with Email Address {customerData.Contact.EmailAddress} already exists"))
@@ -133,7 +132,6 @@ namespace DFC.App.Account.Services.DSS.Services
               throw new UnableToUpdateContactDetailsException($"Unable To Updated contact details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
 
-            return result;
         }
 
         public async Task<Address> UpsertCustomerAddressData(Address address, Guid customerId)

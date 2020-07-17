@@ -27,6 +27,7 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            MobilePhoneRegex = "^(\\+44\\s?7\\d{3}|\\(?07\\d{3}\\)?)\\s?\\d{3}\\s?\\d{3}$";
             // We have to get the selection value of the property on which the logic is dependent (ContactPreference)
             var propertyContactPreference = validationContext.ObjectType.GetProperty(this.DependsOn);
             if (propertyContactPreference == null)
