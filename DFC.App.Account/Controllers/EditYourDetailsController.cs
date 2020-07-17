@@ -113,7 +113,7 @@ namespace DFC.App.Account.Controllers
 
                         if (addressToUpdate != null)
                         {
-                            await _dssWriter.UpsertCustomerAddressData(addressToUpdate, updatedDetails.CustomerId);
+                            //await _dssWriter.UpsertCustomerAddressData(addressToUpdate, updatedDetails.CustomerId);
                         }
 
                         customerDetails.Contact.LastModifiedDate = DateTime.UtcNow;

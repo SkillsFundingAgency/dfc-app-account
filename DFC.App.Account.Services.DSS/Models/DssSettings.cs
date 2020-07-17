@@ -16,5 +16,8 @@
 
         public string AccountsTouchpointId { get; set; }
         public string ApiKey { get; set; }
+
+        public string DigitalIdentitiesPatchByCustomerIdApiUrl { get; set; }
+        public string DigitalIdentitiesPatchByCustomerIdApiVersion { get; set; }
     }
 }

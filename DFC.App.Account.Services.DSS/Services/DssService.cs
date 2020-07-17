@@ -273,6 +273,45 @@ namespace DFC.App.Account.Services.DSS.Services
             }
         }
 
+        public async Task<IResult> UpdateLastLogin(Guid customerId)
+        {
+            try
+            {
+                using (var request = CreateRequestMessage())
+                {
+                    var updateLoginRequest = new UpdateLastLoginRequest()
+                    {
+                        LastLoggedInDateTime = DateTime.UtcNow
+                    };
+                    
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(updateLoginRequest),
+                        Encoding.UTF8, MediaTypeNames.Application.Json);
+                    
+                    request.Headers.Add("version", _dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiVersion);
+                    
+                    var result = await _restClient.PatchAsync<object>(
+                        apiPath:
+                        $"{_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())}",
+                        requestMessage: request);
+                }
+
+                if (!_restClient.LastResponse.IsSuccess)
+                {
+                    throw new UnableToUpdateCustomerDetailsException(
+                        $"Unable To Updated customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
+                }
+
+                return Result.Ok();
+            }
+            catch (Exception e)
+            {
+                throw new DssException(
+                    $"Unable To Digital Identities customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
+            }
+
+        }
+
         public async Task<IList<ActionPlan>> GetActionPlans(string customerId)
         {
             try

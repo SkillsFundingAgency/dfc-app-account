@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,7 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
+        private IDssWriter _dssWriter;
         
         [SetUp]
         public void Init()
@@ -31,7 +33,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void When_RedirectCalled_Redirected()
         {
-            var controller = new AuthSuccess(_compositeSettings, _authService);
+            var controller = new AuthSuccess(_compositeSettings, _authService,_dssWriter);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
