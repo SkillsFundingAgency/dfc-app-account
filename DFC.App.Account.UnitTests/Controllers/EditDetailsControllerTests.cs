@@ -200,6 +200,31 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
+        public async Task WhenSaveDataPostedWithMobilePreferenceAndFormIsValid_ThenDateShouldBeSaved()
+        {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer
+            {
+                Contact = new Contact()
+            });
+
+            EditDetailsCompositeViewModel editDetailVm = GetViewModel();
+            editDetailVm.Identity.ContactDetails.ContactPreference = CommonEnums.Channel.Email;
+            var result = await controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"saveDetails", "saveDetails"}
+            })) as ViewResult;
+            
+            _dssWriter.Received(3);
+        }
+
+        [Test]
         public async Task WhenSaveDataPostedAndFormIsValid_ThenDateShouldBeSaved()
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
@@ -221,8 +246,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             
             _dssWriter.Received(3);
         }
-
-        
+ 
 
         [Test]
         public async Task WhenFindAddressPostedAndPostcodeIsNotValid_ThenAddressServiceNotCalledAndModelIsReturnedWithError()
