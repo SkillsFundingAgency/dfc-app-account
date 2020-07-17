@@ -222,32 +222,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _dssWriter.Received(3);
         }
 
-        [Test]
-        public async Task WhenSaveDataPostedAndFormIsValidAndEmailIsUpdated_ThenDateShouldBeSaved()
-        {
-            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
-            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
-            {
-                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-            };
-            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer
-            {
-                Contact = new Contact
-                {
-                    EmailAddress = "test"
-                }
-            });
-
-            var result = await controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
-            {
-                {"saveDetails", "saveDetails"}
-            })) as RedirectResult;
-
-            result.Should().NotBeNull();
-            result.Url.Should().Be("/your-account/your-details?logout=true");
-        }
+        
 
         [Test]
         public async Task WhenFindAddressPostedAndPostcodeIsNotValid_ThenAddressServiceNotCalledAndModelIsReturnedWithError()
