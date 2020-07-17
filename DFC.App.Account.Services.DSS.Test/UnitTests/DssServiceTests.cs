@@ -260,7 +260,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         public void Setup()
         {
             _logger = Substitute.For<ILogger<DssService>>();
-            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerActionPlanDetailsDetails(), statusToReturn: HttpStatusCode.Created);
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerActionPlanDetails(), statusToReturn: HttpStatusCode.Created);
             _restClient = new RestClient(mockHandler.Object);
             _dssSettings = Options.Create(new DssSettings()
             {
@@ -312,4 +312,60 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 
         }
     }
+
+    public class DigitalIdentitiesTests
+    {
+        private IDssWriter _dssService;
+        private RestClient _restClient;
+        private IOptions<DssSettings> _dssSettings;
+        private ILogger<DssService> _logger;
+        
+        [SetUp]
+        public void Setup()
+        {
+            _logger = Substitute.For<ILogger<DssService>>();
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDigitalIdentitiesCustomerUpdateDetails(), statusToReturn: HttpStatusCode.Created);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssSettings = Options.Create(new DssSettings()
+            {
+                ApiKey = "0000dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk/api/Customers/",
+                AccountsTouchpointId = "9000000000",
+                CustomerApiVersion = "V2",
+                CustomerAddressDetailsApiUrl = "https://this.is.anApi.org.uk/api/Customers/{customerId}/Addresses",
+                CustomerAddressDetailsApiVersion = "V2",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk/customers/{customerId}/ContactDetails/",
+                CustomerContactDetailsApiVersion = "V2",
+                ActionPlansApiUrl="SomeAPI",
+                ActionPlansApiVersion = "V2",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://at.api.nationalcareersservice.org.uk/digitalidentities/api/customer/{customerId}",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "v2"
+            });
+        }
+
+        [Test]
+        public async Task When_UpdateLastLoginWithException_UpdateCustomer()
+        {
+            _dssService = new DssService(_restClient, _dssSettings, _logger);
+            var result = await _dssService.UpdateLastLogin(new Guid());
+            result.Should().NotBe(null);
+        }
+        [Test]
+        public async Task When_UpdateLastLoginWithException_Return_Exception()
+        {
+            var restClient = Substitute.For<IRestClient>();
+            restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            
+
+            restClient.GetAsync<string>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<string>(x => { throw new DssException("Customer");});
+            
+            _dssService = new DssService(restClient, _dssSettings, _logger);
+
+            _dssService.Invoking(async sut => await sut.UpdateLastLogin(new Guid()))
+                .Should().Throw<DssException>();
+
+        }
+        
+    }
+
 }
