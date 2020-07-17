@@ -261,6 +261,14 @@
                                 "value": "v2"
                             },
                             {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/digitalidentities/api/customer/{customerId}')]"
+                            },
+                            {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiVersion",
+                                "value": "v2"
+                            },
+                            {
                                 "name": "DssSettings__ApiKey",
                                 "value": "[parameters('apimDSSApiKey')]"
                             },
