@@ -37,12 +37,7 @@ namespace DFC.App.Account.Controllers
         [Route("/bodytop/[controller]/{id?}")]
         public virtual async Task<IActionResult> BodyTop()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var customer = await _authService.GetCustomer(User);
-                ViewModel.Name = $"{customer.GivenName} {customer.FamilyName}";
-            }
-
+            
             return View(ViewModel);
         }
 
@@ -73,24 +68,8 @@ namespace DFC.App.Account.Controllers
         {
             return View(ViewModel);
         }
-        protected virtual IActionResult RedirectWithError(string controller, string parameters = "")
-        {
-
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                 parameters = $"&{parameters}";
-            }
-
-            return RedirectTo($"{controller}?errors=true{parameters}");
-        }
-
        
-        protected bool HasErrors()
-        {
-            var errorsString = Request.Query["errors"];
-            var parsed = bool.TryParse(errorsString, out var error);
-            return parsed && error;
-        }
+      
 
         protected IActionResult RedirectTo(string relativeAddress)
         {
