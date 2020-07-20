@@ -26,8 +26,8 @@ namespace DFC.App.Account.Application.Common.Models
             }
             public static class PhoneNumber
             {
-                public const String ContactPhone = @"^[+0]{1}[0-9( )-]{10,19}$";
-                public const String ContactMobilePhone = @"^((\+44)|(0044)|(0))7([1-5]|[7-9])[0-9]{8}$";
+                public const String ContactPhone = @"^((\(?0\d{4}\)?\s?\d{3}\s?(\d{3}|\d{2}))|(\(?0\d{3}\)?\s?\d{3}\s?(\d{4}|\d{3}))|(\(?0\d{2}\)?\s?\d{4}\s?(\d{4}|\d{3})))(\s?\#(\d{4}|\d{3}))?$";
+                public const String ContactMobilePhone = @"^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?(\d{3}|\d{2})$";
             }
             public static class Other
             {

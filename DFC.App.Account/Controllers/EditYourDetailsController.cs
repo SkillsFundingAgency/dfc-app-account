@@ -104,7 +104,7 @@ namespace DFC.App.Account.Controllers
                         }
 
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-                        //await _dssWriter.UpdateCustomerData(updatedDetails);
+                        await _dssWriter.UpdateCustomerData(updatedDetails);
                         
                         var addressToUpdate = string.IsNullOrEmpty(viewModel.Identity.PersonalDetails.AddressId)
                             ? updatedDetails.Addresses.FirstOrDefault(x => string.IsNullOrEmpty(x.AddressId))
