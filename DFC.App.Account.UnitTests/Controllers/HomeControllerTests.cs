@@ -103,13 +103,13 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
         [Test]
-        public async Task WhenBodyTopCalled_ReturnHtml()
+        public void WhenBodyTopCalled_ReturnHtml()
         {
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
-            var result = await _controller.BodyTop() as ViewResult;
+            var result =  _controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();

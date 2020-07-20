@@ -39,9 +39,9 @@ namespace DFC.App.Account.Controllers
         }
         [Route("/bodytop/{controller}/{id?}")]
         [Route("/bodytop/{id?}")]
-        public override async Task<IActionResult> BodyTop()
+        public override IActionResult BodyTop()
         {
-            return await base.BodyTop();
+            return base.BodyTop();
         }
         [Route("/breadcrumb/{controller}/{id?}")]
         [Route("/breadcrumb/{id?}")]

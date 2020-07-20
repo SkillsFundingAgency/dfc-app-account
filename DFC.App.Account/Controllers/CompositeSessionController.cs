@@ -35,7 +35,7 @@ namespace DFC.App.Account.Controllers
 
         [HttpGet]
         [Route("/bodytop/[controller]/{id?}")]
-        public virtual async Task<IActionResult> BodyTop()
+        public virtual IActionResult BodyTop()
         {
             
             return View(ViewModel);
