@@ -103,45 +103,18 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
         [Test]
-        public async Task WhenBodyTopCalled_ReturnHtml()
+        public void WhenBodyTopCalled_ReturnHtml()
         {
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
-            var result = await _controller.BodyTop() as ViewResult;
+            var result =  _controller.BodyTop() as ViewResult;
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
         }
-        [Test]
-        public async Task WhenBodyTopCalled_ReturnHtmlWithUserName()
-        {
-            var customer = new Customer()
-            {
-                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
-                FamilyName = "familyName",
-                GivenName = "givenName"
-            };
-            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    HttpContext = { User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim("CustomerId", "test")
-                    },"testType"))}
-                }
-            };
-            var result = await controller.BodyTop() as ViewResult;
-            result.Should().NotBeNull();
-            result.Should().BeOfType<ViewResult>();
-            result.ViewName.Should().BeNull();
-            var model = result.ViewData.Model as CompositeViewModel;
-            model.Name.Should().Be("givenName familyName");
-        }
+       
         [Test]
         public void WhenBodyFooterCalled_ReturnHtml()
         {
