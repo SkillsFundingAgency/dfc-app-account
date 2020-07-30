@@ -11,8 +11,7 @@ else
 {
     <title>@Model.PageTitle</title>
 }
-<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
-
+<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
@@ -31,8 +30,8 @@ else
 
                 <h2 class="heading-medium">Confirm account closure</h2>
                 <p>Enter your password to close your account.</p>
-                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)>  
-                     
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)>
+
                     <govukLabel id="lablepassword" text="Password" for="password"></govukLabel>
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "govuk-error-message" })
 
