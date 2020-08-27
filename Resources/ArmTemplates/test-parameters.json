@@ -8,6 +8,15 @@
         "apimDSSProxyAddress": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },
+        "aspInstances": {
+            "value": 1
+        },
+        "aspTier": {
+            "value": "Standard"
+        },
+        "aspSize": {
+            "value": "2"
+        },
         "cdnUrl": {
             "value": "https://foo.api.nationalcareersservice.org.uk"
         },
