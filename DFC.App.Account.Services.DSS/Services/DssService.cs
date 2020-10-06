@@ -15,6 +15,7 @@ using DFC.App.Account.Application.Common;
 using DFC.App.Account.Application.Common.Interfaces;
 using DFC.App.Account.Services.DSS.Exceptions;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace DFC.App.Account.Services.DSS.Services
 {
@@ -63,6 +64,7 @@ namespace DFC.App.Account.Services.DSS.Services
                     JsonConvert.SerializeObject(customerData),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
                 result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
@@ -83,6 +85,7 @@ namespace DFC.App.Account.Services.DSS.Services
                     JsonConvert.SerializeObject(customerData),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
                 result = await _restClient.PatchAsync<Customer>(apiPath:$"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", requestMessage: request);
@@ -107,6 +110,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 JsonConvert.SerializeObject(customerData.Contact),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
+            request.Headers.Remove("version");
             request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
 
 
@@ -141,6 +145,7 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Content = new StringContent(
                     JsonConvert.SerializeObject(address));
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
 
                 var x = JsonConvert.SerializeObject(address);
@@ -168,6 +173,7 @@ namespace DFC.App.Account.Services.DSS.Services
         {
 
             var request = CreateRequestMessage();
+            request.Headers.Remove("version");
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
             var customer = await GetCustomerDetail(customerId, request);
@@ -191,6 +197,7 @@ namespace DFC.App.Account.Services.DSS.Services
         {
             try
             {
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
                 return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
@@ -206,7 +213,9 @@ namespace DFC.App.Account.Services.DSS.Services
         {
             try
             {
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
+               
                 return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId), request);
             }
             catch (Exception e)
@@ -223,6 +232,7 @@ namespace DFC.App.Account.Services.DSS.Services
         {
             try
             {
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
                 return await _restClient.GetAsync<Contact>(
                     _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerId), request)??new Contact();
@@ -250,6 +260,7 @@ namespace DFC.App.Account.Services.DSS.Services
                         JsonConvert.SerializeObject(deleteRequest),
                         Encoding.UTF8,
                         MediaTypeNames.Application.Json);
+                    request.Headers.Remove("version");
                     request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
                     var result = await _restClient.PatchAsync<DeleteCustomerRequest>(
                         apiPath: $"{_dssSettings.Value.CustomerApiUrl}{deleteRequest.CustomerId}",
@@ -285,7 +296,7 @@ namespace DFC.App.Account.Services.DSS.Services
                     request.Content = new StringContent(
                         JsonConvert.SerializeObject(updateLoginRequest),
                         Encoding.UTF8, MediaTypeNames.Application.Json);
-                    
+                    request.Headers.Remove("version");
                     request.Headers.Add("version", _dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiVersion);
                     
                     var result = await _restClient.PatchAsync<object>(
@@ -315,6 +326,7 @@ namespace DFC.App.Account.Services.DSS.Services
             try
             {
                 var request = CreateRequestMessage();
+                request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
                 var result= await _restClient.GetAsync<IList<ActionPlan>>(_dssSettings.Value.ActionPlansApiUrl.Replace(CustomerIdTag,customerId),
                     request);
