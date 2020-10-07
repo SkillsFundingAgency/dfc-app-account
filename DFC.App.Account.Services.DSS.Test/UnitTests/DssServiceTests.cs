@@ -347,7 +347,8 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         public async Task When_UpdateLastLoginWithException_UpdateCustomer()
         {
             _dssService = new DssService(_restClient, _dssSettings, _logger);
-            var result = await _dssService.UpdateLastLogin(new Guid());
+            var token = "test";
+            var result = await _dssService.UpdateLastLogin(new Guid(), token);
             result.Should().NotBe(null);
         }
         [Test]
@@ -355,13 +356,13 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         {
             var restClient = Substitute.For<IRestClient>();
             restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
-            
+            var token = "test";
 
             restClient.GetAsync<string>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<string>(x => { throw new DssException("Customer");});
             
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
-            _dssService.Invoking(async sut => await sut.UpdateLastLogin(new Guid()))
+            _dssService.Invoking(async sut => await sut.UpdateLastLogin(new Guid(), token))
                 .Should().Throw<DssException>();
 
         }

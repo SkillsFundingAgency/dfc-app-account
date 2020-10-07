@@ -282,7 +282,7 @@ namespace DFC.App.Account.Services.DSS.Services
             }
         }
 
-        public async Task<IResult> UpdateLastLogin(Guid customerId)
+        public async Task<IResult> UpdateLastLogin(Guid customerId, string token)
         {
             try
             {
@@ -290,7 +290,8 @@ namespace DFC.App.Account.Services.DSS.Services
                 {
                     var updateLoginRequest = new UpdateLastLoginRequest()
                     {
-                        LastLoggedInDateTime = DateTime.UtcNow
+                        LastLoggedInDateTime = DateTime.UtcNow,
+                        Token = token
                     };
                     
                     request.Content = new StringContent(
