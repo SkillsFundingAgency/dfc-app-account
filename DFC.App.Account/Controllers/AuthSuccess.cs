@@ -33,7 +33,8 @@ namespace DFC.App.Account.Controllers
         private async Task UpdateLastLoggedIn()
         {
             var customer = await GetCustomerDetails();
-            await _dssWriter.UpdateLastLogin(customer.CustomerId);
+            var token = User.Claims.FirstOrDefault(x => x.Type == "DssToken");
+            await _dssWriter.UpdateLastLogin(customer.CustomerId, token?.Value);
         }
        
     }
