@@ -1,18 +1,15 @@
-﻿using DFC.App.Account.Application.Common.Constants;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
-    
+
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
@@ -41,13 +38,7 @@ namespace DFC.App.Account.Controllers
                 return RedirectTo($"{CompositeViewModel.PageId.Home}");
             }
 
-            var deleteCustomerRequest = new DeleteCustomerRequest()
-            {
-                CustomerId = customer.CustomerId,
-                DateOfTermination = DateTime.UtcNow,
-                ReasonForTermination = Constants.ClosureReasonCustomerChoice
-            };
-            await _dssService.DeleteCustomer(deleteCustomerRequest);
+            await _dssService.DeleteCustomer(customer.CustomerId);
             return RedirectTo($"{CompositeViewModel.PageId.Home}/signOut?accountClosed=true");
         }
         

@@ -227,7 +227,25 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 CustomerApiVersion = "V1"
             }), _logger);
 
-            _dssService.Invoking(x => x.DeleteCustomer(null)).Should()
+            _dssService.Invoking(x => x.DeleteCustomer(Guid.NewGuid())).Should()
+                .Throw<UnableToUpdateCustomerDetailsException>();
+
+        }
+
+        [Test]
+        public void When_DeleteCustomerRequestEmptyGuid_ThrowException()
+        {
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.InternalServerError);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssService = new DssService(_restClient, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1"
+            }), _logger);
+
+            _dssService.Invoking(x => x.DeleteCustomer(Guid.Empty)).Should()
                 .Throw<UnableToUpdateCustomerDetailsException>();
 
         }
@@ -235,15 +253,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         [Test]
         public async Task When_DeleteCustomerSuccess_ReturnOk()
         {
-            //Tod-Remove
-            var deleteRequest = new DeleteCustomerRequest()
-            {
-                CustomerId = new Guid( "621b65a6-497e-4e9f-8031-a9a1a54a4b61"),
-                ReasonForTermination = 1,
-                DateOfTermination = DateTime.UtcNow
-            };
-           
-            await _dssService.DeleteCustomer(deleteRequest);
+            await _dssService.DeleteCustomer(Guid.NewGuid());
 
         }
     }
