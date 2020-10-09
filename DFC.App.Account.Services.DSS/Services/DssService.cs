@@ -247,30 +247,25 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        public async Task<IResult> DeleteCustomer(DeleteCustomerRequest deleteRequest)
+        public async Task<IResult> DeleteCustomer(Guid customerId)
         {
-            if (deleteRequest == null)
+            if (customerId == null || customerId == Guid.Empty)
                 throw new UnableToUpdateCustomerDetailsException(
                     $"Unable To Updated customer details for customer. No details provided.");
             try
             {
                 using (var request = CreateRequestMessage())
                 {
-                    request.Content = new StringContent(
-                        JsonConvert.SerializeObject(deleteRequest),
-                        Encoding.UTF8,
-                        MediaTypeNames.Application.Json);
                     request.Headers.Remove("version");
-                    request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-                    var result = await _restClient.PatchAsync<DeleteCustomerRequest>(
-                        apiPath: $"{_dssSettings.Value.CustomerApiUrl}{deleteRequest.CustomerId}",
-                        requestMessage: request);
+                    request.Headers.Add("version", _dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiVersion);
+                    await _restClient.DeleteAsync(
+                        apiPath: $"{_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())}", request);
                 }
 
                 if (!_restClient.LastResponse.IsSuccess)
                 {
                     throw new UnableToUpdateCustomerDetailsException(
-                        $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
+                        $"Unable To Updated customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
                 }
 
                 return Result.Ok();
@@ -278,7 +273,7 @@ namespace DFC.App.Account.Services.DSS.Services
             catch (Exception e)
             {
                 throw new UnableToUpdateCustomerDetailsException(
-                    $"Unable To Updated customer details for customer {deleteRequest.CustomerId}, Response {_restClient.LastResponse.Content}");
+                    $"Unable To Updated customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
             }
         }
 
