@@ -26,5 +26,10 @@ namespace DFC.App.Account.ViewModels
 
             return string.Empty;
         }
+
+        public string GetFormGroupErrorClass(string elementName, ModelStateDictionary state)
+        {
+            return string.IsNullOrEmpty(GetErrorClass(elementName, state)) ? "" : "govuk-form-group--error";
+        }
     }
 }

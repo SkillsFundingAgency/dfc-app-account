@@ -51,27 +51,17 @@ namespace DFC.App.Account.Application.Common.Models
         [RegularExpression(ServiceCommon.RegexPatterns.PostCode.Postcode, ErrorMessage = "Home postcode contains invalid characters")]
         [StringLength(8, ErrorMessage = "Home postcode too long (max. 8)")]
         [Display(Name = "Enter your postcode", Order = 9)]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Enter your postcode")]
         public string HomePostCode { get; set; }
 
         public string FindAddressServiceResult { get; set; }
 
-        [BFPOAddress(DependsOn = "HomePostCode", DependsOnPropertyForAttribute = "HomePostCode",
-            IsNonEnglishBfpo = true,
-            ErrorMessage = "Enter an alternative postcode")]
-        [DoubleRegex(
-            FirstRegex = @"(?ixs)^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4}|[gG][iI][rR]\s{0,1}0[aA][aA]|[a-pr-uwyzA-PR-UWYZ]([0-9]{1,2}|([a-hk-yA-HK-Y][0-9]|[a-hk-yA-HK-Y][0-9]([0-9]|[abehmnprv-yABEHMNPRV-Y]))|[0-9][a-hjkps-uwA-HJKPS-UW])\s{0,1}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2})$",
-            SecondRegex = @"(?ixs)^(?!ab|bt|cf|ch5|ch6|ch7|ch8|dd|dg|eh|fk|g[0-9]|gy|hs|im|iv|je|ka|kw|ky|ld|ll|ml|np|pa|ph|sa|sy|td|ze)+.*$",
-            IsAndOperator = true,
-            IsRequired = false,
-            ErrorMessage = "Alternative postcode must be an English or BFPO postcode")]
-        [RegularExpression(ServiceCommon.RegexPatterns.PostCode.Postcode, ErrorMessage = "Alternative postcode contains invalid characters")]
-        [StringLength(8, ErrorMessage = "Alternative postcode too long (max. 8)")]
-        [Display(Name = "Alternative postcode", Order = 10)]
-        public string AlternativePostCode { get; set; }
+      
 
         [ConditionalRequired(DependsOn = "HomePostCode", ErrorMessage = "First line of your address is required")]
         [RegularExpression(ServiceCommon.RegexPatterns.Other.AddressString, ErrorMessage = "First line of your address contains invalid characters")]
         [StringLength(80, ErrorMessage = "First line of your address is too long (max. 80)")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "First line of your address is required")]
         [Display(Name = "First line of your address", Order = 11)]
         public string AddressLine1 { get; set; }
 
@@ -93,12 +83,7 @@ namespace DFC.App.Account.Application.Common.Models
         [StringLength(80, ErrorMessage = "Fourth line of your address is too long (max. 80)")]
         [Display(Name = "Fourth line of your address", Order = 14)]
         public string AddressLine4 { get; set; }
-
-        [RegularExpression(ServiceCommon.RegexPatterns.Other.AddressString, ErrorMessage = "Fifth line of your address contains invalid characters")]
-        [StringLength(80, ErrorMessage = "Fifth line of your address is too long (max. 80)")]
-        [Display(Name = "Fifth line of your address", Order = 15)]
-        public string AddressLine5 { get; set; }
-
+        
         public string AddressId { get; set; }
 
         [BFPOAddress(DependsOn = "HomePostCode", DependsOnPropertyForAttribute = "HomePostCode",

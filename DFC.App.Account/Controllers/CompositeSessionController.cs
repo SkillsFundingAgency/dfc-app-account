@@ -1,4 +1,5 @@
-﻿using DFC.App.Account.Models;
+﻿using System.Collections.Generic;
+using DFC.App.Account.Models;
 using DFC.App.Account.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,7 @@ namespace DFC.App.Account.Controllers
         [Route("/bodytop/[controller]/{id?}")]
         public virtual IActionResult BodyTop()
         {
+            
             return View(ViewModel);
         }
 
@@ -43,6 +45,13 @@ namespace DFC.App.Account.Controllers
         [Route("/breadcrumb/[controller]/{id?}")]
         public virtual IActionResult Breadcrumb()
         {
+            var pagesThatDontNeedBreadCrumbs = new List<CompositeViewModel.PageId>
+            {
+                CompositeViewModel.PageId.Home, CompositeViewModel.PageId.DeleteAccount, CompositeViewModel.PageId.SessionTimeout
+            };
+
+            ViewModel.ShowBreadCrumb = !pagesThatDontNeedBreadCrumbs.Contains(ViewModel.Id);
+            
             return View(ViewModel);
         }
 
@@ -59,24 +68,8 @@ namespace DFC.App.Account.Controllers
         {
             return View(ViewModel);
         }
-        protected virtual IActionResult RedirectWithError(string controller, string parameters = "")
-        {
-
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                 parameters = $"&{parameters}";
-            }
-
-            return RedirectTo($"{controller}?errors=true{parameters}");
-        }
-
        
-        protected bool HasErrors()
-        {
-            var errorsString = Request.Query["errors"];
-            var parsed = bool.TryParse(errorsString, out var error);
-            return parsed && error;
-        }
+      
 
         protected IActionResult RedirectTo(string relativeAddress)
         {

@@ -13,5 +13,13 @@ namespace DFC.App.Account.UnitTests.Exception
 
             exception.Message.Should().Be("Test");
         }
+
+        [Test]
+        public void When_UserIsNotValidated_UserNotValidatedException_Is_ThrownWithCorrectMessage()
+        {
+            var exception = new UserNotValidatedException("Test");
+
+            exception.Message.Should().Be("Test");
+        }
     }
 }

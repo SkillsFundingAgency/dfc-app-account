@@ -10,7 +10,6 @@ namespace DFC.App.Account.UnitTests.Models
         {
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
             closeYourAccountCompositeViewModel.Password = "Password";
-            closeYourAccountCompositeViewModel.Reason = "Reason";
         }
     }
 }

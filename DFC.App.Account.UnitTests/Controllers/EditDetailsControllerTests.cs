@@ -1,4 +1,5 @@
-﻿using DFC.App.Account.Application.Common.Enums;
+﻿using System;
+using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
@@ -14,9 +15,9 @@ using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Primitives;
 using NSubstitute.ExceptionExtensions;
 
@@ -44,6 +45,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
             controller.ControllerContext = new ControllerContext
             {
@@ -61,6 +64,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ThenDssCalled()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
             controller.ControllerContext = new ControllerContext
             {
@@ -99,8 +104,6 @@ namespace DFC.App.Account.UnitTests.Controllers
                     AddressLine2 = "Line2",
                     AddressLine3 = "Line3",
                     AddressLine4 = "Line4",
-                    AddressLine5 = "Line5",
-                    AlternativePostCode = "SSSS",
                     DateOfBirth = null,
                     DateOfBirthDay = "05",
                     DateOfBirthMonth = "Oct",
@@ -165,6 +168,8 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenSaveDataPostedAndFormHasErrors_ThenDateShouldNotSaved()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
                 _dssReader, _dssWriter)
             {
@@ -195,8 +200,35 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
+        public async Task WhenSaveDataPostedWithMobilePreferenceAndFormIsValid_ThenDateShouldBeSaved()
+        {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer
+            {
+                Contact = new Contact()
+            });
+
+            EditDetailsCompositeViewModel editDetailVm = GetViewModel();
+            editDetailVm.Identity.ContactDetails.ContactPreference = CommonEnums.Channel.Email;
+            var result = await controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"saveDetails", "saveDetails"}
+            })) as ViewResult;
+            
+            _dssWriter.Received(3);
+        }
+
+        [Test]
         public async Task WhenSaveDataPostedAndFormIsValid_ThenDateShouldBeSaved()
         {
+            var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
                 _dssReader, _dssWriter)
             {
@@ -214,31 +246,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             
             _dssWriter.Received(3);
         }
-
-        [Test]
-        public async Task WhenSaveDataPostedAndFormIsValidAndEmailIsUpdated_ThenDateShouldBeSaved()
-        {
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
-            {
-                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-            };
-            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer
-            {
-                Contact = new Contact
-                {
-                    EmailAddress = "test"
-                }
-            });
-
-            var result = await controller.Body(GetViewModel(), new FormCollection(new Dictionary<string, StringValues>
-            {
-                {"saveDetails", "saveDetails"}
-            })) as RedirectResult;
-
-            result.Should().NotBeNull();
-            result.Url.Should().Be("/your-account/your-details?logout=true");
-        }
+ 
 
         [Test]
         public async Task WhenFindAddressPostedAndPostcodeIsNotValid_ThenAddressServiceNotCalledAndModelIsReturnedWithError()
@@ -478,7 +486,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var viewModel = new EditDetailsCompositeViewModel();
            viewModel.GetErrorClass("test", controller.ViewData.ModelState).Should().NotBeNullOrEmpty();
         }
-
+        
         [Test]
         public void WhenGetErrorClassCalledWithError_ReturnEmptyString()
         {
@@ -491,6 +499,34 @@ namespace DFC.App.Account.UnitTests.Controllers
             var viewModel = new EditDetailsCompositeViewModel();
             viewModel.GetErrorClass("test", controller.ViewData.ModelState).Should().BeNullOrEmpty();
         }
+
+        [Test]
+        public void WhenGetFormGroupErrorClassCalledWithError_ReturnClass()
+        {
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+            controller.ModelState.AddModelError("test", "test");
+            var viewModel = new EditDetailsCompositeViewModel();
+            viewModel.GetFormGroupErrorClass("test", controller.ViewData.ModelState).Should().NotBeNullOrEmpty();
+        }
+
+        [Test]
+        public void WhenGetFormGroupErrorClassCalledWithError_ReturnEmptyString()
+        {
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+
+            var viewModel = new EditDetailsCompositeViewModel();
+            viewModel.GetFormGroupErrorClass("test", controller.ViewData.ModelState).Should().BeNullOrEmpty();
+        }
+
+
         private EditDetailsCompositeViewModel GetViewModel()
         {
             var editViewModel = new EditDetailsCompositeViewModel();
@@ -516,8 +552,6 @@ namespace DFC.App.Account.UnitTests.Controllers
                     AddressLine2 = "Line2",
                     AddressLine3 = "Line3",
                     AddressLine4 = "Line4",
-                    AddressLine5 = "Line5",
-                    AlternativePostCode = "SSSS",
                     DateOfBirth = null,
                     DateOfBirthDay = "05",
                     DateOfBirthMonth = "Oct",

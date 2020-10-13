@@ -1,12 +1,15 @@
-using DFC.App.Account.Helpers;
+using DFC.App.Account.Application.Common.Services;
 using DFC.App.Account.Models;
+using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
+using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -14,13 +17,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using DFC.App.Account.Models.AddressSearch;
-using DFC.App.Account.Services.Interfaces;
-using DFC.App.Account.Application.Common.Services;
-using DFC.App.Account.Services.AzureB2CAuth.Interfaces;
-using DFC.App.Account.Services.AzureB2CAuth;
+using System.Text;
+using System.Threading.Tasks;
+using DFC.App.Account.Services.Auth;
+using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.Services.Auth.Models;
+using DFC.Personalisation.Common.Helpers;
 
 namespace DFC.App.Account
 {
@@ -43,52 +48,77 @@ namespace DFC.App.Account
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
-            services.AddScoped<IAddressSearchService, GetAddressIoSearchService>();
+            services.AddScoped<IAddressSearchService, AddressSearchService>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.Configure<DssSettings>(Configuration.GetSection(nameof(DssSettings)));
             services.Configure<CompositeSettings>(Configuration.GetSection(nameof(CompositeSettings)));
+            services.Configure<ActionPlansSettings>(Configuration.GetSection(nameof(ActionPlansSettings)));
             services.Configure<AddressSearchServiceSettings>(
                 Configuration.GetSection(nameof(AddressSearchServiceSettings)));
             services.Configure<ShcSettings>(Configuration.GetSection(nameof(ShcSettings)));
-
+            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             services.AddScoped<IOpenIDConnectClient, AzureB2CAuthClient>();
             services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
+            
+            var authSettings = new AuthSettings();
+            var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
-            //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //.AddJwtBearer(cfg =>
-            //{
-            //    cfg.TokenValidationParameters =
-            //            new TokenValidationParameters
-            //            {
-            //                ValidateIssuer = true,
-            //                ValidateAudience = true,
-            //                ValidateIssuerSigningKey = true,
+            Configuration.GetSection("AuthSettings").Bind(authSettings);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters =
+                        new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.Zero,
+                            ValidIssuer = authSettings.Issuer,
+                            ValidAudience = authSettings.ClientId,
+                            IssuerSigningKey =
+                                new SymmetricSecurityKey(
+                                    Encoding.ASCII.GetBytes(authSettings.ClientSecret)),
+                        };
+                    cfg.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Redirect(appPath + "/session-timeout");
+                            }
+                            else
+                            {
+                                context.Response.Redirect(authSettings.SignInUrl);
+                            }
+                            return Task.CompletedTask;
+                            
+                            
+                        },
+                       OnChallenge = context =>
+                        {
+                           context.Response.Redirect(authSettings.SignInUrl);
+                           context.HandleResponse();
+                           return Task.CompletedTask;
+                        }
+                        
 
-            //                  /*
-            //                   * if ValidateLifetime is set to true and the jwt is expired according to to both the ClockSkew and also the expiry on the jwt,then token is invalid
-            //                   * This will mark the User.IsAuthenticated as false
-            //                  */
-            //                ValidateLifetime = true,
-            //                ClockSkew = TimeSpan.FromMinutes(1),
+                    };
+                });
 
-            //                ValidIssuer = Configuration["TokenProviderOptions:Issuer"],
-            //                ValidAudience = Configuration["TokenProviderOptions:ClientId"],
-            //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenProviderOptions:ClientSecret"])),
-            //            };
-            //});
+            services.AddSession();
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                     new HyphenControllerTransformer()));
-            });
-            //services.AddRazorPages()
-            //    .AddViewOptions(options =>
-            //    {
-            //        options.HtmlHelperOptions.ClientValidationEnabled = false;
-            //    });
+            }).AddViewOptions(options =>
+                options.HtmlHelperOptions.ClientValidationEnabled = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +131,7 @@ namespace DFC.App.Account
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
+            app.UseSession();  
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler(errorApp =>
@@ -127,13 +158,15 @@ namespace DFC.App.Account
                 endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
                 
                 endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new {controller = "deleteAccount", action = "body"});
-                endpoints.MapControllerRoute("deleteAccountBody",  "/body/delete-account", new {controller = "deleteAccount", action = "body"});
 
                 endpoints.MapControllerRoute("confirmDelete", appPath + "/confirm-delete", new { controller = "confirmDelete", action = "body" });
                 endpoints.MapControllerRoute("confirmDeleteBody", "/body/confirm-delete", new { controller = "confirmDelete", action = "body" });
 
                 endpoints.MapControllerRoute("shcDeleted", appPath + "/shc-deleted", new { controller = "shcDeleted", action = "body" });
                 endpoints.MapControllerRoute("shcDeletedBody", "/body/shc-deleted", new { controller = "shcDeleted", action = "body" });
+
+                endpoints.MapControllerRoute("authSuccess", appPath + "/authSuccess", new { controller = "AuthSuccess", action = "body" });
+                endpoints.MapControllerRoute("authSuccessBody", "/body/authSuccess", new { controller = "AuthSuccess", action = "body" });
 
                 endpoints.MapControllers();
             });

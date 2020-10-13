@@ -1,24 +1,27 @@
-﻿using System;
+﻿using DFC.App.Account.Application.Common.Enums;
 using DFC.App.Account.Application.Common.Models;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.DSS.Exceptions;
+using DFC.App.Account.Services.DSS.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.Account.Application.Common.Enums;
-using DFC.App.Account.Services.DSS.Exceptions;
-using DFC.App.Account.Services.DSS.Interfaces;
-using DFC.App.Account.Services.DSS.Models;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
 {
+    [Authorize]
     public class EditYourDetailsController : CompositeSessionController<EditDetailsCompositeViewModel>
     {
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
@@ -35,20 +38,21 @@ namespace DFC.App.Account.Controllers
             _dssWriter = dssWriter;
         }
 
-        [Route("/body/edit-your-details")]
+        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
         public override async Task<IActionResult> Body()
         {
-            //remove after auth configured
-            var customerDetails = await _dssReader.GetCustomerData("ac78e0b9-950a-407a-9f99-51dc63ce699a");
+            var customer = await GetCustomerDetails();
+            var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
             ViewModel.Identity = MapCustomerToCitizenIdentity(customerDetails);
 
             return await base.Body();
         }
 
-        [Route("/body/edit-your-details")]
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<IActionResult> Body(EditDetailsCompositeViewModel viewModel, IFormCollection formCollection)
         {
+            var customer = await GetCustomerDetails();
             var additionalData = GetEditDetailsAdditionalData(formCollection);
             viewModel.Identity.MarketingPreferences = new MarketingPreferences
             {
@@ -69,12 +73,12 @@ namespace DFC.App.Account.Controllers
             else if (!string.IsNullOrWhiteSpace(additionalData.SaveDetails))
             {
 
-                var customerDetails = await _dssReader.GetCustomerData("ac78e0b9-950a-407a-9f99-51dc63ce699a");
+                var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
                 if (ModelState.IsValid)
                 {
                     try
                     {
-
+                        
                         string dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
                         string dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
                         string dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
@@ -99,11 +103,9 @@ namespace DFC.App.Account.Controllers
                             viewModel.Identity.PersonalDetails.DateOfBirth = null;
                         }
 
-                        var existingEmail = customerDetails.Contact.EmailAddress;
                         var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-
                         await _dssWriter.UpdateCustomerData(updatedDetails);
-
+                        
                         var addressToUpdate = string.IsNullOrEmpty(viewModel.Identity.PersonalDetails.AddressId)
                             ? updatedDetails.Addresses.FirstOrDefault(x => string.IsNullOrEmpty(x.AddressId))
                             : updatedDetails.Addresses.FirstOrDefault(x =>
@@ -111,17 +113,17 @@ namespace DFC.App.Account.Controllers
 
                         if (addressToUpdate != null)
                         {
-                            await _dssWriter.UpsertCustomerAddressData(addressToUpdate, updatedDetails.CustomerId);
+                            //await _dssWriter.UpsertCustomerAddressData(addressToUpdate, updatedDetails.CustomerId);
                         }
 
-                        customerDetails.Contact.LastModifiedDate = DateTime.UtcNow;
-                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
+                        updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
 
-                        if (existingEmail != viewModel.Identity.ContactDetails.ContactEmail)
+                        if (updatedDetails.Contact.PreferredContactMethod == CommonEnums.Channel.Mobile)
                         {
-                            //Auth endpoint needed here
-                            return new RedirectResult("/your-account/your-details?logout=true", false);
+                            updatedDetails.Contact.MobileNumber = updatedDetails.Contact.AlternativeNumber;
                         }
+
+                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
                         return new RedirectResult("/your-account/your-details", false);
                     }
@@ -196,9 +198,8 @@ namespace DFC.App.Account.Controllers
                         viewModel.Identity.PersonalDetails.AddressLine2 = additionalData.SelectedAddress.Line2;
                         viewModel.Identity.PersonalDetails.AddressLine3 = additionalData.SelectedAddress.Line3;
                         viewModel.Identity.PersonalDetails.AddressLine4 = additionalData.SelectedAddress.Line4;
-                        viewModel.Identity.PersonalDetails.AddressLine5 = additionalData.SelectedAddress.Line5;
-                        viewModel.Identity.PersonalDetails.HomePostCode = additionalData.SelectedAddress.PostalCode;
                         viewModel.Identity.PersonalDetails.Town = additionalData.SelectedAddress.City;
+                        viewModel.Identity.PersonalDetails.HomePostCode = additionalData.SelectedAddress.PostalCode;
                     }
                 }
                 catch
@@ -235,13 +236,12 @@ namespace DFC.App.Account.Controllers
 
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
-            customer.Contact.EmailAddress = identity.ContactDetails.ContactEmail;
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
             customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
-            customer.OptInMarketResearch = identity.MarketingPreferences.MarketingOptIn;
+            customer.OptInUserResearch = identity.MarketingPreferences.MarketingOptIn;
 
             customer.DateofBirth = identity.PersonalDetails.DateOfBirth;
             customer.FamilyName = identity.PersonalDetails.FamilyName;
@@ -264,9 +264,8 @@ namespace DFC.App.Account.Controllers
                 address.Address2 = identity.PersonalDetails.AddressLine2;
                 address.Address3 = identity.PersonalDetails.AddressLine3;
                 address.Address4 = identity.PersonalDetails.AddressLine4;
-                address.Address5 = identity.PersonalDetails.AddressLine5;
+                address.Address5 = identity.PersonalDetails.Town;
                 address.PostCode = identity.PersonalDetails.HomePostCode;
-                address.AlternativePostCode = identity.PersonalDetails.AlternativePostCode;
                 address.LastModifiedDate = DateTimeOffset.Now;
                 address.EffectiveFrom = DateTimeOffset.Now;
             }
@@ -278,9 +277,8 @@ namespace DFC.App.Account.Controllers
                     Address2 = identity.PersonalDetails.AddressLine2,
                     Address3 = identity.PersonalDetails.AddressLine3,
                     Address4 = identity.PersonalDetails.AddressLine4,
-                    Address5 = identity.PersonalDetails.AddressLine5,
+                    Address5 = identity.PersonalDetails.Town,
                     PostCode = identity.PersonalDetails.HomePostCode,
-                    AlternativePostCode = identity.PersonalDetails.AlternativePostCode,
                     LastModifiedDate = DateTimeOffset.Now,
                     EffectiveFrom = DateTimeOffset.Now,
 
@@ -316,10 +314,9 @@ namespace DFC.App.Account.Controllers
                     AddressLine2 = currentAddress?.Address2,
                     AddressLine3 = currentAddress?.Address3,
                     AddressLine4 = currentAddress?.Address4,
-                    AddressLine5 = currentAddress?.Address5,
+                    Town = currentAddress?.Address5,
                     HomePostCode = currentAddress?.PostCode,
                     AddressId = currentAddress?.AddressId,
-                    AlternativePostCode = currentAddress?.AlternativePostCode,
                     DateOfBirth = customer.DateofBirth,
                     DateOfBirthDay = customer.DateofBirth?.Day.ToString(),
                     DateOfBirthMonth = customer.DateofBirth?.Month.ToString(),

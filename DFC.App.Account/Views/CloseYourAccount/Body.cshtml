@@ -11,49 +11,31 @@ else
 {
     <title>@Model.PageTitle</title>
 }
-<div class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
-    
+<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <partial name="~/ViewComponents/ErrorSummary/ErrorSummaryComponent.cshtml" />
-           
-            <form action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group" method="post">
 
+            <form id="@Model.GetElementId("form","closeYourAccount")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.CloseYourAccount" class="govuk-form-group validationOnClient " method="post">
+
+                @Html.HiddenFor(model => model.CustomerId)
                 <govukHeadingH1 text="@Model.PageHeading"></govukHeadingH1>
                 <p>
-                    Closing your account means we'll delete all of your personal information and any of the following that are stored in your account:
+                    Closing your account means we'll delete all of your personal information and any adviser created action plans.
                 </p>
 
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>CVs</li>
-                    <li>Skills health check reports</li>
-                    <li>adviser created action plans</li>
-                    <li>personal action plans</li>
-                    <li>saved course searches</li>
-                </ul>
                 <p>
-                    It will also mean that advisers won't be able to access any
-                    information about you that you've provided to
-                    careers advisers face-to-face or over the phone.
+                    It will also mean that advisers won't be able to access any information about you that you've provided to careers advisers face-to-face or over the phone.
                 </p>
-                <govukLabel id="lablereason" text="Tell us why you want to close your account" for="Reason"></govukLabel>
-                <div class="govuk-form-group
-             @((!ViewData.ModelState.IsValid && ViewData.ModelState[Html.NameFor(m => m.Reason).ToString()].Errors.Any()) ? " govuk-form-group--error" : "")
-             @HtmlExtensions.GetClass(Html.NameFor(m => m.Reason).ToString(), ViewData.ModelState)">
-
-                    @Html.ValidationMessageFor(model => model.Reason, null, new { @class = "govuk-error-message" })
-                    @Html.TextAreaFor(model => model.Reason, new { @class = "govuk-textarea", ariaRequired = "true", cols = "50", rows = "10", data_Fieldgroup = "DetailsGroup" })
-                    <p id="textdetailscounter" class="hint" aria-live="polite" aria-atomic="false">(Limit is 250 characters)</p>
-                </div>
 
                 <h2 class="heading-medium">Confirm account closure</h2>
                 <p>Enter your password to close your account.</p>
-                <div class="govuk-form-group
-                     @((!ViewData.ModelState.IsValid && ViewData.ModelState["password"].Errors.Any()) ? "govuk-form-group--error" : "") @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)">
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")" @HtmlExtensions.GetClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)>
+
                     <govukLabel id="lablepassword" text="Password" for="password"></govukLabel>
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "govuk-error-message" })
 
-                    @Html.PasswordFor(model => model.Password, new { id = "password", @class = "govuk-input govuk-input--width-20" })
+                    @Html.PasswordFor(model => model.Password, new { id = "password", @class = $"govuk-input govuk-input--width-20 {Model.GetErrorClass(Html.NameFor(m => m.Password).ToString(), ViewData.ModelState)}" })
                 </div>
                 <br />
                 <div class="govuk-form-group">
@@ -72,3 +54,5 @@ else
         </div>
     </div>
 </div>
+
+

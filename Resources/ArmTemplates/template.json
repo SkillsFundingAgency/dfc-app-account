@@ -23,16 +23,13 @@
             "defaultValue": ""
         },
         "aspInstances": {
-            "type": "int",
-            "defaultValue": 2
+            "type": "int"
         },
         "aspSize": {
-            "type": "string",
-            "defaultValue": ""
+            "type": "string"
         },
         "aspTier": {
-            "type": "string",
-            "defaultValue": ""
+            "type": "string"
         },
         "cdnUrl": {
             "type": "string"
@@ -83,12 +80,36 @@
         },
         "ShcSettingsLinkUrl": {
             "type": "string"
+        },
+        "OIDCSettingsPwdVerificationClientId": {
+            "type": "string"
+        },
+        "OIDCSettingsTokenEndPoint": {
+            "type": "string"
+        },
+        "AuthSettingsIssuer": {
+            "type": "string"
+        },
+        "AuthSettingsClientSecret": {
+            "type": "string"
+        },       
+        "AuthSettingsClientId": {
+            "type": "string"
+        },
+        "AddressSearchServiceSettingsBaseUrl": {
+            "type": "string"
+        },
+        "AddressSearchServiceSettingsKey": {
+            "type": "string"
+        },       
+        "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "type": "string"
         }
     },
     "variables": {
         "productionEnvironment": "[or(equals(parameters('environment'), 'PP'), equals(parameters('Environment'), 'PRD'))]",
-        "appServicePlanName": "[if(greater(length(parameters('sharedAppServicePlanName')), 0), parameters('sharedAppServicePlanName'), concat(variables('resourcePrefix'), '-asp'))]",
-        "appServicePlanResourceGroup": "[if(greater(length(parameters('SharedAppServicePlanResourceGroup')), 0), parameters('SharedAppServicePlanResourceGroup'), resourceGroup().name)]",
+        "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
+        "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
         "cosmosDbCollectionPartitionKey": "/PartitionKey",
         "cosmosDbDatabaseName": "dfc-app-account",
@@ -123,7 +144,6 @@
             "apiVersion": "2017-05-10",
             "name": "[variables('appServicePlanName')]",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[not(equals(parameters('sharedAppServicePlanName'), variables('appServicePlanName')))]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -218,7 +238,7 @@
                             },
                             {
                                 "name": "DssSettings__CustomerApiVersion",
-                                "value": "v2"
+                                "value": "v3"
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiUrl",
@@ -226,14 +246,22 @@
                             },
                             {
                                 "name": "DssSettings__CustomerContactDetailsApiVersion",
-                                "value": "v1"
+                                "value": "v2"
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiUrl",
-                                "value": "[concat(parameters('apimDSSProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses')]"
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/addresses/api/Customers/{customerId}/Addresses/')]"
                             },
                             {
                                 "name": "DssSettings__CustomerAddressDetailsApiVersion",
+                                "value": "v2"
+                            },
+                            {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/digitalidentities/api/customer/{customerId}')]"
+                            },
+                            {
+                                "name": "DssSettings__DigitalIdentitiesPatchByCustomerIdApiVersion",
                                 "value": "v2"
                             },
                             {
@@ -242,7 +270,19 @@
                             },
                             {
                                 "name": "DssSettings__AccountsTouchpointId",
-                                "value": "9000000000"
+                                "value": "0000000997"
+                            },
+                            {
+                                "name": "DssSettings__ActionPlansApiUrl",
+                                "value": "[concat(parameters('apimDSSProxyAddress'), '/actionplans/api/Customers/{customerId}/ActionPlans/')]"
+                            },
+                            {
+                                "name": "DssSettings__ActionPlansApiVersion",
+                                "value": "v3"
+                            },
+                            {
+                                "name": "ActionPlansSettings__Url",
+                                "value": "/action-plans"
                             },
                             {
                                 "name": "CompositeSettings__Path",
@@ -275,13 +315,66 @@
                             {
                                 "name": "ShcSettings__LinkUrl",
                                 "value": "[parameters('ShcSettingsLinkUrl')]"
+                            },
+                            {
+                                "name": "OIDCSettings__PwdVerificationClientId",
+                                "value": "[parameters('OIDCSettingsPwdVerificationClientId')]"
+                            },
+                            {
+                                "name": "OIDCSettings__TokenEndPoint",
+                                "value": "[parameters('OIDCSettingsTokenEndPoint')]"
+                            },
+                            {
+                                "name": "AuthSettings__Issuer",
+                                "value": "[parameters('AuthSettingsIssuer')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientSecret",
+                                "value": "[parameters('AuthSettingsClientSecret')]"
+                            },
+                            {
+                                "name": "AuthSettings__ClientId",
+                                "value": "[parameters('AuthSettingsClientId')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignInUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn')]"
+                            },
+                            {
+                                "name": "AuthSettings__SignOutUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/signOut')]"
+                            },
+                            {
+                                "name": "AuthSettings__RegisterUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/register')]"
+                            },
+                            {
+                                "name": "AuthSettings__ResetPasswordUrl",
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/resetPassword')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__FindAddressesBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Find/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__RetrieveAddressBaseUrl",
+                                "value": "[concat(parameters('AddressSearchServiceSettingsBaseUrl'), '/CapturePlus/Interactive/Retrieve/2.1/json.ws?')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__Key",
+                                "value": "[parameters('AddressSearchServiceSettingsKey')]"
+                            },
+                            {
+                                "name": "AddressSearchServiceSettings__AddressIdentifierPattern",
+                                "value": "[parameters('AddressSearchServiceSettingsAddressIdentifierPattern')]"
                             }
                         ]
                     }
                 }
             },
             "dependsOn": [
-                "[variables('webAppInsightsName')]"
+                "[variables('webAppInsightsName')]",
+                "[variables('appServicePlanName')]"
             ]
         },
         {

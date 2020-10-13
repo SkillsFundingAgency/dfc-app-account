@@ -182,5 +182,20 @@ namespace DFC.App.Account.UnitTests.ViewModels
             // Assert.
             itemUnderTest.PageTitle.Should().Be("Home | Your account | National Careers Service");
         }
+
+        [Test]
+        public void When_ShowBreadCrumbFalse_Then_ShowBreadCrumbIsFalse()
+        {
+            // Arrange.
+            var page = new HomeCompositeViewModel();
+           
+
+            // Act.
+            page.ShowBreadCrumb=false;
+
+            // Assert.
+            page.ShowBreadCrumb.Should().Be(false);
+        }
+        
     }
 }

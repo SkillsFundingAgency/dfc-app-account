@@ -1,33 +1,36 @@
-﻿using DFC.App.Account.Services.DSS.Interfaces;
+﻿using System.Linq;
+using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DFC.App.Account.Exception;
+using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IDssReader _dssReader;
-
-        public AuthService(IDssReader dssReader)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AuthService(IDssReader dssReader,IHttpContextAccessor httpContextAccessor)
         {
             _dssReader = dssReader;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Customer> GetCustomer(ClaimsPrincipal user)
         {
-            //var userId = user.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            var userId = user.Claims.FirstOrDefault(x => x.Type == "CustomerId")?.Value;
 
-            //if (userId == null)
-            //{
-            //    throw new NoUserIdInClaimException("Unable to locate userID");
-            //}
+            if (userId == null)
+            {
+                throw new NoUserIdInClaimException("Unable to locate userID");
+            }
 
-            //only needed while we stub the Auth Will throw error if unknown customer id
 
-           var  userId = "ac78e0b9-950a-407a-9f99-51dc63ce699a";
 
-           return await _dssReader.GetCustomerData(userId);
+
+            return await _dssReader.GetCustomerData(userId);
         }
     }
 }

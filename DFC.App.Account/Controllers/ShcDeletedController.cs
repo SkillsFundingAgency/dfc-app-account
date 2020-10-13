@@ -1,15 +1,17 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using Dfc.ProviderPortal.Packages;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
-using Dfc.ProviderPortal.Packages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account.Controllers
 {
+    [Authorize]
     public class ShcDeletedController : CompositeSessionController<ShcDeletedCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
@@ -19,12 +21,10 @@ namespace DFC.App.Account.Controllers
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
         }
-        [HttpGet]
         public override async Task<IActionResult> Body()
         {
             return await base.Body();
         }
-        [HttpGet]
         [Route("/body/[controller]/{*id}")]
         public async Task<IActionResult> Body(string id)
         {

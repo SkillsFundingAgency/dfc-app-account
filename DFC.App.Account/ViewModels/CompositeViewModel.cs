@@ -34,6 +34,7 @@ namespace DFC.App.Account.ViewModels
             public static PageId DeleteAccount { get; } = new PageId("delete-account");
             public static PageId ConfirmDelete { get; } = new PageId("confirm-delete");
             public static PageId ShcDeleted { get; } = new PageId("shc-deleted");
+            public static PageId AuthSuccess { get; } = new PageId("auth-success");
 
         }
 
@@ -57,7 +58,9 @@ namespace DFC.App.Account.ViewModels
 
         public string PageTitle { get; set;}
         public string PageHeading { get; set;}
+        public string Name { get; set; }
 
+        public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
 
         protected CompositeViewModel(PageId pageId, string pageHeading)

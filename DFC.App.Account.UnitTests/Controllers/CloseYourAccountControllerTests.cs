@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using DFC.App.Account.Application.Common;
 using DFC.App.Account.Controllers;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.Auth.Interfaces;
+using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +21,28 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
+        private IOpenIDConnectClient _openIdConnectClient;
 
         [SetUp]
         public void Init()
         {
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
+            _openIdConnectClient = Substitute.For<IOpenIDConnectClient>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var customer = new Customer
+            {
+                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
+                Contact = new Contact
+                {
+                    EmailAddress = "user"
+                }
+            };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -41,9 +57,9 @@ namespace DFC.App.Account.UnitTests.Controllers
 
 
         [Test]
-        public void WhenBodyCalledWithInvalidModelState_ReturnToViewWithError()
+        public async Task WhenBodyCalledWithInvalidModelState_ReturnToViewWithError()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -51,14 +67,48 @@ namespace DFC.App.Account.UnitTests.Controllers
                 HttpContext = new DefaultHttpContext()
             };
             controller.ModelState.AddModelError("password","Invalid password");
-            var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
+            var result = await controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
             result.ViewData.ModelState.IsValid.Should().BeFalse();
         }
 
         [Test]
-        public void WhenBodyCalled_RedirectToConfirmDelete()
+        public async Task WhenBodyCalledWithInvalidPassword_ReturnToViewWithError()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService);
+            var customer = new Customer
+            {
+                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
+                Contact = new Contact
+                {
+                    EmailAddress = "user"
+                }
+            };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
+            _openIdConnectClient.VerifyPassword("user","password").ReturnsForAnyArgs(Result.Fail("Failed"));
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
+            var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            var result = await controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
+            result.ViewData.ModelState.IsValid.Should().BeFalse();
+            result.ViewData.ModelState["Password"].Errors[0].ErrorMessage.Should().Be("Wrong password. Try again.");
+        }
+
+        [Test]
+        public async Task WhenBodyCalled_RedirectToConfirmDelete()
+        {
+            var customer = new Customer
+            {
+                CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"),
+                Contact = new Contact
+                {
+                    EmailAddress = "user"
+                }
+            };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -66,7 +116,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 HttpContext = new DefaultHttpContext()
             };
             
-            var result =  controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
+            var result = await controller.Body(closeYourAccountCompositeViewModel) as ViewResult;
             result.Should().BeOfType<ViewResult>();
             result.ViewName = "ConfirmDeleteAccount";
             
