@@ -282,7 +282,7 @@
                             },
                             {
                                 "name": "ActionPlansSettings__Url",
-                                "value": "/action-plans"
+                                "value": "/action-plans/home"
                             },
                             {
                                 "name": "CompositeSettings__Path",
