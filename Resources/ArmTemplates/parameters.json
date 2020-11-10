@@ -65,6 +65,9 @@
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
         },
+        "clientAffinity": {
+            "value": __clientAffinity__
+        },
         "ShcSettingsUrl": {
             "value": "__ShcSettingsUrl__"
         },

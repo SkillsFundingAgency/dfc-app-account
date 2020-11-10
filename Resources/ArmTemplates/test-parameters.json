@@ -56,6 +56,9 @@
         "enableAlerts": {
             "value": false
         },
+        "clientAffinity": {
+            "value": false
+        }
         "ShcSettingsUrl": {
             "value": "https://foo"
         },
