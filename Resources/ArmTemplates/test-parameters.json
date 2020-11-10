@@ -58,7 +58,7 @@
         },
         "clientAffinity": {
             "value": false
-        }
+        },
         "ShcSettingsUrl": {
             "value": "https://foo"
         },
