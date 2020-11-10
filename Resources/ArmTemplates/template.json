@@ -63,6 +63,9 @@
         "accountAppDatabaseNeedsCreation": {
             "type": "bool"
         },
+        "clientAffinity": {
+            "type": "bool"
+        },
         "accountAppDatabaseThroughput": {
             "type": "int"
         },
@@ -194,6 +197,9 @@
                     },
                     "appServiceType": {
                         "value": "app"
+                    },
+                    "clientAffinity": {
+                        "value": "[parameters('clientAffinity')]"
                     },
                     "deployStagingSlot": {
                         "value": false
