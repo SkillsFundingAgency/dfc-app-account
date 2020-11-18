@@ -58,9 +58,6 @@ namespace DFC.App.Account.Controllers
             var customer = await GetCustomerDetails();
             ViewModel.ResetPasswordUrl = _authSettings.ResetPasswordUrl;
             ViewModel.ActionPlansUrl = _actionPlansSettings.Url;
-            //Hard coded value - Needs removing upon account, and DSS integration
-            //Test LLAId with docs:200010216
-            ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
             ViewModel.ActionPlans = await _dssReader.GetActionPlans(customer.CustomerId.ToString());
             return await base.Body();
         }

@@ -11,10 +11,8 @@ namespace DFC.App.Account.ViewModels
         public HomeCompositeViewModel()
             : base(PageId.Home, "Home")
         {
-            ShcDocuments = new List<ShcDocument>();
         }
 
-        public List<ShcDocument> ShcDocuments { get; set; }
         public IList<ActionPlan> ActionPlans { get; set; }
         public String ResetPasswordUrl { get; set; }
         public String ActionPlansUrl { get; set; }
