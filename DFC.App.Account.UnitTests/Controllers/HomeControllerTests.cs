@@ -135,15 +135,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
-        public void AssigningViewModelValues()
-        {
-            var viewModel = new HomeCompositeViewModel();
-            viewModel.ShcDocuments.Add(new ShcDocument());
-            var item = viewModel.ShcDocuments[0];
-            item.Should().NotBeNull();
-        }
-
-        [Test]
         public void When_RegisterCalled_Return_Redirect()
         {
             var result = _controller.Register();

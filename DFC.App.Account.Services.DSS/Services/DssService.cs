@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -67,6 +68,10 @@ namespace DFC.App.Account.Services.DSS.Services
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
 
+
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerApiUrl} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                 result = await _restClient.PostAsync<Customer>(_dssSettings.Value.CustomerApiUrl, request);
             }
 
@@ -87,6 +92,9 @@ namespace DFC.App.Account.Services.DSS.Services
                     MediaTypeNames.Application.Json);
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
 
                 result = await _restClient.PatchAsync<Customer>(apiPath:$"{_dssSettings.Value.CustomerApiUrl}{customerData.CustomerId}", requestMessage: request);
             }
@@ -116,11 +124,15 @@ namespace DFC.App.Account.Services.DSS.Services
 
             if (string.IsNullOrEmpty(customerData.Contact.ContactId))
             {
-                 await _restClient.PostAsync<object>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()), 
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString())} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+                await _restClient.PostAsync<object>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()), 
                     requestMessage: request);
             }
             else
             {
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()) + customerData.Contact.ContactId} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
                 await _restClient.PatchAsync<object>(apiPath: _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerData.CustomerId.ToString()) + customerData.Contact.ContactId, requestMessage: request);
             }
             
@@ -151,11 +163,15 @@ namespace DFC.App.Account.Services.DSS.Services
                 var x = JsonConvert.SerializeObject(address);
                 if (string.IsNullOrEmpty(address.AddressId))
                 {
+                    _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
+                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
                     result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()),
                         requestMessage: request);
                 }
                 else
                 {
+                    _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
+                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
                     result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()) +
                                                                             address.AddressId, requestMessage: request);
                 }
@@ -175,7 +191,7 @@ namespace DFC.App.Account.Services.DSS.Services
             var request = CreateRequestMessage();
             request.Headers.Remove("version");
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
-
+            
             var customer = await GetCustomerDetail(customerId, request);
             customer.Addresses = await GetCustomerAddressDetails(customerId, request);
             customer.Contact = await GetCustomerContactDetails(customerId, request);
@@ -199,6 +215,10 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
+
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerApiUrl}{customerId} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                 return await _restClient.GetAsync<Customer>($"{_dssSettings.Value.CustomerApiUrl}{customerId}",
                     request);
             }
@@ -215,7 +235,10 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-               
+
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId)} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                 return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId), request);
             }
             catch (Exception e)
@@ -234,6 +257,10 @@ namespace DFC.App.Account.Services.DSS.Services
             {
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.CustomerContactDetailsApiVersion);
+
+                _logger.LogInformation($"call to {_dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerId)} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                 return await _restClient.GetAsync<Contact>(
                     _dssSettings.Value.CustomerContactDetailsApiUrl.Replace(CustomerIdTag, customerId), request)??new Contact();
             }
@@ -258,6 +285,10 @@ namespace DFC.App.Account.Services.DSS.Services
                 {
                     request.Headers.Remove("version");
                     request.Headers.Add("version", _dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiVersion);
+
+                    _logger.LogInformation($"call to {_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
+                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                     await _restClient.DeleteAsync(
                         apiPath: $"{_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())}", request);
                 }
@@ -295,6 +326,9 @@ namespace DFC.App.Account.Services.DSS.Services
                     request.Headers.Remove("version");
                     request.Headers.Add("version", _dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiVersion);
                     
+                    _logger.LogInformation($"call to {_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
+                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                     var result = await _restClient.PatchAsync<object>(
                         apiPath:
                         $"{_dssSettings.Value.DigitalIdentitiesPatchByCustomerIdApiUrl.Replace(CustomerIdTag, customerId.ToString())}",
@@ -324,8 +358,12 @@ namespace DFC.App.Account.Services.DSS.Services
                 var request = CreateRequestMessage();
                 request.Headers.Remove("version");
                 request.Headers.Add("version", _dssSettings.Value.ActionPlansApiVersion);
+                _logger.LogInformation($"call to {_dssSettings.Value.ActionPlansApiUrl.Replace(CustomerIdTag, customerId)} made");
+                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
+
                 var result= await _restClient.GetAsync<IList<ActionPlan>>(_dssSettings.Value.ActionPlansApiUrl.Replace(CustomerIdTag,customerId),
                     request);
+              
 
                 return _restClient.LastResponse.StatusCode == HttpStatusCode.NoContent
                     ? new List<ActionPlan>()

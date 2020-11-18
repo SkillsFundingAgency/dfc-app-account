@@ -134,15 +134,6 @@ namespace DFC.App.Account
             app.UseSession();  
             app.UseHttpsRedirection();
 
-            app.UseExceptionHandler(errorApp =>
-                errorApp.Run(async context =>
-                {
-                    await ErrorService.LogException(context, logger);
-                    context.Response.Redirect(appPath + "/Error");
-                }));
-
-
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
