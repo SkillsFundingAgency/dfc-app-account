@@ -19,6 +19,8 @@ namespace DFC.App.Account.Controllers
         private readonly AuthSettings _authSettings;
         private readonly IDssReader _dssReader;
         private readonly ActionPlansSettings _actionPlansSettings;
+        private readonly ILogger<HomeController> _logger;
+
         public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings)
         :base(compositeSettings, authService)
         {
@@ -27,6 +29,7 @@ namespace DFC.App.Account.Controllers
             _authSettings = authSettings.Value;
             _dssReader = dssReader;
             _actionPlansSettings = actionPlansSettings.Value;
+            _logger = logger;
         }
 
         #region Default Routes
@@ -100,7 +103,11 @@ namespace DFC.App.Account.Controllers
         [Route("/body/{controller}/signout")]
         public IActionResult SignOut(bool accountClosed)
         {
-            return Redirect(accountClosed ? $"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}/your-account/Delete-Account/AccountClosed" : _authSettings.SignOutUrl);
+            var redirectUrl = accountClosed
+                ? $"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}/your-account/Delete-Account/AccountClosed"
+                : _authSettings.SignOutUrl;
+            _logger.LogInformation($"accountClosed: {accountClosed},  Redirecting to {redirectUrl}");
+            return Redirect(redirectUrl);
         }
         #endregion
     }
