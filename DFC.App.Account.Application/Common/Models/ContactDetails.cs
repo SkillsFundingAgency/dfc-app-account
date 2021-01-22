@@ -20,7 +20,7 @@ namespace DFC.App.Account.Application.Common.Models
             FirstRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
             SecondRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactMobilePhone,
             IsAndOperator = false,
-            ErrorMessage = "Enter a valid phone number")]
+            ErrorMessage = "You have selected a contact preference which requires a valid telephone number")]
         [Display(Name = "Phone number", Order = 18)]
         public string TelephoneNumber { get; set; }
 
