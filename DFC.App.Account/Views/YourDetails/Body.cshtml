@@ -26,20 +26,7 @@
                                     @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Date of birth", LabelValue = @Model.CustomerDetails.DateofBirth?.ToString("dd MMMM yyyy") })
 
                                     @await Component.InvokeAsync(nameof(Row), new RowModel() { Label = "Gender", LabelValue = (int)@Model.CustomerDetails.Gender == 99 ? "Not Provided" : Model.CustomerDetails.Gender.GetDisplayName() })
-
-                                    @await Component.InvokeAsync(nameof(Row), new RowModel()
-                                        {
-                                            Label = "Address",
-                                            LabelValue =
-                                                liveAddress != null ?
-                                                    $"<div>{liveAddress.Address1}</div>" +
-                                                    $"<div>{liveAddress.Address2}</div>" +
-                                                    $"<div>{liveAddress.Address3}</div>" +
-                                                    $"<div>{liveAddress.Address4}</div>" +
-                                                    $"<div>{liveAddress.Address5}</div>" +
-                                                    $"<div>{liveAddress.PostCode}</div>"
-                                                    : ""
-                                        })
+                                 
                                 </tbody>
                             </table>
                             <h2 class="heading-medium">Your contact details</h2>
@@ -54,7 +41,7 @@
 
                                     @await Component.InvokeAsync(nameof(Row), new RowModel()
                                {
-                                   Label = "Contact by",
+                                   Label = "Preferred contact method",
                                         LabelValue = Model.CustomerDetails.Contact == null ? "" :
                                             (int)Model.CustomerDetails.Contact.PreferredContactMethod == 99 || (int)Model.CustomerDetails.Contact.PreferredContactMethod == 0 ? "Not known" :
                                                 Model.CustomerDetails.Contact.PreferredContactMethod.ToString()
