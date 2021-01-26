@@ -117,12 +117,7 @@ namespace DFC.App.Account.Controllers
                         }
 
                         updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
-
-                        if (updatedDetails.Contact.PreferredContactMethod == CommonEnums.Channel.Mobile)
-                        {
-                            updatedDetails.Contact.MobileNumber = updatedDetails.Contact.AlternativeNumber;
-                        }
-
+                        
                         await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
                         return new RedirectResult("/your-account/your-details", false);
@@ -237,7 +232,8 @@ namespace DFC.App.Account.Controllers
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
-            customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
+            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber;
+            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
@@ -300,7 +296,8 @@ namespace DFC.App.Account.Controllers
                 {
                     ContactEmail = customer.Contact?.EmailAddress,
                     ContactPreference = customer.Contact?.PreferredContactMethod ?? CommonEnums.Channel.Email,
-                    TelephoneNumber = customer.Contact?.HomeNumber,
+                    HomeNumber = customer.Contact?.HomeNumber,
+                    MobileNumber = customer.Contact?.MobileNumber,
                     TelephoneNumberAlternative = customer.Contact?.AlternativeNumber
                 },
                 MarketingPreferences = new MarketingPreferences

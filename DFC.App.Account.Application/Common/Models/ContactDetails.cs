@@ -12,24 +12,27 @@ namespace DFC.App.Account.Application.Common.Models
         [Display(Name = "Email address", Order = 17)]
         public string ContactEmail { get; set; }
 
-        [MobilePhone(
-            DependsOn = "ContactPreference",
-            ErrorMessage = "You have selected a contact preference which requires a mobile number")]
         [TelephoneNumber(
             DependsOn = "ContactPreference",
-            FirstRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
-            SecondRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactMobilePhone,
+            Regex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
+            Type = CommonEnums.Channel.Phone,
             IsAndOperator = false,
             ErrorMessage = "You have selected a contact preference which requires a valid telephone number")]
         [Display(Name = "Phone number", Order = 18)]
-        public string TelephoneNumber { get; set; }
+        public string HomeNumber { get; set; }
 
-        [MobilePhone(
+        [TelephoneNumber(
             DependsOn = "ContactPreference",
+            Regex = ServiceCommon.RegexPatterns.PhoneNumber.ContactMobilePhone,
+            Type = CommonEnums.Channel.Mobile,
+            IsAndOperator = false,
             ErrorMessage = "You have selected a contact preference which requires a mobile number")]
-        [DoubleRegex(
-            FirstRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
-            SecondRegex = ServiceCommon.RegexPatterns.PhoneNumber.ContactMobilePhone,
+        [Display(Name = "Mobile number", Order = 18)]
+        public string MobileNumber { get; set; }
+
+
+        [PhoneRegex(
+            Regex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
             IsAndOperator = false,
             IsRequired = false,
             ErrorMessage = "Enter a valid phone number")]

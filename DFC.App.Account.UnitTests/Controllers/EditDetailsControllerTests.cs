@@ -88,7 +88,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 {
                     ContactEmail = "ContactEmail",
                     ContactPreference = CommonEnums.Channel.Email,
-                    TelephoneNumber = "8675309",
+                    HomeNumber = "8675309",
                     TelephoneNumberAlternative = "2222"
                 },
                 MarketingPreferences = new MarketingPreferences
@@ -536,7 +536,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 {
                     ContactEmail = "ContactEmail",
                     ContactPreference = CommonEnums.Channel.Email,
-                    TelephoneNumber = "8675309",
+                    HomeNumber = "8675309",
                     TelephoneNumberAlternative = "2222"
                 },
                 MarketingPreferences = new MarketingPreferences

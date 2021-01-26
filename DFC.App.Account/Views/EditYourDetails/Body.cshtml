@@ -162,56 +162,67 @@
         <h2 class="heading-medium">Your contact details</h2>
         <table class="govuk-table" aria-describedby="contact-details-table">
             <tbody class="govuk-table__body">
-            @* <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactEmail, new { @class = "govuk-label" })</th>
-                    <td class="govuk-table__cell">
-                        <span class="govuk-hint">
-                            If you change this you'll be signed out. You'll need to activate your new email address before you can sign in.
-                        </span>
-                        <div class="govuk-form-group  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)">
-                            @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactEmail, null, new { @class = "govuk-error-message" })
-                            @Html.TextBoxFor(model => model.Identity.ContactDetails.ContactEmail,
-                                new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)}" })
+                @* <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactEmail, new { @class = "govuk-label" })</th>
+            <td class="govuk-table__cell">
+                <span class="govuk-hint">
+                    If you change this you'll be signed out. You'll need to activate your new email address before you can sign in.
+                </span>
+                <div class="govuk-form-group  @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)">
+                    @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactEmail, null, new { @class = "govuk-error-message" })
+                    @Html.TextBoxFor(model => model.Identity.ContactDetails.ContactEmail,
+                        new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactEmail).ToString(), ViewData.ModelState)}" })
+                </div>
+                <div class="govuk-form-group"> </div>
+            </td>
+        </tr>
+                *@
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.HomeNumber, new { @class = "govuk-label" })</th>
+                    <td class="govuk-table__cell  ">
+                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.HomeNumber).ToString(), ViewData.ModelState)">
+                            @Html.ValidationMessageFor(model => model.Identity.ContactDetails.HomeNumber, null, new { @class = "govuk-error-message" })
+                            @Html.TextBoxFor(model => model.Identity.ContactDetails.HomeNumber, new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.HomeNumber).ToString(), ViewData.ModelState)}" })
                         </div>
                         <div class="govuk-form-group"> </div>
                     </td>
                 </tr>
-                                *@
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumber, new {@class = "govuk-label"})</th>
-                <td class="govuk-table__cell  ">
-                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)">
-                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumber, null, new {@class = "govuk-error-message"})
-                        @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumber, new {@class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumber).ToString(), ViewData.ModelState)}"})
-                    </div>
-                    <div class="govuk-form-group"> </div>
-                </td>
-            </tr>
 
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative, new {@class = "govuk-label"})</th>
-                <td class="govuk-table__cell   ">
-                    <span class="govuk-hint">
-                        If you remove this phone number, telephone and face-to-face advisers won't be able to contact you on this number anymore.
-                    </span>
-                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)">
-                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, null, new {@class = "govuk-error-message"})
-                        @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, new {@class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)}"})
-                    </div>
-                    <div class="govuk-form-group"> </div>
-                </td>
-            </tr>
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactPreference, new {@class = "govuk-label"})</th>
-                <td class="govuk-table__cell ">
-                    <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)">
-                        @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactPreference, null, new {@class = "govuk-error-message"})
-                        @Html.DropDownListFor(m => m.Identity.ContactDetails.ContactPreference, Html.GetEnumSelectList(Model.Identity.ContactDetails.ContactPreference.GetType()), new {@class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}"})
-                    </div>
-                    <div class="govuk-form-group"> </div>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.MobileNumber, new { @class = "govuk-label" })</th>
+                    <td class="govuk-table__cell  ">
+                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.MobileNumber).ToString(), ViewData.ModelState)">
+                            @Html.ValidationMessageFor(model => model.Identity.ContactDetails.MobileNumber, null, new { @class = "govuk-error-message" })
+                            @Html.TextBoxFor(model => model.Identity.ContactDetails.MobileNumber, new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.MobileNumber).ToString(), ViewData.ModelState)}" })
+                        </div>
+                        <div class="govuk-form-group"> </div>
+                    </td>
+                </tr>
 
-                </td>
-            </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative, new { @class = "govuk-label" })</th>
+                    <td class="govuk-table__cell   ">
+                        <span class="govuk-hint">
+                            If you remove this phone number, telephone and face-to-face advisers won't be able to contact you on this number anymore.
+                        </span>
+                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)">
+                            @Html.ValidationMessageFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, null, new { @class = "govuk-error-message" })
+                            @Html.TextBoxFor(model => model.Identity.ContactDetails.TelephoneNumberAlternative, new { @class = $"govuk-input {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.TelephoneNumberAlternative).ToString(), ViewData.ModelState)}" })
+                        </div>
+                        <div class="govuk-form-group"> </div>
+                    </td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactPreference, new { @class = "govuk-label" })</th>
+                    <td class="govuk-table__cell ">
+                        <div class="govuk-form-group @HtmlExtensions.GetClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)">
+                            @Html.ValidationMessageFor(model => model.Identity.ContactDetails.ContactPreference, null, new { @class = "govuk-error-message" })
+                            @Html.DropDownListFor(m => m.Identity.ContactDetails.ContactPreference, Html.GetEnumSelectList(Model.Identity.ContactDetails.ContactPreference.GetType()), new { @class = $"govuk-select {Model.GetErrorClass(Html.NameFor(m => m.Identity.ContactDetails.ContactPreference).ToString(), ViewData.ModelState)}" })
+                        </div>
+                        <div class="govuk-form-group"> </div>
+
+                    </td>
+                </tr>
             </tbody>
         </table>
 
