@@ -1,18 +1,21 @@
 ﻿using DFC.App.Account.Application.Common.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.Account.Application.Common.CustomAttributes
 {
     // TelephoneNumberAttribute inherits from DoubleRegexAttribute and it's logic is applied in ExtendedDataAnnotationsModelValidatorProvider,
     // where under condition if ContactPreference set to Phone, DoubleRegexAttribute is enforced to be Required and 
     // and the property value is valided against Phone and Mobile Regexes
-    public class TelephoneNumberAttribute : DoubleRegexAttribute
+    [ExcludeFromCodeCoverage]
+    public class TelephoneNumberAttribute : PhoneRegexAttribute
     {
         /// <summary>
         /// Gets or Sets the dependent property for this attribute, this is used by the validation method.
         /// </summary>
         public string DependsOn { get; set; }
+        public CommonEnums.Channel Type { get; set; }
 
         public TelephoneNumberAttribute() : base()
         {
@@ -29,8 +32,8 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
             }
 
             var contactPref = (CommonEnums.Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
-            base.IsRequired = contactPref == CommonEnums.Channel.Phone;
-
+            base.IsRequired = contactPref == Type;
+            
             return base.IsValid(value, validationContext);
         }
     }
