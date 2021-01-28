@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
-using DFC.App.Account.Models;
-using DFC.App.Account.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Models;
+using DFC.App.Account.ViewModels;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
 {
@@ -16,14 +20,19 @@ namespace DFC.App.Account.Controllers
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         private readonly IAuthService _authService;
+        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
+        private readonly Guid _sharedContent;
+
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
         {
             _authService = authService;
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,
-            };  
+            };
+            _sharedContent = config.GetValue<Guid>("SharedContentGuid");
+            _documentService = documentService;
         }
 
         [HttpGet]
@@ -57,9 +66,11 @@ namespace DFC.App.Account.Controllers
 
         [HttpGet]
         [Route("/body/[controller]/{id?}")]
-        public virtual Task<IActionResult> Body()
+        public virtual async Task<IActionResult> Body()
         {
-            return Task.FromResult<IActionResult>(View(ViewModel));
+            var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
+            ViewModel.SharedSideBar = sharedContent?.Content;
+            return View(ViewModel);
         }
 
         [HttpGet]

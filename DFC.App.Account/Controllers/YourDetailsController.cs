@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
 {
@@ -17,8 +20,8 @@ namespace DFC.App.Account.Controllers
 
         private readonly IDssReader _dssService;
 
-        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService)
-            : base(compositeSettings, authService)
+        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, authService, documentService, config)
         {
             _dssService = dssService;
         }
@@ -29,7 +32,7 @@ namespace DFC.App.Account.Controllers
         {
             var customer = await GetCustomerDetails();
             ViewModel.CustomerDetails = await _dssService.GetCustomerData(customer.CustomerId.ToString());
-            return View(ViewModel);
+            return await base.Body();
         }
     }
 }

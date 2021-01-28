@@ -1,7 +1,12 @@
+using AutoMapper;
 using DFC.App.Account.Application.Common.Services;
+using DFC.App.Account.HostedServices;
 using DFC.App.Account.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
+using DFC.App.Account.Services.Auth;
+using DFC.App.Account.Services.Auth.Interfaces;
+using DFC.App.Account.Services.Auth.Models;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
@@ -9,6 +14,17 @@ using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
+using DFC.APP.Account.CacheContentService;
+using DFC.APP.Account.Data.Contracts;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos;
+using DFC.Compui.Cosmos.Contracts;
+using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
+using DFC.Compui.Telemetry;
+using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
+using DFC.Content.Pkg.Netcore.Extensions;
+using DFC.Personalisation.Common.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,33 +38,38 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
-using DFC.App.Account.Services.Auth;
-using DFC.App.Account.Services.Auth.Interfaces;
-using DFC.App.Account.Services.Auth.Models;
-using DFC.Personalisation.Common.Helpers;
 
 namespace DFC.App.Account
 {
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-           
-        }
-
+        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:Account";
+        private readonly IWebHostEnvironment env;
         public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {
+            this.Configuration = configuration;
+            this.env = env;
+
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
+            services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment());
+
+            services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
+            services.AddTransient<ICacheReloadService, CacheReloadService>();
+
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.AddScoped<IAddressSearchService, AddressSearchService>();
+            services.AddAutoMapper(typeof(Startup).Assembly);
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
@@ -62,9 +83,17 @@ namespace DFC.App.Account
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             services.AddScoped<IOpenIDConnectClient, AzureB2CAuthClient>();
             services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
-            
+            services.AddSingleton(Configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
+            services.AddHostedServiceTelemetryWrapper();
+            services.AddSubscriptionBackgroundService(Configuration);
+            services.AddHostedService<CacheReloadBackgroundService>();
             var authSettings = new AuthSettings();
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
+
+            const string AppSettingsPolicies = "Policies";
+            var policyOptions = Configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>() ?? new PolicyOptions();
+            var policyRegistry = services.AddPolicyRegistry();
+            services.AddApiServices(Configuration, policyRegistry);
 
             Configuration.GetSection("AuthSettings").Bind(authSettings);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -88,7 +117,7 @@ namespace DFC.App.Account
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            
+
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
                                 context.Response.Redirect(appPath + "/session-timeout");
@@ -98,16 +127,16 @@ namespace DFC.App.Account
                                 context.Response.Redirect(authSettings.SignInUrl);
                             }
                             return Task.CompletedTask;
-                            
-                            
+
+
                         },
-                       OnChallenge = context =>
-                        {
-                           context.Response.Redirect(authSettings.SignInUrl);
-                           context.HandleResponse();
-                           return Task.CompletedTask;
-                        }
-                        
+                        OnChallenge = context =>
+                         {
+                             context.Response.Redirect(authSettings.SignInUrl);
+                             context.HandleResponse();
+                             return Task.CompletedTask;
+                         }
+
 
                     };
                 });
@@ -131,7 +160,7 @@ namespace DFC.App.Account
 
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
             app.UseStaticFiles();
-            app.UseSession();  
+            app.UseSession();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -139,16 +168,16 @@ namespace DFC.App.Account
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new {controller = "yourDetails", action = "body"});
-                
-                endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new {controller = "closeYourAccount", action = "body"});
-                endpoints.MapControllerRoute("closeAccountBody", "/body/close-your-account", new {controller = "closeYourAccount", action = "body"});
-                
-                
-                endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new {controller = "editYourDetails", action = "body"});
-                endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new {controller = "changePassword", action = "body"});
-                
-                endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new {controller = "deleteAccount", action = "body"});
+                endpoints.MapControllerRoute("yourDetails", appPath + "/your-details", new { controller = "yourDetails", action = "body" });
+
+                endpoints.MapControllerRoute("closeAccount", appPath + "/close-your-account", new { controller = "closeYourAccount", action = "body" });
+                endpoints.MapControllerRoute("closeAccountBody", "/body/close-your-account", new { controller = "closeYourAccount", action = "body" });
+
+
+                endpoints.MapControllerRoute("editDetails", appPath + "/edit-your-details", new { controller = "editYourDetails", action = "body" });
+                endpoints.MapControllerRoute("changePassword", appPath + "/change-password", new { controller = "changePassword", action = "body" });
+
+                endpoints.MapControllerRoute("deleteAccount", appPath + "/delete-account", new { controller = "deleteAccount", action = "body" });
 
                 endpoints.MapControllerRoute("confirmDelete", appPath + "/confirm-delete", new { controller = "confirmDelete", action = "body" });
                 endpoints.MapControllerRoute("confirmDeleteBody", "/body/confirm-delete", new { controller = "confirmDelete", action = "body" });

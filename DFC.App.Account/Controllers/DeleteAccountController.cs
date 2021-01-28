@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
 {
@@ -13,8 +16,8 @@ namespace DFC.App.Account.Controllers
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
-        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService)
-            : base(compositeSettings, authService)
+        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, authService, documentService, config)
         {
             _dssService = dssService;
         }
