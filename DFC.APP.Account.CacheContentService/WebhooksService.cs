@@ -37,6 +37,7 @@ namespace DFC.APP.Account.CacheContentService
         {
             if (_sharedContentId != contentId)
             {
+                logger.LogInformation($"Event Id: {eventId}, is not a shared content item we are subscribed to, so no content has been processed");
                 return HttpStatusCode.OK;
             }
 

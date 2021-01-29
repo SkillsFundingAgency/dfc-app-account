@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Common;
 using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
@@ -31,7 +33,7 @@ namespace DFC.App.Account.Controllers
             {
                 CompositeSettings = compositeSettings.Value,
             };
-            _sharedContent = config.GetValue<Guid>("SharedContentGuid");
+            _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
             _documentService = documentService;
         }
 

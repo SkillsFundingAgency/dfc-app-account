@@ -70,6 +70,8 @@ namespace DFC.App.Account
             services.AddScoped<IDssWriter, DssService>();
             services.AddScoped<IAddressSearchService, AddressSearchService>();
             services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddTransient<IWebhooksService, WebhooksService>();
+            services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISkillsHealthCheckService, SkillsHealthCheckService>();
