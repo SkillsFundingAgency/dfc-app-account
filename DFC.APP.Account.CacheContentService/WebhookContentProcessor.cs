@@ -27,14 +27,12 @@ namespace DFC.APP.Account.CacheContentService
         public async Task<HttpStatusCode> ProcessContentAsync(Uri url, Guid contentId)
         {
             var apiDataModel = await cmsApiService.GetItemAsync<CmsApiSharedContentModel>(url).ConfigureAwait(false);
-
-            apiDataModel.Id = apiDataModel.ItemId.Value;
-
+            
             if (apiDataModel == null)
             {
                 return HttpStatusCode.NoContent;
             }
-
+            apiDataModel.Id = apiDataModel.ItemId.Value;
             var contentResult = await eventMessageService.UpdateAsync(apiDataModel).ConfigureAwait(false);
 
             if (contentResult == HttpStatusCode.NotFound)

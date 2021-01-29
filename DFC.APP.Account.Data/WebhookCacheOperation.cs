@@ -1,4 +1,6 @@
-﻿namespace DFC.APP.Account.Data
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.APP.Account.Data
 {
     public enum WebhookCacheOperation
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using DFC.APP.Account.Data.Contracts;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Content.Pkg.Netcore.Data.Models;
@@ -6,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace DFC.APP.Account.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class CmsApiSharedContentModel : BaseContentItemModel, ICmsApiMarkupContentItem, IDocumentModel
     {
         public int? Justify { get; set; }

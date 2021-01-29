@@ -1,5 +1,8 @@
-﻿namespace DFC.APP.Account.Data.Common
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.APP.Account.Data.Common
 {
+    [ExcludeFromCodeCoverage]
     public static class Constants
     {
         public const string ContentTypeHtml = "HTML";
