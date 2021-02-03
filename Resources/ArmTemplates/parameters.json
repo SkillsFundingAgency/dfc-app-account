@@ -47,12 +47,6 @@
                 "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
             }
         },
-        "sharedAppServicePlanName": {
-            "value": "__sharedAppServicePlanName__"
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "value": "__appSharedResourceGroup__"
-        },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
         },

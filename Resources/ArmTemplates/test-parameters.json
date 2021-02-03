@@ -35,12 +35,6 @@
         "Environment": {
             "value": "FOO"
         },
-        "sharedAppServicePlanName": {
-            "value": "dfc-dev-app-shared-asp"
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "value": "dfc-dev-app-sharedresources-rg"
-        },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
         },
