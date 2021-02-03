@@ -100,6 +100,21 @@
         },       
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "__AddressSearchServiceSettingsAddressIdentifierPattern__"
+        },
+        "SubscriptionSettingsEndpoint": {
+            "value": "__SubscriptionSettingsEndpoint__"
+        },
+        "apimCompositeApiKey": {
+            "value": "__apimCompositeKey__"
+        },
+        "SummaryEndpoint": {
+            "value": "__SummaryEndpoint__"
+        },
+        "contentUrl": {
+            "value": "__contentUrl__"
+        },
+        "subscriptionUrl": {
+            "value": "__subscriptionUrl__"
         }            
     }
 }

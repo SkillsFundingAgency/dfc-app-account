@@ -91,6 +91,21 @@
         },       
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "MyRegexPattern"
-        }             
+        },
+        "SubscriptionSettingsEndpoint": {
+            "value": "SubscriptionSettingsEndpoint"
+        },
+        "apimCompositeApiKey": {
+            "value": "apimCompositeKey"
+        },
+        "SummaryEndpoint": {
+            "value": "SummaryEndpoint"
+        },
+        "contentUrl": {
+            "value": "contentUrl"
+        },
+        "subscriptionUrl": {
+            "value": "subscriptionUrl"
+        }                      
     }
 }

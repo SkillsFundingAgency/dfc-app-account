@@ -46,14 +46,6 @@
         "environment": {
             "type": "string"
         },
-        "sharedAppServicePlanName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "cosmosDbCollectionName": {
             "type": "string",
             "metadata": {
@@ -95,7 +87,7 @@
         },
         "AuthSettingsClientSecret": {
             "type": "string"
-        },       
+        },
         "AuthSettingsClientId": {
             "type": "string"
         },
@@ -104,13 +96,27 @@
         },
         "AddressSearchServiceSettingsKey": {
             "type": "string"
-        },       
+        },
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
+            "type": "string"
+        },
+        "subscriptionUrl": {
+            "type": "string"
+        },
+        "SubscriptionSettingsEndpoint": {
+            "type": "string"
+        },
+        "apimCompositeApiKey": {
+            "type": "securestring"
+        },
+        "contentUrl": {
+            "type": "string"
+        },
+        "SummaryEndpoint": {
             "type": "string"
         }
     },
     "variables": {
-        "productionEnvironment": "[or(equals(parameters('environment'), 'PP'), equals(parameters('Environment'), 'PRD'))]",
         "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
         "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
@@ -373,6 +379,70 @@
                             {
                                 "name": "AddressSearchServiceSettings__AddressIdentifierPattern",
                                 "value": "[parameters('AddressSearchServiceSettingsAddressIdentifierPattern')]"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Endpoint",
+                                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/webhook/ReceiveEvents?subscription-key=',parameters('apimCompositeApiKey'))]"
+                            },
+                            {
+                                "name": "SubscriptionSettings__SubscriptionRegistrationDelay",
+                                "value": "00:02:00"
+                            },
+                            {
+                                "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
+                                "value": "[concat(parameters('subscriptionUrl'),'/api/Execute')]"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
+                                "value": "published"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__1",
+                                "value": "unpublished"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
+                                "value": "deleted"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Key",
+                                "value": "subject"
+                            },
+                            {
+                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__0",
+                                "value": "/content/sharedcontent/"
+                            },
+                            {
+                                "name": "SharedContentGuid",
+                                "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                            },
+                            {
+                                "name": "Configuration__NotifyOptions__Policies__HttpCircuitBreaker__DurationOfBreak",
+                                "value": "00:00:30"
+                            },
+                            {
+                                "name": "Configuration__NotifyOptions__Policies__HttpCircuitBreaker__ExceptionsAllowedBeforeBreaking",
+                                "value": 3
+                            },
+                            {
+                                "name": "Configuration__CosmosDbConnections__Account__CollectionId",
+                                "value": "sharedcontent"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__Timeout",
+                                "value": "00:00:30"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__ApiKey",
+                                "value": "05914c51af7c462ebe504287a5271e43"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__BaseAddress",
+                                "value": "[parameters('contentUrl')]"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__SummaryEndpoint",
+                                "value": "[parameters('SummaryEndpoint')]"
                             }
                         ]
                     }
