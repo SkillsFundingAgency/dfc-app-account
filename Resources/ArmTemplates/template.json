@@ -425,10 +425,6 @@
                                 "value": 3
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Account__CollectionId",
-                                "value": "sharedcontent"
-                            },
-                            {
                                 "name": "CmsApiClientOptions__Timeout",
                                 "value": "00:00:30"
                             },
