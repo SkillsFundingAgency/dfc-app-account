@@ -238,7 +238,7 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Account__CollectionId",
-                                "value": "[parameters('cosmosDbCollectionName')]"
+                                "value": "sharedcontent"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__Account__PartitionKey",
