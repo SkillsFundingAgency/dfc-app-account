@@ -62,6 +62,7 @@ namespace DFC.App.Account.ViewModels
 
         public bool ShowBreadCrumb { get; set; }
         public CompositeSettings CompositeSettings { get; set; }
+        public string SharedSideBar { get; set; }
 
         protected CompositeViewModel(PageId pageId, string pageHeading)
         {

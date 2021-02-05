@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Configuration;
 using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
@@ -30,8 +33,8 @@ namespace DFC.App.Account.Controllers
         private readonly IDssWriter _dssWriter;
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
-            IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter)
-            : base(compositeSettings, authService)
+            IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, authService, documentService, config)
         {
             _addressSearchService = addressSearchService;
             _dssReader = dssReader;

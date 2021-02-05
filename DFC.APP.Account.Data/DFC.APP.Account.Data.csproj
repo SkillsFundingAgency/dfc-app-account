@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+	  <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.61" />
+    <PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.85" />
+  </ItemGroup>
+
+</Project>
