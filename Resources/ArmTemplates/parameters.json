@@ -50,6 +50,9 @@
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
         },
+        "cosmosContentDbCollectionName": {
+            "value": "__cosmosContentDbCollectionName__"
+        },
         "accountAppDatabaseNeedsCreation": {
             "value": __CosmosDbDatabaseDoesntExist__
         },

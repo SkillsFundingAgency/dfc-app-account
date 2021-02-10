@@ -38,6 +38,9 @@
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
         },
+        "cosmosContentDbCollectionName": {
+            "value": "another-test-collection"
+        },
         "CosmosDbResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
         },
