@@ -50,6 +50,9 @@
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
         },
+        "cosmosContentDbCollectionName": {
+            "value": "__cosmosContentDbCollectionName__"
+        },
         "accountAppDatabaseNeedsCreation": {
             "value": __CosmosDbDatabaseDoesntExist__
         },
@@ -79,6 +82,9 @@
         },
         "AuthSettingsIssuer": {
             "value": "__AuthSettingsIssuer__"
+        },
+        "AuthSettingsIssuerRedirect": {
+            "value": "__AuthSettingsIssuerRedirect__"
         },
         "AuthSettingsClientSecret": {
             "value": "__AuthSettingsClientSecret__"
