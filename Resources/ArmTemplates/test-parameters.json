@@ -74,9 +74,6 @@
         "AuthSettingsIssuer": {
             "value": "IAmAnIssuer"
         },
-        "AuthSettingsIssuerRedirect": {
-            "value": "AuthSettingsIssuerRedirect"
-        },
         "AuthSettingsClientSecret": {
             "value": "ThisIsAClientSecret"
         },       
@@ -94,9 +91,6 @@
         },
         "SubscriptionSettingsEndpoint": {
             "value": "SubscriptionSettingsEndpoint"
-        },
-        "apimCompositeApiKey": {
-            "value": "apimCompositeKey"
         },
         "SummaryEndpoint": {
             "value": "SummaryEndpoint"

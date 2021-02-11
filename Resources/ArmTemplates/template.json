@@ -91,9 +91,6 @@
         "AuthSettingsIssuer": {
             "type": "string"
         },
-        "AuthSettingsIssuerRedirect": {
-            "type": "string"
-        },
         "AuthSettingsClientSecret": {
             "type": "string"
         },
@@ -114,9 +111,6 @@
         },
         "SubscriptionSettingsEndpoint": {
             "type": "string"
-        },
-        "apimCompositeApiKey": {
-            "type": "securestring"
         },
         "contentUrl": {
             "type": "string"
@@ -362,7 +356,7 @@
                             },
                             {
                                 "name": "AuthSettings__SignInUrl",
-                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn', parameters('AuthSettingsIssuerRedirect'))]"
+                                "value": "[concat(parameters('AuthSettingsIssuer'), '/auth/SignIn?redirectUrl=/your-account')]"
                             },
                             {
                                 "name": "AuthSettings__SignOutUrl",
