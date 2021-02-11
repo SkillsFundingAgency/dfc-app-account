@@ -17,6 +17,10 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
         public string DependsOn { get; set; }
         public CommonEnums.Channel Type { get; set; }
 
+        public const string DefaultRequireMessage = "You have selected a contact preference which requires a valid phone number";
+        public string NonRequiredRegexErrorMessage { get; set; }
+        public string BaseErrorMessage { get; set; }
+
         public TelephoneNumberAttribute() : base()
         {
 
@@ -32,8 +36,22 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
             }
 
             var contactPref = (CommonEnums.Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
-            base.IsRequired = contactPref == Type;
+
             
+            if (contactPref == CommonEnums.Channel.Text)
+            {
+                base.ErrorMessage = DefaultRequireMessage;
+                base.IsRequired = true;
+            }else if (contactPref == Type)
+            {
+                base.IsRequired = true;
+                base.ErrorMessage = BaseErrorMessage;
+            }
+            else
+            {
+                base.ErrorMessage = NonRequiredRegexErrorMessage;
+            }
+
             return base.IsValid(value, validationContext);
         }
     }

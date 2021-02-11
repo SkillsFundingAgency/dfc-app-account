@@ -75,7 +75,6 @@ namespace DFC.App.Account.Controllers
             }
             else if (!string.IsNullOrWhiteSpace(additionalData.SaveDetails))
             {
-
                 var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
                 if (ModelState.IsValid)
                 {
