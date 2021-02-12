@@ -1,5 +1,6 @@
 ﻿using DFC.App.Account.Application.Common.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -17,7 +18,6 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
         public string DependsOn { get; set; }
         public CommonEnums.Channel Type { get; set; }
 
-        public const string DefaultRequireMessage = "You have selected a contact preference which requires a valid phone number";
         public string NonRequiredRegexErrorMessage { get; set; }
         public string BaseErrorMessage { get; set; }
 
@@ -32,23 +32,22 @@ namespace DFC.App.Account.Application.Common.CustomAttributes
             var propertyContactPreference = validationContext.ObjectType.GetProperty(this.DependsOn);
             if (propertyContactPreference == null)
             {
-                throw new MissingMemberException("Missing member DependsOn - Should be set to contact preference.");
+                base.IsRequired = false;
+                base.ErrorMessage = NonRequiredRegexErrorMessage;
+                return base.IsValid(value, validationContext);
             }
 
             var contactPref = (CommonEnums.Channel)propertyContactPreference.GetValue(validationContext.ObjectInstance);
 
             
-            if (contactPref == CommonEnums.Channel.Text)
-            {
-                base.ErrorMessage = DefaultRequireMessage;
-                base.IsRequired = true;
-            }else if (contactPref == Type)
+            if (contactPref == Type)
             {
                 base.IsRequired = true;
                 base.ErrorMessage = BaseErrorMessage;
             }
             else
             {
+                base.IsRequired = false;
                 base.ErrorMessage = NonRequiredRegexErrorMessage;
             }
 

@@ -19,7 +19,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
@@ -31,6 +33,7 @@ namespace DFC.App.Account.Controllers
         private readonly IAddressSearchService _addressSearchService;
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
+        public const string SMSErrorMessage = "You have selected a contact preference which requires a valid phone number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
             IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
@@ -76,7 +79,7 @@ namespace DFC.App.Account.Controllers
             else if (!string.IsNullOrWhiteSpace(additionalData.SaveDetails))
             {
                 var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
-                if (ModelState.IsValid)
+                if (IsValid(ModelState, viewModel))
                 {
                     try
                     {
@@ -135,6 +138,25 @@ namespace DFC.App.Account.Controllers
             ViewModel.Identity = viewModel.Identity;
 
             return await base.Body();
+        }
+
+        private bool IsValid(ModelStateDictionary modelState, EditDetailsCompositeViewModel viewModel)
+        {
+            if (viewModel.Identity.ContactDetails.ContactPreference == CommonEnums.Channel.Text)
+            {
+                var contact = viewModel.Identity.ContactDetails;
+                if (string.IsNullOrEmpty(contact.MobileNumber) &&
+                    string.IsNullOrEmpty(contact.TelephoneNumberAlternative) &&
+                    string.IsNullOrEmpty(contact.HomeNumber))
+                {
+                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", SMSErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SMSErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SMSErrorMessage);
+                    return false;
+                }
+            }
+
+            return modelState.IsValid;
         }
 
         private async Task FindAddress(EditDetailsCompositeViewModel viewModel)

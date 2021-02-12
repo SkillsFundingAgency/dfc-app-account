@@ -35,7 +35,6 @@ namespace DFC.App.Account.Application.Common.Models
         [TelephoneNumber(
             DependsOn = "ContactPreference",
             Regex = ServiceCommon.RegexPatterns.PhoneNumber.ContactPhone,
-            Type = CommonEnums.Channel.Text,
             IsAndOperator = false,
             BaseErrorMessage = "You have selected a contact preference which requires a valid telephone number",
             NonRequiredRegexErrorMessage = "Enter a valid telephone number")]
