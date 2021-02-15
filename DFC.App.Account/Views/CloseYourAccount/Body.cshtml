@@ -20,13 +20,23 @@ else
 
                 @Html.HiddenFor(model => model.CustomerId)
                 <govukHeadingH1 text="@Model.PageHeading"></govukHeadingH1>
-                <p>
-                    Closing your account means we'll delete all of your personal information and any adviser created action plans.
+                <p class="govuk-body">
+                    Closing your account means you will no longer have online access to:
+                    <ul class="govuk-body list list-bullet">
+                        <li>any personal information you’ve shared with us</li>
+                        <li>any adviser created action plans</li>
+                    </ul>  
                 </p>
 
-                <p>
-                    It will also mean that advisers won't be able to access any information about you that you've provided to careers advisers face-to-face or over the phone.
+                <p class="govuk-body">
+                    Your careers adviser will still have access to information that you've provided:
+                    <ul class="govuk-body list list-bullet">
+                        <li>in a face-to-face session</li>
+                        <li>over the phone</li>
+                    </ul>
                 </p>
+                
+                <p class="govuk-body">If you want to find out how we look after your information, read our <govukLink id="PrivatePolicy" link-text="privacy policy" link-href="https://nationalcareers.service.gov.uk/help/privacy-and-cookies"></govukLink></p>
 
                 <h2 class="heading-medium">Confirm account closure</h2>
                 <p>Enter your password to close your account.</p>

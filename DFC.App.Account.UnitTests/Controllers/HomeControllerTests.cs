@@ -4,15 +4,19 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Controllers;
+using DFC.APP.Account.Data.Common;
+using DFC.APP.Account.Data.Models;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -31,10 +35,21 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<ActionPlansSettings> _actionPlansSettings;
         private IDssReader _dssReader;
         private HomeController _controller;
-        
+        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private IConfiguration _config;
+
         [SetUp]
         public void Init()
         {
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            var inMemorySettings = new Dictionary<string, string> {
+                {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
+            };
+
+            _config = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
             _logger = new Logger<HomeController>(new LoggerFactory());
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = Substitute.For<ILogger<HomeController>>();
@@ -48,7 +63,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 SignOutUrl = "signout"
             });
             _actionPlansSettings = Options.Create(new ActionPlansSettings() {Url ="/actionj-plans"});
-            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings);
+            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _documentService, _config);
         }
 
         [Test]
@@ -78,7 +93,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 GivenName = "givenName"
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings);
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _documentService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -132,15 +147,6 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ViewResult>();
             result.ViewName.Should().BeNull();
-        }
-
-        [Test]
-        public void AssigningViewModelValues()
-        {
-            var viewModel = new HomeCompositeViewModel();
-            viewModel.ShcDocuments.Add(new ShcDocument());
-            var item = viewModel.ShcDocuments[0];
-            item.Should().NotBeNull();
         }
 
         [Test]

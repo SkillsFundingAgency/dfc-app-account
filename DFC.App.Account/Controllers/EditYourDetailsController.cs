@@ -17,6 +17,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
@@ -28,10 +33,11 @@ namespace DFC.App.Account.Controllers
         private readonly IAddressSearchService _addressSearchService;
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
+        public const string SMSErrorMessage = "You have selected a contact preference which requires a valid phone number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
-            IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter)
-            : base(compositeSettings, authService)
+            IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, authService, documentService, config)
         {
             _addressSearchService = addressSearchService;
             _dssReader = dssReader;
@@ -72,9 +78,8 @@ namespace DFC.App.Account.Controllers
             }
             else if (!string.IsNullOrWhiteSpace(additionalData.SaveDetails))
             {
-
                 var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
-                if (ModelState.IsValid)
+                if (IsValid(ModelState, viewModel))
                 {
                     try
                     {
@@ -117,12 +122,7 @@ namespace DFC.App.Account.Controllers
                         }
 
                         updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
-
-                        if (updatedDetails.Contact.PreferredContactMethod == CommonEnums.Channel.Mobile)
-                        {
-                            updatedDetails.Contact.MobileNumber = updatedDetails.Contact.AlternativeNumber;
-                        }
-
+                        
                         await _dssWriter.UpsertCustomerContactData(updatedDetails);
 
                         return new RedirectResult("/your-account/your-details", false);
@@ -138,6 +138,25 @@ namespace DFC.App.Account.Controllers
             ViewModel.Identity = viewModel.Identity;
 
             return await base.Body();
+        }
+
+        private bool IsValid(ModelStateDictionary modelState, EditDetailsCompositeViewModel viewModel)
+        {
+            if (viewModel.Identity.ContactDetails.ContactPreference == CommonEnums.Channel.Text)
+            {
+                var contact = viewModel.Identity.ContactDetails;
+                if (string.IsNullOrEmpty(contact.MobileNumber) &&
+                    string.IsNullOrEmpty(contact.TelephoneNumberAlternative) &&
+                    string.IsNullOrEmpty(contact.HomeNumber))
+                {
+                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", SMSErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SMSErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SMSErrorMessage);
+                    return false;
+                }
+            }
+
+            return modelState.IsValid;
         }
 
         private async Task FindAddress(EditDetailsCompositeViewModel viewModel)
@@ -237,7 +256,8 @@ namespace DFC.App.Account.Controllers
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
-            customer.Contact.HomeNumber = identity.ContactDetails.TelephoneNumber;
+            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber;
+            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber;
             customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
@@ -300,7 +320,8 @@ namespace DFC.App.Account.Controllers
                 {
                     ContactEmail = customer.Contact?.EmailAddress,
                     ContactPreference = customer.Contact?.PreferredContactMethod ?? CommonEnums.Channel.Email,
-                    TelephoneNumber = customer.Contact?.HomeNumber,
+                    HomeNumber = customer.Contact?.HomeNumber,
+                    MobileNumber = customer.Contact?.MobileNumber,
                     TelephoneNumberAlternative = customer.Contact?.AlternativeNumber
                 },
                 MarketingPreferences = new MarketingPreferences

@@ -17,7 +17,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Common;
+using DFC.APP.Account.Data.Models;
 using DFC.App.Account.Services.DSS.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using NSubstitute.ExceptionExtensions;
 
@@ -30,11 +34,21 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IAddressSearchService _addressSearchService;
         private IDssReader _dssReader;
         private IDssWriter _dssWriter;
-
+        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        private IConfiguration _config;
 
         [SetUp]
         public void Init()
         {
+            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            var inMemorySettings = new Dictionary<string, string> {
+                {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
+            };
+
+            _config = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _addressSearchService = Substitute.For<IAddressSearchService>();
@@ -47,7 +61,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter, _documentService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -66,7 +80,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter, _documentService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -88,7 +102,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 {
                     ContactEmail = "ContactEmail",
                     ContactPreference = CommonEnums.Channel.Email,
-                    TelephoneNumber = "8675309",
+                    HomeNumber = "8675309",
                     TelephoneNumberAlternative = "2222"
                 },
                 MarketingPreferences = new MarketingPreferences
@@ -171,7 +185,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext()}
             };
@@ -200,12 +214,47 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
+        public async Task WhenSaveDataPostedAsSmsAndAllValuesAreEmpty_ThenDateShouldNotSaved()
+        {
+            var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
+                _dssReader, _dssWriter, _documentService, _config)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+            };
+            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer());
+
+            var result = await controller.Body(new EditDetailsCompositeViewModel
+            {
+                Identity = new CitizenIdentity
+                {
+                    ContactDetails = new ContactDetails
+                    {
+                        ContactEmail = "7777777",
+                        ContactPreference = CommonEnums.Channel.Text
+                    }
+                }
+            }, new FormCollection(new Dictionary<string, StringValues>
+            {
+                {"saveDetails", "saveDetails"}
+            })) as ViewResult;
+
+            _dssWriter.Received(0);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
+
+
+        [Test]
         public async Task WhenSaveDataPostedWithMobilePreferenceAndFormIsValid_ThenDateShouldBeSaved()
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -230,7 +279,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -252,7 +301,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenFindAddressPostedAndPostcodeIsNotValid_ThenAddressServiceNotCalledAndModelIsReturnedWithError()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -277,7 +326,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenFindAddressPostedAndFormIsValid_ThenAddressServiceCalled()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -313,7 +362,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenFindAddressPostedAndFormIsValidAndAddressServiceIsDown_ThenReturnServiceDownMessage()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -343,7 +392,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenFindAddressPostedAndNoAddressesAreFound_ThenReturnNoAddressFoundMessage()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -375,7 +424,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenSelectAddressPosted_ThenAddressServiceCalled()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -412,7 +461,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenSelectAddressPosted_ThenReturnViewModelWithSelectedAddress()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -447,7 +496,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public async Task WhenSelectAddressPostedAndAddressServiceIsDown_ThenReturnServiceDownMessage()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -478,7 +527,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetErrorClassCalledWithError_ReturnClass()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -491,7 +540,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetErrorClassCalledWithError_ReturnEmptyString()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -504,7 +553,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetFormGroupErrorClassCalledWithError_ReturnClass()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -517,7 +566,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetFormGroupErrorClassCalledWithError_ReturnEmptyString()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService,
-                _dssReader, _dssWriter)
+                _dssReader, _dssWriter, _documentService, _config)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -536,7 +585,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 {
                     ContactEmail = "ContactEmail",
                     ContactPreference = CommonEnums.Channel.Email,
-                    TelephoneNumber = "8675309",
+                    HomeNumber = "8675309",
                     TelephoneNumberAlternative = "2222"
                 },
                 MarketingPreferences = new MarketingPreferences

@@ -6,7 +6,7 @@ namespace DFC.App.Account.ViewModels
 {
     public class EditDetailsCompositeViewModel : CompositeViewModel
     {
-        public EditDetailsCompositeViewModel() : base(PageId.EditDetails, "Edit Details")
+        public EditDetailsCompositeViewModel() : base(PageId.EditDetails, "Edit details")
         {
             
         }

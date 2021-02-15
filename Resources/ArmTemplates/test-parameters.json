@@ -35,14 +35,11 @@
         "Environment": {
             "value": "FOO"
         },
-        "sharedAppServicePlanName": {
-            "value": "dfc-dev-app-shared-asp"
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "value": "dfc-dev-app-sharedresources-rg"
-        },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
+        },
+        "cosmosContentDbCollectionName": {
+            "value": "another-test-collection"
         },
         "CosmosDbResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
@@ -54,6 +51,9 @@
             "value": 2
         },
         "enableAlerts": {
+            "value": false
+        },
+        "clientAffinity": {
             "value": false
         },
         "ShcSettingsUrl": {
@@ -88,6 +88,18 @@
         },       
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "MyRegexPattern"
-        }             
+        },
+        "SubscriptionSettingsEndpoint": {
+            "value": "SubscriptionSettingsEndpoint"
+        },
+        "SummaryEndpoint": {
+            "value": "SummaryEndpoint"
+        },
+        "contentUrl": {
+            "value": "contentUrl"
+        },
+        "subscriptionUrl": {
+            "value": "subscriptionUrl"
+        }                      
     }
 }

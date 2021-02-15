@@ -47,14 +47,11 @@
                 "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
             }
         },
-        "sharedAppServicePlanName": {
-            "value": "__sharedAppServicePlanName__"
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "value": "__appSharedResourceGroup__"
-        },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
+        },
+        "cosmosContentDbCollectionName": {
+            "value": "__cosmosContentDbCollectionName__"
         },
         "accountAppDatabaseNeedsCreation": {
             "value": __CosmosDbDatabaseDoesntExist__
@@ -64,6 +61,9 @@
         },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
+        },
+        "clientAffinity": {
+            "value": __clientAffinity__
         },
         "ShcSettingsUrl": {
             "value": "__ShcSettingsUrl__"
@@ -97,6 +97,18 @@
         },       
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "__AddressSearchServiceSettingsAddressIdentifierPattern__"
+        },
+        "SubscriptionSettingsEndpoint": {
+            "value": "__SubscriptionSettingsEndpoint__"
+        },
+        "SummaryEndpoint": {
+            "value": "__SummaryEndpoint__"
+        },
+        "contentUrl": {
+            "value": "__contentUrl__"
+        },
+        "subscriptionUrl": {
+            "value": "__subscriptionUrl__"
         }            
     }
 }

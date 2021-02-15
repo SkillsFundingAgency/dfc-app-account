@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
 {
@@ -19,14 +22,17 @@ namespace DFC.App.Account.Controllers
         private readonly AuthSettings _authSettings;
         private readonly IDssReader _dssReader;
         private readonly ActionPlansSettings _actionPlansSettings;
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings)
-        :base(compositeSettings, authService)
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            : base(compositeSettings, authService, documentService, config)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
             _authSettings = authSettings.Value;
             _dssReader = dssReader;
             _actionPlansSettings = actionPlansSettings.Value;
+            _logger = logger;
         }
 
         #region Default Routes
@@ -58,9 +64,6 @@ namespace DFC.App.Account.Controllers
             var customer = await GetCustomerDetails();
             ViewModel.ResetPasswordUrl = _authSettings.ResetPasswordUrl;
             ViewModel.ActionPlansUrl = _actionPlansSettings.Url;
-            //Hard coded value - Needs removing upon account, and DSS integration
-            //Test LLAId with docs:200010216
-            ViewModel.ShcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010200");
             ViewModel.ActionPlans = await _dssReader.GetActionPlans(customer.CustomerId.ToString());
             return await base.Body();
         }
@@ -103,7 +106,11 @@ namespace DFC.App.Account.Controllers
         [Route("/body/{controller}/signout")]
         public IActionResult SignOut(bool accountClosed)
         {
-            return Redirect(accountClosed ? $"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}/your-account/Delete-Account/AccountClosed" : _authSettings.SignOutUrl);
+            var redirectUrl = accountClosed
+                ? $"{_authSettings.SignOutUrl}?redirectUrl={_authSettings.Issuer}/your-account/Delete-Account/AccountClosed"
+                : _authSettings.SignOutUrl;
+            _logger.LogInformation($"accountClosed: {accountClosed},  Redirecting to {redirectUrl}");
+            return Redirect(redirectUrl);
         }
         #endregion
     }
