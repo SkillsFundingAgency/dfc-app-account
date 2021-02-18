@@ -1,4 +1,4 @@
-﻿Feature: Login to Citizen account
+﻿Feature: Login to Citizen account update contact details
 
 @Accounts @Smoke
 Scenario: Login to citizen account and edit phone number
