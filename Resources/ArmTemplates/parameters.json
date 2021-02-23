@@ -85,7 +85,7 @@
         },
         "AuthSettingsClientSecret": {
             "value": "__AuthSettingsClientSecret__"
-        },       
+        },
         "AuthSettingsClientId": {
             "value": "__AuthSettingsClientId__"
         },
@@ -94,7 +94,7 @@
         },
         "AddressSearchServiceSettingsKey": {
             "value": "__AddressSearchServiceSettingsKey__"
-        },       
+        },
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "__AddressSearchServiceSettingsAddressIdentifierPattern__"
         },
@@ -109,6 +109,12 @@
         },
         "subscriptionUrl": {
             "value": "__subscriptionUrl__"
-        }            
+        },
+        "TestExecutionSettingsAppLoginEmail": {
+            "value": "__TestExecutionSettingsAppLoginEmail__"
+        },
+        "TestExecutionSettingsAppLoginPassword": {
+            "value": "__TestExecutionSettingsAppLoginPassword__"
+        }
     }
 }
