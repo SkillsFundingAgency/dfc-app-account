@@ -101,11 +101,11 @@
         "subscriptionUrl": {
             "value": "subscriptionUrl"
         },
-        "TestExecutionSettingsAppLoginEmail": {
-            "value": "TestExecutionSettingsAppLoginEmail"
+        "AppLoginEmail": {
+            "value": "AppLoginEmail"
         },
-        "TestExecutionSettingsAppLoginPassword": {
-            "value": "TestExecutionSettingsAppLoginPassword"
+        "AppLoginPassword": {
+            "value": "AppLoginPassword"
         }
     }
 }
