@@ -118,10 +118,10 @@
         "SummaryEndpoint": {
             "type": "string"
         },
-        "TestExecutionSettingsAppLoginEmail": {
+        "AppLoginEmail": {
             "type": "string"
         },
-        "TestExecutionSettingsAppLoginPassword": {
+        "AppLoginPassword": {
             "type": "string"
         }
     },
@@ -453,12 +453,12 @@
                                 "value": "[parameters('SummaryEndpoint')]"
                             },
                             {
-                                "name": "TestExecutionSettings__AppLoginEmail",
-                                "value": "[parameters('TestExecutionSettingsAppLoginEmail')]"
+                                "name": "AppLoginEmail",
+                                "value": "[parameters('AppLoginEmail')]"
                             },
                             {
-                                "name": "TestExecutionSettings__AppLoginPassword",
-                                "value": "[parameters('TestExecutionSettingsAppLoginPassword')]"
+                                "name": "AppLoginPassword",
+                                "value": "[parameters('AppLoginPassword')]"
                             }
                         ]
                     }
