@@ -117,6 +117,12 @@
         },
         "SummaryEndpoint": {
             "type": "string"
+        },
+        "TestExecutionSettingsAppLoginEmail": {
+            "type": "string"
+        },
+        "TestExecutionSettingsAppLoginPassword": {
+            "type": "string"
         }
     },
     "variables": {
@@ -445,6 +451,14 @@
                             {
                                 "name": "CmsApiClientOptions__SummaryEndpoint",
                                 "value": "[parameters('SummaryEndpoint')]"
+                            },
+                            {
+                                "name": "TestExecutionSettings__AppLoginEmail",
+                                "value": "[parameters('TestExecutionSettingsAppLoginEmail')]"
+                            },
+                            {
+                                "name": "TestExecutionSettings__AppLoginPassword",
+                                "value": "[parameters('TestExecutionSettingsAppLoginPassword')]"
                             }
                         ]
                     }
