@@ -65,7 +65,7 @@
                 @{
                     if (Model.ActionPlans.Count > 0)
                     {
-                        foreach (var actionPlan in Model.ActionPlans)
+                        foreach (var actionPlan in Model.ActionPlans.OrderByDescending(x=>x.DateActionPlanCreated))
                         {
                             <tr class="govuk-table__row">
                                 <td class="govuk-table-cell">Created @actionPlan.DateActionPlanCreated.ToString("dd MMMM yyyy HH:mm")</td>
