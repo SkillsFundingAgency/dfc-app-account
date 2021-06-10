@@ -12,7 +12,7 @@
 
         <form id="@Model.GetElementId("form", "editYourDetails")" action="@Model.CompositeSettings.Path/@CompositeViewModel.PageId.EditDetails" class="govuk-form-group mt" method="post">
 
-        <table class="govuk-table govuk-visually-hidden">
+        <table class="govuk-table govuk-visually-hidden" aria-label="Your personal details">
             <govukHeadingH2 text="Your personal details" additional-class="govuk-visually-hidden"></govukHeadingH2>
             <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
@@ -160,7 +160,7 @@
         </table>
 
         <h2 class="heading-medium">Your contact details</h2>
-        <table class="govuk-table">
+        <table class="govuk-table" aria-label="your contact details">
             <tbody class="govuk-table__body">
                 @* <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">@Html.LabelFor(m => m.Identity.ContactDetails.ContactEmail, new { @class = "govuk-label" })</th>
