@@ -117,6 +117,12 @@
         },
         "SummaryEndpoint": {
             "type": "string"
+        },
+        "AppLoginEmail": {
+            "type": "string"
+        },
+        "AppLoginPassword": {
+            "type": "string"
         }
     },
     "variables": {
@@ -445,6 +451,14 @@
                             {
                                 "name": "CmsApiClientOptions__SummaryEndpoint",
                                 "value": "[parameters('SummaryEndpoint')]"
+                            },
+                            {
+                                "name": "AppLoginEmail",
+                                "value": "[parameters('AppLoginEmail')]"
+                            },
+                            {
+                                "name": "AppLoginPassword",
+                                "value": "[parameters('AppLoginPassword')]"
                             }
                         ]
                     }

@@ -76,7 +76,7 @@
         },
         "AuthSettingsClientSecret": {
             "value": "ThisIsAClientSecret"
-        },       
+        },
         "AuthSettingsClientId": {
             "value": "AuthSettingsClientId"
         },
@@ -85,7 +85,7 @@
         },
         "AddressSearchServiceSettingsKey": {
             "value": "MyGuidLoqateKey"
-        },       
+        },
         "AddressSearchServiceSettingsAddressIdentifierPattern": {
             "value": "MyRegexPattern"
         },
@@ -100,6 +100,12 @@
         },
         "subscriptionUrl": {
             "value": "subscriptionUrl"
-        }                      
+        },
+        "AppLoginEmail": {
+            "value": "AppLoginEmail"
+        },
+        "AppLoginPassword": {
+            "value": "AppLoginPassword"
+        }
     }
 }

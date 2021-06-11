@@ -19,7 +19,7 @@ namespace DFC.App.Accounts.UI.FunctionalTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class LoginToCitizenAccountFeature : object, Xunit.IClassFixture<LoginToCitizenAccountFeature.FixtureData>, System.IDisposable
+    public partial class LoginToCitizenAccountUpdateContactDetailsFeature : object, Xunit.IClassFixture<LoginToCitizenAccountUpdateContactDetailsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace DFC.App.Accounts.UI.FunctionalTests.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "LoginToCitizenAccount.feature"
+#line 1 "LoginToCitizenAccountUpdateContactDetails.feature"
 #line hidden
         
-        public LoginToCitizenAccountFeature(LoginToCitizenAccountFeature.FixtureData fixtureData, DFC_App_Accounts_UI_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public LoginToCitizenAccountUpdateContactDetailsFeature(LoginToCitizenAccountUpdateContactDetailsFeature.FixtureData fixtureData, DFC_App_Accounts_UI_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace DFC.App.Accounts.UI.FunctionalTests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-GB"), "Features", "Login to Citizen account", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-GB"), "Features", "Login to Citizen account update contact details", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,7 +81,7 @@ namespace DFC.App.Accounts.UI.FunctionalTests.Features
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Login to citizen account and edit phone number")]
-        [Xunit.TraitAttribute("FeatureTitle", "Login to Citizen account")]
+        [Xunit.TraitAttribute("FeatureTitle", "Login to Citizen account update contact details")]
         [Xunit.TraitAttribute("Description", "Login to citizen account and edit phone number")]
         [Xunit.TraitAttribute("Category", "Accounts")]
         [Xunit.TraitAttribute("Category", "Smoke")]
@@ -165,12 +165,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                LoginToCitizenAccountFeature.FeatureSetup();
+                LoginToCitizenAccountUpdateContactDetailsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                LoginToCitizenAccountFeature.FeatureTearDown();
+                LoginToCitizenAccountUpdateContactDetailsFeature.FeatureTearDown();
             }
         }
     }
