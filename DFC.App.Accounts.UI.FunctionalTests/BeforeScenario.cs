@@ -62,7 +62,6 @@ namespace DFC.App.Accounts
             var webDriver = new WebDriverSupport<AppSettings>(settingsLibrary).Create();
             webDriver.Manage().Window.Maximize();
             webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(settingsLibrary.TestExecutionSettings.TimeoutSettings.PageNavigation);
-            webDriver.SwitchTo().Window(webDriver.CurrentWindowHandle);
             this.Context.SetWebDriver(webDriver);
         }
 
@@ -72,6 +71,5 @@ namespace DFC.App.Accounts
             var helperLibrary = new HelperLibrary<AppSettings>(this.Context.GetWebDriver(), this.Context.GetSettingsLibrary<AppSettings>());
             this.Context.SetHelperLibrary(helperLibrary);
         }
-
     }
 }
