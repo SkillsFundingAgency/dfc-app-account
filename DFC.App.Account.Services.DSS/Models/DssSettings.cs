@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Services.DSS.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Services.DSS.Models
 {
+    [ExcludeFromCodeCoverage]
     public class DssSettings
     {
         public string CustomerApiUrl { get; set; }
