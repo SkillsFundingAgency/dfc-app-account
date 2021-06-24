@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace DFC.App.Account.Services
 {
+    [ExcludeFromCodeCoverage]
     public static class ErrorService
     {
         public static async Task LogException(HttpContext context, ILogger logger)

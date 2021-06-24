@@ -1,10 +1,11 @@
-﻿using System;
-using DFC.App.Account.Application.SkillsHealthCheck.Models;
+﻿using DFC.App.Account.Services.DSS.Models;
+using System;
 using System.Collections.Generic;
-using DFC.App.Account.Services.DSS.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.Account.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class HomeCompositeViewModel : CompositeViewModel
     {
         public bool HasErrors { get; set; }

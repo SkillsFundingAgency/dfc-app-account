@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
 using DFC.App.Account.Services.SHC.Models;
 
 namespace DFC.App.Account.Services.SHC.Services
 {
-
+    [ExcludeFromCodeCoverage]
     public static class Mapping
     {
         private static readonly Lazy<IMapper> Lazy = new Lazy<IMapper>(() =>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.Account.Services.DSS.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Address
     {
      

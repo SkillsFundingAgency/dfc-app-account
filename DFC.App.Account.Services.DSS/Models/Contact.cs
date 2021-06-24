@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using DFC.App.Account.Application.Common.Enums;
 
 namespace DFC.App.Account.Services.DSS.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Contact
     {
         public string ContactId { get; set; }

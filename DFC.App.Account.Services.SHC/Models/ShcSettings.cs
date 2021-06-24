@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Services.SHC.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Services.SHC.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ShcSettings
     {
         public string SHCDocType { get; set; }
