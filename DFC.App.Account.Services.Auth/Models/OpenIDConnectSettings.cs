@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Services.Auth.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Services.Auth.Models
 {
+    [ExcludeFromCodeCoverage]
     public class OpenIDConnectSettings
     {
         public string OIDCConfigMetaDataUrl { get; set; }

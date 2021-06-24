@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using DFC.App.Account.Application.Common.Enums;
 
 namespace DFC.App.Account.Services.DSS.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Customer
     {
         public Guid CustomerId { get; set; }

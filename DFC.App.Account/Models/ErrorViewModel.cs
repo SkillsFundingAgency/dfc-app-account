@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace DFC.App.Account.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorViewModel
     {
         public string RequestId { get; set; }
