@@ -7,9 +7,13 @@ using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.ViewModels;
+using DFC.APP.Account.Data.Models;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -17,11 +21,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
 
 namespace DFC.App.Account.Controllers
@@ -33,7 +32,7 @@ namespace DFC.App.Account.Controllers
         private readonly IAddressSearchService _addressSearchService;
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        public const string SMSErrorMessage = "You have selected a contact preference which requires a valid phone number";
+        public const string SmsErrorMessage = "You have selected a contact preference which requires a valid phone number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
             IAddressSearchService addressSearchService, IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
@@ -44,7 +43,7 @@ namespace DFC.App.Account.Controllers
             _dssWriter = dssWriter;
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
+        [Route("/body/edit-your-details")]
         public override async Task<IActionResult> Body()
         {
             var customer = await GetCustomerDetails();
@@ -54,8 +53,8 @@ namespace DFC.App.Account.Controllers
             return await base.Body();
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("/body/edit-your-details")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Route("/body/edit-your-details")]
+        [HttpPost]
         public async Task<IActionResult> Body(EditDetailsCompositeViewModel viewModel, IFormCollection formCollection)
         {
             var customer = await GetCustomerDetails();
@@ -88,18 +87,16 @@ namespace DFC.App.Account.Controllers
                         string dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
                         string dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
 
-                        DateTime dateOfBirth = default(DateTime);
                         CultureInfo enGb = new CultureInfo("en-GB");
                         string dob = string.Empty;
                         if (!string.IsNullOrEmpty(dateOfBirthDay) && !string.IsNullOrEmpty(dateOfBirthMonth) &&
                             !string.IsNullOrEmpty(dateOfBirthYear))
                         {
-                            dob = string.Format("{0}/{1}/{2}", dateOfBirthDay.PadLeft(2, '0'),
-                                dateOfBirthMonth.PadLeft(2, '0'), dateOfBirthYear.PadLeft(4, '0'));
+                            dob = $"{dateOfBirthDay.PadLeft(2, '0')}/{dateOfBirthMonth.PadLeft(2, '0')}/{dateOfBirthYear.PadLeft(4, '0')}";
                         }
 
                         if (DateTime.TryParseExact(dob, "dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,
-                            out dateOfBirth))
+                            out var dateOfBirth))
                         {
                             viewModel.Identity.PersonalDetails.DateOfBirth = dateOfBirth;
                         }
@@ -127,7 +124,7 @@ namespace DFC.App.Account.Controllers
 
                         return new RedirectResult("/your-account/your-details", false);
                     }
-                    catch (EmailAddressAlreadyExistsException ex)
+                    catch (EmailAddressAlreadyExistsException)
                     {
                         ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
                     }
@@ -149,9 +146,9 @@ namespace DFC.App.Account.Controllers
                     string.IsNullOrEmpty(contact.TelephoneNumberAlternative) &&
                     string.IsNullOrEmpty(contact.HomeNumber))
                 {
-                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", SMSErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SMSErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SMSErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SmsErrorMessage);
+                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SmsErrorMessage);
                     return false;
                 }
             }
@@ -233,12 +230,12 @@ namespace DFC.App.Account.Controllers
         {
             PostalAddressModel selectedAddress = null;
 
-            var SelectedAddressString = formCollection.FirstOrDefault(x =>
+            var selectedAddressString = formCollection.FirstOrDefault(x =>
                 string.Compare(x.Key, "select-address", StringComparison.CurrentCultureIgnoreCase) == 0).Value;
 
-            if (!string.IsNullOrEmpty(SelectedAddressString))
+            if (!string.IsNullOrEmpty(selectedAddressString))
             {
-                selectedAddress = JsonConvert.DeserializeObject<PostalAddressModel>(SelectedAddressString);
+                selectedAddress = JsonConvert.DeserializeObject<PostalAddressModel>(selectedAddressString);
             }
 
             return new EditDetailsAdditionalData
@@ -274,12 +271,11 @@ namespace DFC.App.Account.Controllers
                 customer.Addresses = new List<Address>();
             }
 
+            var address = customer.Addresses.FirstOrDefault(x => x.AddressId == identity.PersonalDetails.AddressId);
 
             if (!string.IsNullOrEmpty(identity.PersonalDetails.AddressId)
-                    && customer.Addresses.FirstOrDefault(x => x.AddressId == identity.PersonalDetails.AddressId) != null)
+                    && address != null)
             {
-                var address = customer.Addresses.FirstOrDefault(x => x.AddressId == identity.PersonalDetails.AddressId);
-
                 address.Address1 = identity.PersonalDetails.AddressLine1;
                 address.Address2 = identity.PersonalDetails.AddressLine2;
                 address.Address3 = identity.PersonalDetails.AddressLine3;
@@ -311,7 +307,7 @@ namespace DFC.App.Account.Controllers
         private CitizenIdentity MapCustomerToCitizenIdentity(Customer customer)
         {
             var currentAddress = customer.Addresses?.OrderByDescending(x => x.EffectiveFrom).FirstOrDefault(x =>
-               x.EffectiveFrom.Date <= DateTime.Now &&
+               x.EffectiveFrom.HasValue && x.EffectiveFrom.Value.Date <= DateTime.Now &&
                (x.EffectiveTo == null || x.EffectiveTo.Value.Date >= DateTime.Now));
 
             return ViewModel.Identity = new CitizenIdentity

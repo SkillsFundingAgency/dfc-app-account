@@ -74,6 +74,32 @@ namespace DFC.App.Account.UnitTests.Controllers
             result.ViewName.Should().BeNull();
         }
 
+        [Test]
+        public async Task WhenBodyCalledAndUserAddressEffectiveFromIsNull_ReturnNoAddresses()
+        {
+
+            var addresses = new List<Address>
+            {
+                new Address
+                {
+                    EffectiveFrom = null
+                }
+            };
+
+            var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c"), Addresses = addresses};
+            _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _addressSearchService, _dssReader, _dssWriter, _documentService, _config);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            _dssReader.GetCustomerData(Arg.Any<string>()).ReturnsForAnyArgs(new Customer());
+
+            var result = await controller.Body() as ViewResult;
+            result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>();
+            result.ViewName.Should().BeNull();
+        }
 
         [Test]
         public async Task WhenBodyCalled_ThenDssCalled()
