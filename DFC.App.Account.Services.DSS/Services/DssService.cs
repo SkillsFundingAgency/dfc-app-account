@@ -244,11 +244,13 @@ namespace DFC.App.Account.Services.DSS.Services
             catch (Exception e)
             {
                 if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
+                {
                     return null;
-                else
-                    throw new DssException($"Failure Address, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
-            }
+                }
 
+                _logger.LogError("Failure Address {StatusCode} {InnerException}", _restClient?.LastResponse?.StatusCode ?? HttpStatusCode.InternalServerError, e.InnerException);
+                    return null;
+            }
         }
 
         public async Task<Contact> GetCustomerContactDetails(string customerId, HttpRequestMessage request)
