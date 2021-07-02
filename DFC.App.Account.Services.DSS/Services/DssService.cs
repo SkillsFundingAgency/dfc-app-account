@@ -298,7 +298,7 @@ namespace DFC.App.Account.Services.DSS.Services
                 if (!_restClient.LastResponse.IsSuccess)
                 {
                     throw new UnableToUpdateCustomerDetailsException(
-                        $"Unable To Updated customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
+                        $"Unable To Updated customer details for customer {customerId}, Response {_restClient?.LastResponse?.Content}");
                 }
 
                 return Result.Ok();
@@ -306,7 +306,7 @@ namespace DFC.App.Account.Services.DSS.Services
             catch (Exception e)
             {
                 throw new UnableToUpdateCustomerDetailsException(
-                    $"Unable To Updated customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
+                    $"Unable To Updated customer details for customer {customerId}, Response {_restClient?.LastResponse?.Content}");
             }
         }
 

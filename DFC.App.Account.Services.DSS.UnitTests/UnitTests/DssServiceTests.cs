@@ -226,7 +226,9 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 ApiKey = "9238dfjsjdsidfs83fds",
                 CustomerApiUrl = "https://this.is.anApi.org.uk",
                 AccountsTouchpointId = "9000000001",
-                CustomerApiVersion = "V1"
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "test",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "test",
             }), _logger);
 
             _dssService.Invoking(x => x.DeleteCustomer(Guid.NewGuid())).Should()
@@ -255,6 +257,17 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         [Test]
         public async Task When_DeleteCustomerSuccess_ReturnOk()
         {
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.OK);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssService = new DssService(_restClient, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "https://this.is.anApi.org.uk",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://this.is.anApi.org.uk",
+            }), _logger);
             await _dssService.DeleteCustomer(Guid.NewGuid());
 
         }
