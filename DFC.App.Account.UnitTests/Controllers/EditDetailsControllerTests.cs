@@ -75,14 +75,19 @@ namespace DFC.App.Account.UnitTests.Controllers
         }
 
         [Test]
-        public async Task WhenBodyCalledAndUserAddressEffectiveFromIsNull_ReturnNoAddresses()
+        public async Task WhenBodyCalledAndUserAddressFieldsAreNull_ReturnNoAddresses()
         {
 
             var addresses = new List<Address>
             {
                 new Address
                 {
-                    EffectiveFrom = null
+                    EffectiveFrom = null,
+                    Latitude = null,
+                    Longitude = null,
+                    LastModifiedDate = null,
+                    EffectiveTo = null,
+                    
                 }
             };
 
