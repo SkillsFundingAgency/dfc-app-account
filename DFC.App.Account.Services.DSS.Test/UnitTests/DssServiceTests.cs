@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Exceptions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 
 namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
 {
@@ -144,14 +146,14 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         [Test]
         public async Task When_GetCustomerDetailWithNoData_Throw_DSSException () 
         {
-            var mockHandler = DssHelpers.GetMockMessageHandler("&$a", statusToReturn: HttpStatusCode.NoContent);
+            var mockHandler = DssHelpers.GetMockMessageHandler("&$a", statusToReturn: HttpStatusCode.InternalServerError);
             _restClient = new RestClient(mockHandler.Object);
             _dssService = new DssService(_restClient, _dssSettings, _logger);
 
-            _dssService.Invoking( sut=> sut.GetCustomerDetail("993cfb94-12b7-41c4-b32d-7be9331174f1",
-                    new HttpRequestMessage()))
-                .Should().Throw<DssException>()
-                .WithMessage("Failure Customer Details*");
+            var result = await _dssService.GetCustomerAddressDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", new HttpRequestMessage());
+
+            _logger.Received(3);
+            result.Should().BeNull();
 
 
         }
