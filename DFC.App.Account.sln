@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.DS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AE0C4445-4994-4044-9379-2E242E4CB997}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.DSS.UnitTests", "DFC.App.Account.Services.DSS.Test\DFC.App.Account.Services.DSS.UnitTests.csproj", "{83398966-AA47-410D-8B8A-EAD953B9D5A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.DSS.UnitTests", "DFC.App.Account.Services.DSS.UnitTests\DFC.App.Account.Services.DSS.UnitTests.csproj", "{83398966-AA47-410D-8B8A-EAD953B9D5A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Accounts.IntegrationTest", "DFC.App.Accounts.IntegrationTest\DFC.App.Accounts.IntegrationTest.csproj", "{883598B1-0EB9-4E40-88E2-02B15BD4921D}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.SH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.Auth", "DFC.App.Account.Services.Auth\DFC.App.Account.Services.Auth.csproj", "{0E9F85BE-B7FA-48B9-805F-6040E01947C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.Auth.UnitTests", "DFC.App.Account.Services.Auth.UnitTest\DFC.App.Account.Services.Auth.UnitTests.csproj", "{6C5DB68A-1EDC-4158-92AB-87D06BA43BFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.Account.Services.Auth.UnitTests", "DFC.App.Account.Services.Auth.UnitTests\DFC.App.Account.Services.Auth.UnitTests.csproj", "{6C5DB68A-1EDC-4158-92AB-87D06BA43BFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.APP.Account.CacheContentService", "DFC.APP.Account.CacheContentService\DFC.APP.Account.CacheContentService.csproj", "{9F7CB85C-04FF-46FC-A36A-8971938FC393}"
 EndProject
