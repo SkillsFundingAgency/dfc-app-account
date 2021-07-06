@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.App.Account.Services.DSS.Exceptions;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 
@@ -27,7 +28,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         [SetUp]
         public void Setup()
         {
-            _logger = Substitute.For <ILogger<DssService>>();
+            _logger = Substitute.For<ILogger<DssService>>();
             var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.Created);
             _restClient = new RestClient(mockHandler.Object);
             _dssService = new DssService(_restClient, Options.Create(new DssSettings()
@@ -75,7 +76,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             result.Should().BeNull();
         }
 
-       
+
     }
 
     public class GetCustomerDataTests
@@ -103,59 +104,33 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             });
         }
         [Test]
-        public async Task When_GetCustomerDetail_Return_Customer () 
+        public async Task When_GetCustomerDetail_Return_Customer()
         {
             var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.OK);
             _restClient = new RestClient(mockHandler.Object);
             _dssService = new DssService(_restClient, _dssSettings, _logger);
-           var result = await _dssService.GetCustomerDetail("993cfb94-12b7-41c4-b32d-7be9331174f1",new HttpRequestMessage());
-           result.Should().NotBeNull();
+            var result = await _dssService.GetCustomerDetail("993cfb94-12b7-41c4-b32d-7be9331174f1", new HttpRequestMessage());
+            result.Should().NotBeNull();
         }
 
         [Test]
-        public async Task When_GetCustomerContactDetails_Return_Contact () 
+        public async Task When_GetCustomerData_Return_Customer()
+        {
+            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerCreation(), statusToReturn: HttpStatusCode.OK);
+            _restClient = new RestClient(mockHandler.Object);
+            _dssService = new DssService(_restClient, _dssSettings, _logger);
+            var result = await _dssService.GetCustomerData("993cfb94-12b7-41c4-b32d-7be9331174f1");
+            result.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task When_GetCustomerContactDetails_Return_Contact()
         {
             var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerContactDetails(), statusToReturn: HttpStatusCode.OK);
             _restClient = new RestClient(mockHandler.Object);
             _dssService = new DssService(_restClient, _dssSettings, _logger);
-            var result = await _dssService.GetCustomerContactDetails("993cfb94-12b7-41c4-b32d-7be9331174f1",new HttpRequestMessage());
+            var result = await _dssService.GetCustomerContactDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", new HttpRequestMessage());
             result.Should().NotBeNull();
-        }
-
-        [Test]
-        public async Task When_GetCustomerAddressDetails_Return_Address () 
-        {
-            var mockHandler = DssHelpers.GetMockMessageHandler(DssHelpers.SuccessfulDssCustomerAddressDetails(), statusToReturn: HttpStatusCode.OK);
-            _restClient = new RestClient(mockHandler.Object);
-            _dssService = new DssService(_restClient, _dssSettings, _logger);
-            var result = await _dssService.GetCustomerAddressDetails("993cfb94-12b7-41c4-b32d-7be9331174f1",new HttpRequestMessage());
-            result.Should().NotBeNull();
-        }
-
-
-        [Test]
-        public async Task When_GetCustomerAddressDetails_Return_NullAddress () 
-        {
-            var mockHandler = DssHelpers.GetMockMessageHandler("", statusToReturn: HttpStatusCode.NoContent);
-            _restClient = new RestClient(mockHandler.Object);
-            _dssService = new DssService(_restClient, _dssSettings, _logger);
-            var result = await _dssService.GetCustomerAddressDetails("993cfb94-12b7-41c4-b32d-7be9331174f1",new HttpRequestMessage());
-            result.Should().BeNull();
-        }
-
-        [Test]
-        public async Task When_GetCustomerDetailWithNoData_Throw_DSSException () 
-        {
-            var mockHandler = DssHelpers.GetMockMessageHandler("&$a", statusToReturn: HttpStatusCode.InternalServerError);
-            _restClient = new RestClient(mockHandler.Object);
-            _dssService = new DssService(_restClient, _dssSettings, _logger);
-
-            var result = await _dssService.GetCustomerAddressDetails("993cfb94-12b7-41c4-b32d-7be9331174f1", new HttpRequestMessage());
-
-            _logger.Received(3);
-            result.Should().BeNull();
-
-
         }
     }
 
@@ -271,6 +246,135 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             await _dssService.DeleteCustomer(Guid.NewGuid());
 
         }
+
+        [Test]
+        public async Task When_UpsertCustomerContactData_ForNewContactDetails_ReturnOk()
+        {
+            var client = Substitute.For<IRestClient>();
+
+            client.LastResponse.Returns(new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Accepted))
+            {
+                IsSuccess = true,
+                Content = string.Empty,
+            });
+
+            _dssService = new DssService(client, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "https://this.is.anApi.org.uk",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://this.is.anApi.org.uk",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk"
+            }), _logger);
+
+            await _dssService.UpsertCustomerContactData(new Customer
+            {
+                Contact = new Contact(),
+            });
+            
+            await client.Received(1).PostAsync<object>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>());
+        }
+
+        [Test]
+        public async Task When_UpsertCustomerContactData_ForExistingContactDetails_ReturnOk()
+        {
+            var client = Substitute.For<IRestClient>();
+
+            client.LastResponse.Returns(new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Accepted))
+            {
+                IsSuccess = true,
+                Content = string.Empty,
+            });
+
+            _dssService = new DssService(client, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "https://this.is.anApi.org.uk",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://this.is.anApi.org.uk",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk"
+            }), _logger);
+
+            await _dssService.UpsertCustomerContactData(new Customer
+            {
+                Contact = new Contact
+                {
+                    ContactId = Guid.NewGuid().ToString(),
+                },
+            });
+
+            await client.Received(1).PatchAsync<object>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>());
+        }
+
+        [Test]
+        public void When_UpsertCustomerContactData_andUpdateFails_throw_UnableToUpdateContactDetailsException()
+        {
+            var client = Substitute.For<IRestClient>();
+
+            client.LastResponse.Returns(new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Accepted))
+            {
+                IsSuccess = false,
+                Content = string.Empty,
+            });
+
+            _dssService = new DssService(client, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "https://this.is.anApi.org.uk",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://this.is.anApi.org.uk",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk"
+            }), _logger);
+
+            Assert.ThrowsAsync<UnableToUpdateContactDetailsException>(() => _dssService.UpsertCustomerContactData(
+                new Customer
+                {
+                    Contact = new Contact
+                    {
+                        ContactId = Guid.NewGuid().ToString(),
+                    },
+                }));
+        }
+
+        [Test]
+        public void When_UpsertCustomerContactData_andEmailAlreadyExists_throw_EmailAddressAlreadyExistsException()
+        {
+            var client = Substitute.For<IRestClient>();
+
+            client.LastResponse.Returns(new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Accepted))
+            {
+                IsSuccess = false,
+                Content = "Contact with Email Address a@a.com already exists"
+            });
+
+            _dssService = new DssService(client, Options.Create(new DssSettings()
+            {
+                ApiKey = "9238dfjsjdsidfs83fds",
+                CustomerApiUrl = "https://this.is.anApi.org.uk",
+                AccountsTouchpointId = "9000000001",
+                CustomerApiVersion = "V1",
+                DigitalIdentitiesPatchByCustomerIdApiVersion = "https://this.is.anApi.org.uk",
+                DigitalIdentitiesPatchByCustomerIdApiUrl = "https://this.is.anApi.org.uk",
+                CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk"
+            }), _logger);
+
+            Assert.ThrowsAsync<EmailAddressAlreadyExistsException>(() => _dssService.UpsertCustomerContactData(
+                new Customer
+                {
+                    Contact = new Contact
+                    {
+                        ContactId = Guid.NewGuid().ToString(),
+                        EmailAddress = "a@a.com"
+                    },
+                }));
+        }
+
     }
 
 
@@ -280,7 +384,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         private RestClient _restClient;
         private IOptions<DssSettings> _dssSettings;
         private ILogger<DssService> _logger;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -297,7 +401,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 CustomerAddressDetailsApiVersion = "V2",
                 CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk/customers/{customerId}/ContactDetails/",
                 CustomerContactDetailsApiVersion = "V2",
-                ActionPlansApiUrl="SomeAPI",
+                ActionPlansApiUrl = "SomeAPI",
                 ActionPlansApiVersion = "V2"
             });
         }
@@ -315,10 +419,10 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         {
             var restClient = Substitute.For<IRestClient>();
             restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
-            
 
-            restClient.GetAsync<IList<ActionPlan>>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<IList<ActionPlan>>(x => { throw new DssException("Failure Action Plans");});
-            
+
+            restClient.GetAsync<IList<ActionPlan>>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).Returns<IList<ActionPlan>>(x => { throw new DssException("Failure Action Plans"); });
+
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
             _dssService.Invoking(sut => sut.GetActionPlans("993cfb94-12b7-41c4-b32d-7be9331174f1"))
@@ -344,7 +448,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
         private RestClient _restClient;
         private IOptions<DssSettings> _dssSettings;
         private ILogger<DssService> _logger;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -361,7 +465,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
                 CustomerAddressDetailsApiVersion = "V2",
                 CustomerContactDetailsApiUrl = "https://this.is.anApi.org.uk/customers/{customerId}/ContactDetails/",
                 CustomerContactDetailsApiVersion = "V2",
-                ActionPlansApiUrl="SomeAPI",
+                ActionPlansApiUrl = "SomeAPI",
                 ActionPlansApiVersion = "V2",
                 DigitalIdentitiesPatchByCustomerIdApiUrl = "https://at.api.nationalcareersservice.org.uk/digitalidentities/api/customer/{customerId}",
                 DigitalIdentitiesPatchByCustomerIdApiVersion = "v2"
@@ -383,15 +487,15 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             restClient.LastResponse = new RestClient.APIResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized));
             var token = "test";
 
-            restClient.GetAsync<string>(Arg.Any<string>(),Arg.Any<HttpRequestMessage>()).Returns<string>(x => { throw new DssException("Customer");});
-            
+            restClient.GetAsync<string>(Arg.Any<string>(), Arg.Any<HttpRequestMessage>()).Returns<string>(x => { throw new DssException("Customer"); });
+
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
             _dssService.Invoking(async sut => await sut.UpdateLastLogin(new Guid(), token))
                 .Should().Throw<DssException>();
 
         }
-        
+
     }
 
 }

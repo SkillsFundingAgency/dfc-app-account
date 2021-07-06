@@ -9,7 +9,6 @@ namespace DFC.App.Account.Services.DSS.Interfaces
     {
         Task<Customer> GetCustomerData(string customerId);
         Task<Customer> GetCustomerDetail(string customerId, HttpRequestMessage request);
-        Task<IList<Address>> GetCustomerAddressDetails(string customerId, HttpRequestMessage request);
         Task<Contact> GetCustomerContactDetails(string customerId, HttpRequestMessage request);
         Task<IList<ActionPlan>> GetActionPlans(string customerId);
     }

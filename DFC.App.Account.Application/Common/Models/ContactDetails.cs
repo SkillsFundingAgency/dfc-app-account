@@ -1,9 +1,11 @@
 ﻿using DFC.App.Account.Application.Common.CustomAttributes;
 using DFC.App.Account.Application.Common.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.Account.Application.Common.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ContactDetails
     {
         [StringLength(100, ErrorMessage = "Email address is too long (max. 100)")]

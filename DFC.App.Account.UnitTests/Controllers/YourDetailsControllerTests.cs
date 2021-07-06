@@ -52,7 +52,6 @@ namespace DFC.App.Account.UnitTests.Controllers
 
             _customer = new Customer()
             {
-                Addresses = new []{new Address() {Address1 = "Line 1"}},
                 Contact = new Contact() {ContactId = "id",EmailAddress = "email"},
                 OptInMarketResearch = true,
                 OptInUserResearch = true,

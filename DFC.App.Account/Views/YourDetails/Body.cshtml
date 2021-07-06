@@ -3,9 +3,6 @@
 @using DFC.App.Account.Application.Common.Models
 @model DFC.App.Account.ViewModels.YourDetailsCompositeViewModel
 
-@{
-    var liveAddress = Model.CustomerDetails.Addresses == null ? null : Model.CustomerDetails.Addresses.FirstOrDefault(x => x.EffectiveTo == null);
-}
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">

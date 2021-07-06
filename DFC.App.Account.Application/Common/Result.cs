@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using DFC.App.Account.Application.Common.Interfaces;
 
 namespace DFC.App.Account.Application.Common
 {
+    [ExcludeFromCodeCoverage]
     public struct Result : IResult
     {
         private static readonly Result OkResult = new Result(false, null);

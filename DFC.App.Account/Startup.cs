@@ -10,7 +10,6 @@ using DFC.App.Account.Services.Auth.Models;
 using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.Services.DSS.Services;
-using DFC.App.Account.Services.Interfaces;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
@@ -68,7 +67,6 @@ namespace DFC.App.Account
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
-            services.AddScoped<IAddressSearchService, AddressSearchService>();
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddTransient<IWebhooksService, WebhooksService>();
             services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();

@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Application.Common.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Application.Common.Models
 {
+    [ExcludeFromCodeCoverage]
     public class MarketingPreferences
     {
         public bool OptOutOfMarketing { get; set; }

@@ -1,13 +1,15 @@
-﻿using System;
+﻿using DFC.App.Account.Application.Common.Enums;
+using DFC.App.Account.Application.Common.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
-using DFC.App.Account.Application.Common.Enums;
-using DFC.App.Account.Application.Common.Services;
 
 namespace DFC.App.Account.Application.Common.CustomAttributes
 {
+    [ExcludeFromCodeCoverage]
     public class MobilePhoneAttribute : ValidationAttribute, IClientValidatable
     {
         /// <summary>

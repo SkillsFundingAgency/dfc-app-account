@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EndPoint
     {
         public string Action { get; set; }

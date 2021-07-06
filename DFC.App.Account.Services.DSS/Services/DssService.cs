@@ -150,41 +150,6 @@ namespace DFC.App.Account.Services.DSS.Services
 
         }
 
-        public async Task<Address> UpsertCustomerAddressData(Address address, Guid customerId)
-        {
-            Address result;
-            using (var request = CreateRequestMessage())
-            {
-                request.Content = new StringContent(
-                    JsonConvert.SerializeObject(address));
-                request.Headers.Remove("version");
-                request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-
-                var x = JsonConvert.SerializeObject(address);
-                if (string.IsNullOrEmpty(address.AddressId))
-                {
-                    _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
-                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
-                    result = await _restClient.PostAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()),
-                        requestMessage: request);
-                }
-                else
-                {
-                    _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString())} made");
-                    _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
-                    result = await _restClient.PatchAsync<Address>(apiPath: _dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId.ToString()) +
-                                                                            address.AddressId, requestMessage: request);
-                }
-            }
-
-            if (!_restClient.LastResponse.IsSuccess)
-            {
-                throw new UnableToUpdateAddressDetailsException($"Unable To Updated address details for customer {customerId}, Response {_restClient.LastResponse.Content}");
-            }
-
-            return result;
-        }
-
         public async Task<Customer> GetCustomerData(string customerId)
         {
 
@@ -193,11 +158,9 @@ namespace DFC.App.Account.Services.DSS.Services
             request.Headers.Add("version", _dssSettings.Value.CustomerApiVersion);
             
             var customer = await GetCustomerDetail(customerId, request);
-            customer.Addresses = await GetCustomerAddressDetails(customerId, request);
             customer.Contact = await GetCustomerContactDetails(customerId, request);
 
             return customer;
-
         }
 
         private HttpRequestMessage CreateRequestMessage()
@@ -228,31 +191,7 @@ namespace DFC.App.Account.Services.DSS.Services
             }
 
         }
-
-        public async Task<IList<Address>> GetCustomerAddressDetails(string customerId, HttpRequestMessage request)
-        {
-            try
-            {
-                request.Headers.Remove("version");
-                request.Headers.Add("version", _dssSettings.Value.CustomerAddressDetailsApiVersion);
-
-                _logger.LogInformation($"call to {_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId)} made");
-                _logger.LogInformation($" Request contains the following headers{string.Join(",", request.Headers)}");
-
-                return await _restClient.GetAsync<IList<Address>>(_dssSettings.Value.CustomerAddressDetailsApiUrl.Replace(CustomerIdTag, customerId), request);
-            }
-            catch (Exception e)
-            {
-                if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
-                {
-                    return null;
-                }
-
-                _logger.LogError("Failure Address {StatusCode} {InnerException}", _restClient?.LastResponse?.StatusCode ?? HttpStatusCode.InternalServerError, e.InnerException);
-                    return null;
-            }
-        }
-
+        
         public async Task<Contact> GetCustomerContactDetails(string customerId, HttpRequestMessage request)
         {
             try
