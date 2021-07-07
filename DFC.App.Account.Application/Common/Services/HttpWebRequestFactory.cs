@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 
@@ -28,6 +29,7 @@ namespace DFC.App.Account.Application.Common.Services
         IHttpWebRequest Create(string uri);
     }
 
+    [ExcludeFromCodeCoverage]
     public class HttpWebRequestFactory : IHttpWebRequestFactory
     {
         public IHttpWebRequest Create(string uri)
@@ -36,6 +38,7 @@ namespace DFC.App.Account.Application.Common.Services
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class WrapHttpWebRequest : IHttpWebRequest
     {
         private readonly HttpWebRequest _request;
@@ -80,6 +83,7 @@ namespace DFC.App.Account.Application.Common.Services
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class WrapHttpWebResponse : IHttpWebResponse
     {
         private WebResponse _response;

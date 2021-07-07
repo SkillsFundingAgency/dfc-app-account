@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace DFC.App.Account.Services.Auth.Models
 {
+    [ExcludeFromCodeCoverage]
     public class VerifyPasswordResponse
     {
         [JsonProperty("access_token")]

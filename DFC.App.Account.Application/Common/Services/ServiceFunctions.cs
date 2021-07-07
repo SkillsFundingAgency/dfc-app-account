@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace DFC.App.Account.Application.Common.Services
 {
@@ -11,26 +10,6 @@ namespace DFC.App.Account.Application.Common.Services
         {
             return string.IsNullOrWhiteSpace(value) == false &&
                    Regex.IsMatch(value, regexPattern, commonRegexOptions);
-        }
-
-        public static Boolean IsValidDoubleRegexValue(string value, string regexPatternOne, string regexPatternTwo, bool isAndOperator)
-        {
-            if (isAndOperator)
-            {
-                return string.IsNullOrWhiteSpace(value) == false &&
-                       (
-                           IsValidRegexValue(value, regexPatternOne) &&
-                           IsValidRegexValue(value, regexPatternTwo)
-                       );
-            }
-            else
-            {
-                return string.IsNullOrWhiteSpace(value) == false &&
-                       (
-                           IsValidRegexValue(value, regexPatternOne) ||
-                           IsValidRegexValue(value, regexPatternTwo)
-                       );
-            }
         }
     }
 }
