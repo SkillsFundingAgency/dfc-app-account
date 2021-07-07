@@ -1,5 +1,8 @@
-﻿namespace DFC.App.Account.Models.AddressSearch
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.Account.Models.AddressSearch
 {
+    [ExcludeFromCodeCoverage]
     public class AddressSearchServiceSettings
     {
         public string FindAddressesBaseUrl { get; set; }
