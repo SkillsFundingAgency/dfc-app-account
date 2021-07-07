@@ -28,7 +28,6 @@ namespace DFC.App.Account.Services.DSS.Models
         public string SubcontractorId { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public string? LastModifiedTouchpointId { get; set; }
-        public IList<Address> Addresses { get; set; }
         public Contact Contact { get; set; }
 
     }

@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace DFC.App.Account.Application.Common.Enums
 {
+    [ExcludeFromCodeCoverage]
     public class CommonEnums
     {
         public enum Channel

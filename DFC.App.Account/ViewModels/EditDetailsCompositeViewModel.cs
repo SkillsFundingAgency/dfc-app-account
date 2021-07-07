@@ -1,6 +1,5 @@
 ﻿using DFC.App.Account.Application.Common.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
 
 namespace DFC.App.Account.ViewModels
 {
@@ -11,10 +10,7 @@ namespace DFC.App.Account.ViewModels
             
         }
         public CitizenIdentity Identity { get; set; }
-
-        public IList<PostalAddressModel> Items { get; set; }
-
-        public IList<PostalAddressModel> SelectedAddress { get; set; }
+        
         public string GetErrorClass(string elementName, ModelStateDictionary state)
         {
             var elementState = state[elementName];

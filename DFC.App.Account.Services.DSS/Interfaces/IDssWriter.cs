@@ -10,7 +10,6 @@ namespace DFC.App.Account.Services.DSS.Interfaces
         Task<Customer> CreateCustomerData(Customer customerData);
         Task<Customer> UpdateCustomerData(Customer customerData);
         Task UpsertCustomerContactData(Customer customerData);
-        Task<Address> UpsertCustomerAddressData(Address address, Guid customerId);
         Task<IResult> DeleteCustomer(Guid customerId);
         Task<IResult> UpdateLastLogin(Guid customerId, string token);
     }
