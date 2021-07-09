@@ -9,35 +9,38 @@
             {
                 "PageRegion": 1,
                 "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/head/{0}",
-                "HealthCheckRequired": false,
+                "HealthCheckRequired": true,
+                "IsHealthy": true,
                 "OfflineHtml": null
             },
             {
                 "PageRegion": 2,
                 "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/breadcrumb/{0}",
-                "HealthCheckRequired": false,
+                "HealthCheckRequired": true,
+                "IsHealthy": true,
                 "OfflineHtml": null
             },
             {
                 "PageRegion": 3,
                 "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodytop/{0}",
-                "HealthCheckRequired": false,
+                "HealthCheckRequired": true,
+                "IsHealthy": true,
                 "OfflineHtml": "<H3>Service Unavailable</H3>"
             },
-          {
-            "PageRegion": 4,
-            "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/body/{0}",
-            "HealthCheckRequired": false,
-            "OfflineHtml": "<H3>Service Unavailable</H3>"
-          
-          },
-		  {
-            "PageRegion": 7,
-            "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodyfooter/{0}",
-            "HealthCheckRequired": false,
-            "OfflineHtml": "<H3>Service Unavailable</H3>"
-          
-          }
+            {
+                "PageRegion": 4,
+                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/body/{0}",
+                "HealthCheckRequired": true,
+                "IsHealthy": true,
+                "OfflineHtml": "<H3>Service Unavailable</H3>"
+            },
+            {
+                "PageRegion": 7,
+                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodyfooter/{0}",
+                "HealthCheckRequired": true,
+                "IsHealthy": true,
+                "OfflineHtml": "<H3>Service Unavailable</H3>"
+            }
         ]
     }
 ]
