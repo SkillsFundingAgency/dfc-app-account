@@ -16,6 +16,9 @@
     <Folder Include="Helpers\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Setup\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
