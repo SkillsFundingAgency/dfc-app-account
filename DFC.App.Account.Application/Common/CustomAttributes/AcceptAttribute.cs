@@ -6,14 +6,9 @@ using System.Web.Mvc;
 
 namespace DFC.App.Account.Application.Common.CustomAttributes
 {
+    [ExcludeFromCodeCoverage]
     public class AcceptAttribute : ValidationAttribute, IClientValidatable
     {
-        [ExcludeFromCodeCoverage]
-        public AcceptAttribute()
-        {
-
-        }
-
         public override bool IsValid(object value)
         {
             // AcceptAttribute is applied only to Boolean Properties and allow only values set to true
