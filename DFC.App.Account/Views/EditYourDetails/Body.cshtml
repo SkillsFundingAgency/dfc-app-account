@@ -128,7 +128,9 @@
 
 
         <h2 class="heading-medium">Your marketing preferences</h2>
-        <p>I agree to the following:</p>
+            <p class="govuk-body">We may want to speak to you in line with our <a href="/help/privacy-and-cookies" class="govuk-link">privacy policy</a>. You can opt out at any time.</p>
+            <p class="govuk-body">Select the options that apply to you.</p>
+            <p class="govuk-body">I want to take part in:</p>
 
         <legend class="govuk-visually-hidden">
             Your marketing preferences
@@ -137,14 +139,14 @@
 
 
             <govukCheckbox id="@Model.GetElementId("govukCheckBox", "marketing-opt-out")"
-                           label="To receive marketing from the National Careers Service’s trusted partners"
+                           label="user research"
                            AdditionalClass="checkbox-container-item govuk-checkboxes"
                            name="MarketingOptIn"
                            checked="@Model.Identity.MarketingPreferences.MarketingOptIn">
             </govukCheckbox>
 
             <govukCheckbox id="@Model.GetElementId("govukCheckBox", "market-research")"
-                           label="The National Careers Service can contact me for market research"
+                           label="market research"
                            AdditionalClass="checkbox-container-item govuk-checkboxes"
                            name="MarketResearchOptIn"
                            checked="@Model.Identity.MarketingPreferences.MarketResearchOptIn">
