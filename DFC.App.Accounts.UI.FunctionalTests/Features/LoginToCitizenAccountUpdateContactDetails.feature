@@ -3,7 +3,7 @@
 @Accounts @Smoke
 Scenario: Login to citizen account and edit phone number
 	Given I am on the action plans landing page
-	When I click the Go to your action plans button
+	When I click the Go to your action plan button
 	And I enter the email address in the Email address field
 	And I enter the password in the Password field
 	And I click the Sign in button
