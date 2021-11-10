@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -57,7 +58,9 @@ namespace DFC.App.Account
         public void ConfigureServices(IServiceCollection services)
         {
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment());
+            services.AddContentPageServices<ContentPageModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
 
             services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
             services.AddTransient<ICacheReloadService, CacheReloadService>();
