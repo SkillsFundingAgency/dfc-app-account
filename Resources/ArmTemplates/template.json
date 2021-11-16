@@ -217,7 +217,7 @@
                         "value": "[parameters('clientAffinity')]"
                     },
                     "deployStagingSlot": {
-                        "value": false
+                        "value": true
                     },
                     "appServiceAppSettings": {
                         "value": [
