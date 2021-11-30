@@ -141,9 +141,9 @@ namespace DFC.App.Account.Controllers
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
-            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber;
-            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber;
-            customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
+            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber ?? string.Empty;
+            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber ?? string.Empty;
+            customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative ?? string.Empty;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
             customer.OptInUserResearch = identity.MarketingPreferences.MarketingOptIn;
