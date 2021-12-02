@@ -60,50 +60,54 @@ namespace DFC.App.Account.Controllers
                 OptOutOfMarketing = !additionalData.MarketingOptIn,
                 OptOutOfMarketResearch = !additionalData.MarketResearchOptIn
             };
-            
-                var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
-                if (IsValid(ModelState, viewModel))
+
+            var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
+            if (IsValid(ModelState, viewModel))
+            {
+                try
                 {
-                    try
+
+                    var dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
+                    var dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
+                    var dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
+
+                    CultureInfo enGb = new CultureInfo("en-GB");
+                    string dob = string.Empty;
+                    if (!string.IsNullOrEmpty(dateOfBirthDay) && !string.IsNullOrEmpty(dateOfBirthMonth) &&
+                        !string.IsNullOrEmpty(dateOfBirthYear))
                     {
-                        
-                        var dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
-                        var dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
-                        var dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
-
-                        CultureInfo enGb = new CultureInfo("en-GB");
-                        string dob = string.Empty;
-                        if (!string.IsNullOrEmpty(dateOfBirthDay) && !string.IsNullOrEmpty(dateOfBirthMonth) &&
-                            !string.IsNullOrEmpty(dateOfBirthYear))
-                        {
-                            dob = $"{dateOfBirthDay.PadLeft(2, '0')}/{dateOfBirthMonth.PadLeft(2, '0')}/{dateOfBirthYear.PadLeft(4, '0')}";
-                        }
-
-                        if (DateTime.TryParseExact(dob, "dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,
-                            out var dateOfBirth))
-                        {
-                            viewModel.Identity.PersonalDetails.DateOfBirth = dateOfBirth;
-                        }
-                        else
-                        {
-                            viewModel.Identity.PersonalDetails.DateOfBirth = null;
-                        }
-
-                        var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-                        await _dssWriter.UpdateCustomerData(updatedDetails);
-                        
-                        updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
-                        
-                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
-
-                        return new RedirectResult("/your-account/your-details", false);
+                        dob = $"{dateOfBirthDay.PadLeft(2, '0')}/{dateOfBirthMonth.PadLeft(2, '0')}/{dateOfBirthYear.PadLeft(4, '0')}";
                     }
-                    catch (EmailAddressAlreadyExistsException)
+
+                    if (DateTime.TryParseExact(dob, "dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,
+                        out var dateOfBirth))
                     {
-                        ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
+                        viewModel.Identity.PersonalDetails.DateOfBirth = dateOfBirth;
                     }
+                    else
+                    {
+                        viewModel.Identity.PersonalDetails.DateOfBirth = null;
+                    }
+
+                    var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
+                    await _dssWriter.UpdateCustomerData(updatedDetails);
+
+                    updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
+
+                    await _dssWriter.UpsertCustomerContactData(updatedDetails);
+
+                    return new RedirectResult("/your-account/your-details", false);
                 }
-            
+                catch (EmailAddressAlreadyExistsException)
+                {
+                    ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
+                }
+                catch
+                {
+                    return BadRequest($"Unable to update customer data for Id {customer?.CustomerId}");
+                }
+            }
+
             ViewModel.Identity = viewModel.Identity;
 
             return await base.Body();
@@ -127,7 +131,7 @@ namespace DFC.App.Account.Controllers
 
             return modelState.IsValid;
         }
-        
+
         private static EditDetailsAdditionalData GetEditDetailsAdditionalData(IFormCollection formCollection)
         {
             return new EditDetailsAdditionalData
@@ -153,7 +157,7 @@ namespace DFC.App.Account.Controllers
             customer.Gender = identity.PersonalDetails.Gender;
             customer.GivenName = identity.PersonalDetails.GivenName;
             customer.Title = identity.PersonalDetails.Title;
-            
+
             return customer;
         }
 
