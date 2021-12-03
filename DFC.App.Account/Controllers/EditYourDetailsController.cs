@@ -114,13 +114,9 @@ namespace DFC.App.Account.Controllers
             if (viewModel.Identity.ContactDetails.ContactPreference == CommonEnums.Channel.Text)
             {
                 var contact = viewModel.Identity.ContactDetails;
-                if (string.IsNullOrEmpty(contact.MobileNumber) &&
-                    string.IsNullOrEmpty(contact.TelephoneNumberAlternative) &&
-                    string.IsNullOrEmpty(contact.HomeNumber))
+                if (string.IsNullOrEmpty(contact.MobileNumber))
                 {
                     modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SmsErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SmsErrorMessage);
                     return false;
                 }
             }
