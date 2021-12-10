@@ -1,46 +1,49 @@
 [
-    {
-        "Path": "your-account",      
-        "Layout": "FullWidth",
-        "OfflineHtml": "<H2>Accounts Service Unavailable</H2>",
-        "PhaseBannerHtml":"<div class=\"govuk-phase-banner\"><p class=\"govuk-phase-banner__content\"><strong class=\"govuk-tag govuk-phase-banner__content__tag \">beta</strong> <span class=\"govuk-phase-banner__text\">Complete <a target=\"_blank\" class=\"govuk-link\" href=\"https://surveys.ipsosinteractive.com/mrIWeb/mrIWeb.dll?I.Project=S1039833&amp;id=&amp;cf=ovl \">Ipsos MORI survey</a> to give us your feedback about the service.</span> </p></div>",
-        "IsOnline": true,
-        "Regions": [
-            {
-                "PageRegion": 1,
-                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/head/{0}",
-                "HealthCheckRequired": true,
-                "IsHealthy": true,
-                "OfflineHtml": null
-            },
-            {
-                "PageRegion": 2,
-                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/breadcrumb/{0}",
-                "HealthCheckRequired": true,
-                "IsHealthy": true,
-                "OfflineHtml": null
-            },
-            {
-                "PageRegion": 3,
-                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodytop/{0}",
-                "HealthCheckRequired": true,
-                "IsHealthy": true,
-                "OfflineHtml": "<H3>Service Unavailable</H3>"
-            },
-            {
-                "PageRegion": 4,
-                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/body/{0}",
-                "HealthCheckRequired": true,
-                "IsHealthy": true,
-                "OfflineHtml": "<H3>Service Unavailable</H3>"
-            },
-            {
-                "PageRegion": 7,
-                "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodyfooter/{0}",
-                "HealthCheckRequired": true,
-                "IsHealthy": true,
-                "OfflineHtml": "<H3>Service Unavailable</H3>"
-            }
-        ]
-    }
+	{
+		"Path": "your-account",
+		"Layout": "FullWidth",
+		"OfflineHtml": "<H2>Accounts Service Unavailable</H2>",
+		"PhaseBannerHtml": "<div class=\"govuk-phase-banner\"><p class=\"govuk-phase-banner__content\"><strong class=\"govuk-tag govuk-phase-banner__content__tag \">beta</strong> <span class=\"govuk-phase-banner__text\">Complete <a target=\"_blank\" class=\"govuk-link\" href=\"https://surveys.ipsosinteractive.com/mrIWeb/mrIWeb.dll?I.Project=S1039833&amp;id=&amp;cf=ovl \">Ipsos MORI survey</a> to give us your feedback about the service.</span> </p></div>",
+		"IsOnline": true,
+		"Regions": [
+			{
+				"PageRegion": 1,
+				"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/head/{0}",
+				"HealthCheckRequired": true,
+				"IsHealthy": true,
+				"OfflineHtml": null
+			},
+			{
+				"PageRegion": 2,
+				"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/breadcrumb/{0}",
+				"HealthCheckRequired": true,
+				"IsHealthy": true,
+				"OfflineHtml": null
+			},
+			{
+				"PageRegion": 3,
+				"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodytop/{0}",
+				"HealthCheckRequired": true,
+				"IsHealthy": true,
+				"OfflineHtml": "<H3>Service Unavailable</H3>"
+			},
+			{
+				"PageRegion": 4,
+				"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/body/{0}",
+				"HealthCheckRequired": true,
+				"IsHealthy": true,
+				"OfflineHtml": "<H3>Service Unavailable</H3>"
+			},
+			{
+				"PageRegion": 7,
+				"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/bodyfooter/{0}",
+				"HealthCheckRequired": true,
+				"IsHealthy": true,
+				"OfflineHtml": "<H3>Service Unavailable</H3>"
+			}
+		],
+		"JavaScriptNames": {
+			"/js/dfc-app-accounts.min.js": null
+		}
+	}
 ]
