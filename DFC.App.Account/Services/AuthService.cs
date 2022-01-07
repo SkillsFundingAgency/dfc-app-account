@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using DFC.App.Account.Services.DSS.Interfaces;
+﻿using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DFC.App.Account.Exception;
-using Microsoft.AspNetCore.Http;
 
 namespace DFC.App.Account.Services
 {
@@ -12,10 +12,12 @@ namespace DFC.App.Account.Services
     {
         private readonly IDssReader _dssReader;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthService(IDssReader dssReader,IHttpContextAccessor httpContextAccessor)
+        private readonly ILogger<AuthService> _logger;
+        public AuthService(IDssReader dssReader, IHttpContextAccessor httpContextAccessor, ILogger<AuthService> logger)
         {
             _dssReader = dssReader;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
         public async Task<Customer> GetCustomer(ClaimsPrincipal user)
@@ -24,11 +26,9 @@ namespace DFC.App.Account.Services
 
             if (userId == null)
             {
-                throw new NoUserIdInClaimException("Unable to locate userID");
+                _logger.LogError("Unable to Locate User with {userId}", userId);
+                return null;
             }
-
-
-
 
             return await _dssReader.GetCustomerData(userId);
         }

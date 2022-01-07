@@ -29,7 +29,7 @@ namespace DFC.App.Account.Controllers
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        public const string SmsErrorMessage = "You have selected a contact preference which requires a valid phone number";
+        public const string SmsErrorMessage = "You have selected a contact preference which requires a valid mobile number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
             IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
@@ -60,50 +60,54 @@ namespace DFC.App.Account.Controllers
                 OptOutOfMarketing = !additionalData.MarketingOptIn,
                 OptOutOfMarketResearch = !additionalData.MarketResearchOptIn
             };
-            
-                var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
-                if (IsValid(ModelState, viewModel))
+
+            var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
+            if (IsValid(ModelState, viewModel))
+            {
+                try
                 {
-                    try
+
+                    var dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
+                    var dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
+                    var dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
+
+                    CultureInfo enGb = new CultureInfo("en-GB");
+                    string dob = string.Empty;
+                    if (!string.IsNullOrEmpty(dateOfBirthDay) && !string.IsNullOrEmpty(dateOfBirthMonth) &&
+                        !string.IsNullOrEmpty(dateOfBirthYear))
                     {
-                        
-                        var dateOfBirthDay = viewModel.Identity.PersonalDetails.DateOfBirthDay;
-                        var dateOfBirthMonth = viewModel.Identity.PersonalDetails.DateOfBirthMonth;
-                        var dateOfBirthYear = viewModel.Identity.PersonalDetails.DateOfBirthYear;
-
-                        CultureInfo enGb = new CultureInfo("en-GB");
-                        string dob = string.Empty;
-                        if (!string.IsNullOrEmpty(dateOfBirthDay) && !string.IsNullOrEmpty(dateOfBirthMonth) &&
-                            !string.IsNullOrEmpty(dateOfBirthYear))
-                        {
-                            dob = $"{dateOfBirthDay.PadLeft(2, '0')}/{dateOfBirthMonth.PadLeft(2, '0')}/{dateOfBirthYear.PadLeft(4, '0')}";
-                        }
-
-                        if (DateTime.TryParseExact(dob, "dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,
-                            out var dateOfBirth))
-                        {
-                            viewModel.Identity.PersonalDetails.DateOfBirth = dateOfBirth;
-                        }
-                        else
-                        {
-                            viewModel.Identity.PersonalDetails.DateOfBirth = null;
-                        }
-
-                        var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
-                        await _dssWriter.UpdateCustomerData(updatedDetails);
-                        
-                        updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
-                        
-                        await _dssWriter.UpsertCustomerContactData(updatedDetails);
-
-                        return new RedirectResult("/your-account/your-details", false);
+                        dob = $"{dateOfBirthDay.PadLeft(2, '0')}/{dateOfBirthMonth.PadLeft(2, '0')}/{dateOfBirthYear.PadLeft(4, '0')}";
                     }
-                    catch (EmailAddressAlreadyExistsException)
+
+                    if (DateTime.TryParseExact(dob, "dd/MM/yyyy", enGb, DateTimeStyles.AdjustToUniversal,
+                        out var dateOfBirth))
                     {
-                        ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
+                        viewModel.Identity.PersonalDetails.DateOfBirth = dateOfBirth;
                     }
+                    else
+                    {
+                        viewModel.Identity.PersonalDetails.DateOfBirth = null;
+                    }
+
+                    var updatedDetails = GetUpdatedCustomerDetails(customerDetails, viewModel.Identity);
+                    await _dssWriter.UpdateCustomerData(updatedDetails);
+
+                    updatedDetails.Contact.LastModifiedDate = DateTime.UtcNow.AddMinutes(-1);
+
+                    await _dssWriter.UpsertCustomerContactData(updatedDetails);
+
+                    return new RedirectResult("/your-account/your-details", false);
                 }
-            
+                catch (EmailAddressAlreadyExistsException)
+                {
+                    ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
+                }
+                catch
+                {
+                    return BadRequest($"Unable to update customer data for Id {customer?.CustomerId}");
+                }
+            }
+
             ViewModel.Identity = viewModel.Identity;
 
             return await base.Body();
@@ -114,20 +118,16 @@ namespace DFC.App.Account.Controllers
             if (viewModel.Identity.ContactDetails.ContactPreference == CommonEnums.Channel.Text)
             {
                 var contact = viewModel.Identity.ContactDetails;
-                if (string.IsNullOrEmpty(contact.MobileNumber) &&
-                    string.IsNullOrEmpty(contact.TelephoneNumberAlternative) &&
-                    string.IsNullOrEmpty(contact.HomeNumber))
+                if (string.IsNullOrEmpty(contact.MobileNumber))
                 {
                     modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.TelephoneNumberAlternative", SmsErrorMessage);
-                    modelState.AddModelError("Identity.ContactDetails.HomeNumber", SmsErrorMessage);
                     return false;
                 }
             }
 
             return modelState.IsValid;
         }
-        
+
         private static EditDetailsAdditionalData GetEditDetailsAdditionalData(IFormCollection formCollection)
         {
             return new EditDetailsAdditionalData
@@ -141,9 +141,9 @@ namespace DFC.App.Account.Controllers
         private Customer GetUpdatedCustomerDetails(Customer customer, CitizenIdentity identity)
         {
             customer.Contact.PreferredContactMethod = identity.ContactDetails.ContactPreference;
-            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber;
-            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber;
-            customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative;
+            customer.Contact.HomeNumber = identity.ContactDetails.HomeNumber ?? string.Empty;
+            customer.Contact.MobileNumber = identity.ContactDetails.MobileNumber ?? string.Empty;
+            customer.Contact.AlternativeNumber = identity.ContactDetails.TelephoneNumberAlternative ?? string.Empty;
 
             customer.OptInMarketResearch = identity.MarketingPreferences.MarketResearchOptIn;
             customer.OptInUserResearch = identity.MarketingPreferences.MarketingOptIn;
@@ -153,7 +153,7 @@ namespace DFC.App.Account.Controllers
             customer.Gender = identity.PersonalDetails.Gender;
             customer.GivenName = identity.PersonalDetails.GivenName;
             customer.Title = identity.PersonalDetails.Title;
-            
+
             return customer;
         }
 

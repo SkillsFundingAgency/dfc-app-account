@@ -7,6 +7,7 @@ using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -16,6 +17,7 @@ namespace DFC.App.Account.UnitTests.Services
     {
         private readonly IDssReader _dssService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthServiceTests()
         {
@@ -31,7 +33,7 @@ namespace DFC.App.Account.UnitTests.Services
                 FamilyName = "Test"
             });
 
-            var service = new AuthService(_dssService,_httpContextAccessor);
+            var service = new AuthService(_dssService,_httpContextAccessor, _logger);
 
             var result = await service.GetCustomer(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {

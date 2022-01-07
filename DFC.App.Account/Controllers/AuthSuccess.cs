@@ -25,19 +25,19 @@ namespace DFC.App.Account.Controllers
         [Route("/body/authsuccess")]
         public override async Task<IActionResult> Body()
         {
-            await UpdateLastLoggedIn();
+            var customer = await GetCustomerDetails();
+            if(customer == null)
+            {
+                return BadRequest("unable to get customer details");
+            }
+            var token = User.Claims.FirstOrDefault(x => x.Type == "DssToken");
+            await _dssWriter.UpdateLastLogin(customer.CustomerId, token?.Value);
+
             Request.Query.TryGetValue("redirectUrl", out var redirectUrl);
             var url = string.IsNullOrEmpty(redirectUrl.ToList().FirstOrDefault())
                 ? "/your-account"
                 : redirectUrl.ToList().FirstOrDefault();
             return Redirect(url);
-        }
-
-        private async Task UpdateLastLoggedIn()
-        {
-            var customer = await GetCustomerDetails();
-            var token = User.Claims.FirstOrDefault(x => x.Type == "DssToken");
-            await _dssWriter.UpdateLastLogin(customer.CustomerId, token?.Value);
         }
        
     }
