@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.67" />
-    <PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.85" />
+    <PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.106" />
   </ItemGroup>
 
 </Project>
