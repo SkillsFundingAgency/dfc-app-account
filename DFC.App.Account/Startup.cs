@@ -44,7 +44,7 @@ namespace DFC.App.Account
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private const string CosmosDbContentPagesConfigAppSettings = "CosmosDbConnections:Account";
+        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:Account";
         private readonly IWebHostEnvironment env;
         public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
