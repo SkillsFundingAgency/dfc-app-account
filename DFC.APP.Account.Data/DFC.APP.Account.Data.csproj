@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.67" />
     <PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.106" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
   </ItemGroup>
 
 </Project>
