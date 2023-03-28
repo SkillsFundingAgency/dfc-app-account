@@ -187,7 +187,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             }), _logger);
 
             _dssService.Invoking(x => x.UpdateCustomerData(new Customer())).Should()
-                .Throw<UnableToUpdateCustomerDetailsException>();
+                .ThrowAsync<UnableToUpdateCustomerDetailsException>();
 
         }
 
@@ -207,7 +207,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             }), _logger);
 
             _dssService.Invoking(x => x.DeleteCustomer(Guid.NewGuid())).Should()
-                .Throw<UnableToUpdateCustomerDetailsException>();
+                .ThrowAsync<UnableToUpdateCustomerDetailsException>();
 
         }
 
@@ -225,7 +225,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             }), _logger);
 
             _dssService.Invoking(x => x.DeleteCustomer(Guid.Empty)).Should()
-                .Throw<UnableToUpdateCustomerDetailsException>();
+                .ThrowAsync<UnableToUpdateCustomerDetailsException>();
 
         }
 
@@ -426,7 +426,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
             _dssService.Invoking(sut => sut.GetActionPlans("993cfb94-12b7-41c4-b32d-7be9331174f1"))
-                .Should().Throw<DssException>();
+                .Should().ThrowAsync<DssException>();
 
         }
         [Test]
@@ -492,7 +492,7 @@ namespace DFC.App.Account.Services.DSS.UnitTests.UnitTests
             _dssService = new DssService(restClient, _dssSettings, _logger);
 
             _dssService.Invoking(async sut => await sut.UpdateLastLogin(new Guid(), token))
-                .Should().Throw<DssException>();
+                .Should().ThrowAsync<DssException>();
 
         }
 
