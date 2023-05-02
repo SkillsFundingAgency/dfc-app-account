@@ -115,6 +115,9 @@
         },
         "AppLoginPassword": {
             "value": "__AppLoginPassword__"
+        },
+        "appInsightsInstrumentationKey": {
+          "value": "__appInsightsInstrumentationKey__" 
         }
     }
 }
