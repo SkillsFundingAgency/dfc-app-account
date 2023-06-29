@@ -49,8 +49,6 @@ namespace DFC.App.Account.Controllers
 
             var customer = await GetCustomerDetails();
 
-            _logger.LogInformation($"ConfirmDeleteController Body customer {customer.CustomerId} ");
-
             //Hard coded value - Needs removing upon account, and DSS integration
             var shcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
 
@@ -61,7 +59,7 @@ namespace DFC.App.Account.Controllers
 
             if (doc == null)
             {
-                _logger.LogInformation($"ConfirmDeleteController Body customer {customer.CustomerId} doc is null ");
+                _logger.LogInformation($"ConfirmDeleteController Body customer doc is null ");
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
             }
 
