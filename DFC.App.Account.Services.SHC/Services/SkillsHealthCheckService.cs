@@ -11,15 +11,17 @@ using System.Net;
 using System.Net.Mime;
 using System.Xml;
 using DFC.App.Account.Application.SkillsHealthCheck.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.Services.SHC.Services
 {
     public class SkillsHealthCheckService : ISkillsHealthCheckService
     {
         private readonly IOptions<ShcSettings> _settings;
+        private readonly ILogger _logger;
         private readonly IHttpWebRequestFactory _factory;
         private const string ContentType = "text/xml;charset=\"utf-8\"";
-        public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory)
+        public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory, ILogger logger)
         {
             
             Throw.IfNull(settings, nameof(settings));
@@ -33,11 +35,15 @@ namespace DFC.App.Account.Services.SHC.Services
 
             _settings = settings;
             _factory = requestFactory;
+            _logger = logger;
         }
         public List<ShcDocument> GetShcDocumentsForUser(string llaId)
         {
             if (string.IsNullOrWhiteSpace(llaId))
+            {
+                _logger.LogWarning($"SkillsHealthCheckService GetShcDocumentsForUser llaId is null");
                 return new List<ShcDocument>();
+            }
             
 
             var soapEnvelopeXml = CreateSoapEnvelope(llaId);
@@ -47,6 +53,7 @@ namespace DFC.App.Account.Services.SHC.Services
             var result = webRequest.GetResponse();
             if (result.StatusCode != HttpStatusCode.OK)
             {
+                _logger.LogWarning($"Failure to get SHC document. LLA ID: {llaId}");
                 throw new ShcException($"Failure to get SHC document. LLA ID: {llaId}, Code: {result.StatusCode}");
             }
 

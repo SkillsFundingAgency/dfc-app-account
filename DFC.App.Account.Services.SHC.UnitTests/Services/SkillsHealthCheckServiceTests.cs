@@ -6,11 +6,15 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 
 namespace DFC.App.Account.Services.SHC.UnitTest.Services
 {
     public class SkillsHealthCheckServiceTests
     {
+        private ILogger _logger;
+
         [Test]
         public void IfIdIsNull_ReturnNull()
         {
@@ -23,7 +27,7 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 ServiceName = "serviceName",
                 LinkUrl = "linkUrl"
             };
-            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
+            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory, Substitute.For<ILogger>());
             var documents = serviceUnderTest.GetShcDocumentsForUser(null);
             documents.Should().BeEmpty();
         }
@@ -41,7 +45,7 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 ServiceName = "serviceName",
                 LinkUrl = "linkUrl"
             };
-            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
+            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory, Substitute.For<ILogger>());
             var documents = serviceUnderTest.GetShcDocumentsForUser("12345");
             documents.Should().NotBeNull();
             documents.Should().NotBeEmpty();
@@ -60,7 +64,7 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 ServiceName = "serviceName",
                 LinkUrl = "linkUrl"
             };
-            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
+            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory, Substitute.For<ILogger>());
             var documents = serviceUnderTest.GetShcDocumentsForUser("12345");
             documents.Should().NotBeNull();
             documents.Should().BeEmpty();
@@ -79,7 +83,7 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
                 ServiceName = "serviceName",
                 LinkUrl = "linkUrl"
             };
-            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory);
+            var serviceUnderTest = new SkillsHealthCheckService(Options.Create(settings), factory, Substitute.For<ILogger>());
             serviceUnderTest.Invoking(x => x.GetShcDocumentsForUser("12345")).Should().Throw<ShcException>()
                 .WithMessage("Failure to get SHC document. LLA ID: 12345, Code: InternalServerError");
 

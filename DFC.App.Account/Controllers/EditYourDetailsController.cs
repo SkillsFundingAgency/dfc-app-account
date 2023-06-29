@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using RedirectResult = Microsoft.AspNetCore.Mvc.RedirectResult;
+using Castle.Core.Resource;
 
 namespace DFC.App.Account.Controllers
 {
@@ -29,14 +31,17 @@ namespace DFC.App.Account.Controllers
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
+        private readonly ILogger _logger;
+
         public const string SmsErrorMessage = "You have selected a contact preference which requires a valid mobile number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
-            IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+            IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
             : base(compositeSettings, authService, documentService, config)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
+            _logger = logger;
         }
 
         [Route("/body/edit-your-details")]
@@ -45,7 +50,8 @@ namespace DFC.App.Account.Controllers
             var customer = await GetCustomerDetails();
             var customerDetails = await _dssReader.GetCustomerData(customer.CustomerId.ToString());
             ViewModel.Identity = MapCustomerToCitizenIdentity(customerDetails);
-
+            _logger.LogInformation($"EditYourDetailsController body/edit-your-details customer.CustomerId {customer.CustomerId}");
+           
             return await base.Body();
         }
 
@@ -55,6 +61,9 @@ namespace DFC.App.Account.Controllers
         {
             var customer = await GetCustomerDetails();
             var additionalData = GetEditDetailsAdditionalData(formCollection);
+
+            _logger.LogInformation($"EditYourDetailsController body/edit-your-details customer.CustomerId {customer.CustomerId}");
+
             viewModel.Identity.MarketingPreferences = new MarketingPreferences
             {
                 OptOutOfMarketing = !additionalData.MarketingOptIn,
@@ -100,10 +109,12 @@ namespace DFC.App.Account.Controllers
                 }
                 catch (EmailAddressAlreadyExistsException)
                 {
+                    _logger.LogWarning($"EditYourDetailsController body/edit-your-details {viewModel.Identity.ContactDetails.ContactEmail} email already in use");
                     ModelState.AddModelError("Identity.ContactDetails.ContactEmail", "Email address already in use");
                 }
                 catch
                 {
+                    _logger.LogWarning($"EditYourDetailsController body/edit-your-details Unable to update customer data for Id {customer?.CustomerId}");
                     return BadRequest($"Unable to update customer data for Id {customer?.CustomerId}");
                 }
             }
@@ -120,7 +131,7 @@ namespace DFC.App.Account.Controllers
                 var contact = viewModel.Identity.ContactDetails;
                 if (string.IsNullOrEmpty(contact.MobileNumber))
                 {
-                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
+                     modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
                     return false;
                 }
             }

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.Controllers
 {
@@ -16,10 +18,12 @@ namespace DFC.App.Account.Controllers
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
-        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        private readonly ILogger _logger;
+        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
             : base(compositeSettings, authService, documentService, config)
         {
             _dssService = dssService;
+            _logger = logger;
         }
 
         [Authorize]
@@ -38,10 +42,14 @@ namespace DFC.App.Account.Controllers
 
             if (customer.CustomerId != model.CustomerId)
             {
+                _logger.LogWarning($"DeleteAccountController Body customer.CustomerId {customer.CustomerId} != model.CustomerId {model.CustomerId} ");
                 return RedirectTo($"{CompositeViewModel.PageId.Home}");
             }
 
             await _dssService.DeleteCustomer(customer.CustomerId);
+
+            _logger.LogInformation($"DeleteAccountController Body Delete customer is called customer.CustomerId {customer.CustomerId} ");
+
             return RedirectTo($"{CompositeViewModel.PageId.Home}/signOut?accountClosed=true");
         }
         
@@ -49,6 +57,7 @@ namespace DFC.App.Account.Controllers
         [Route("/body/delete-account/AccountClosed")]
         public async Task<IActionResult> AccountClosed()
         {
+            _logger.LogInformation($"DeleteAccountController Body AccountClosed");
             return await base.Body();
         }
 

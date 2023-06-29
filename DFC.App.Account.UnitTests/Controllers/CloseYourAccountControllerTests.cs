@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -29,6 +30,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOpenIDConnectClient _openIdConnectClient;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ILogger _logger;
 
         [SetUp]
         public void Init()
@@ -45,6 +47,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _openIdConnectClient = Substitute.For<IOpenIDConnectClient>();
+            _logger = Substitute.For<ILogger>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
@@ -58,7 +61,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 }
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
-            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config, _logger);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -75,7 +78,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithInvalidModelState_ReturnToViewWithError()
         {
-            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config, _logger);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -100,7 +103,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
             _openIdConnectClient.VerifyPassword("user","password").ReturnsForAnyArgs(Result.Fail("Failed"));
-            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config, _logger);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext
@@ -124,7 +127,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 }
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).ReturnsForAnyArgs(customer);
-            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config);
+            var controller = new CloseYourAccountController(_compositeSettings, _authService,_openIdConnectClient, _documentService, _config, _logger);
             var closeYourAccountCompositeViewModel = new CloseYourAccountCompositeViewModel();
 
             controller.ControllerContext = new ControllerContext

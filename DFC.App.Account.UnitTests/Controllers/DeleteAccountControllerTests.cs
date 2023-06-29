@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -28,6 +29,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IDssWriter _dssService;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ILogger _logger;
 
         [SetUp]
         public void Init()
@@ -44,11 +46,12 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _dssService = Substitute.For<IDssWriter>();
+            _logger = Substitute.For<ILogger>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new DeleteAccountController(_compositeSettings,_dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings,_dssService, _authService, _documentService, _config, _logger);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -62,7 +65,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenAccountClosedCalled_ReturnHtml()
         {
-            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config, _logger);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -79,7 +82,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService, _documentService, _config, _logger);
 
 
             var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
@@ -102,7 +105,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config, _logger);
 
             var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
             {

@@ -19,11 +19,13 @@ namespace DFC.App.Account.Controllers
     {
 
         private readonly IDssReader _dssService;
+        private readonly ILogger _logger;
 
         public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(compositeSettings, authService, documentService, config)
         {
             _dssService = dssService;
+            _logger = logger;
         }
 
         
@@ -31,6 +33,7 @@ namespace DFC.App.Account.Controllers
         public override async Task<IActionResult> Body()
         {
             var customer = await GetCustomerDetails();
+            _logger.LogInformation($"YourDetailsController body/your-details customer.CustomerId {customer.CustomerId}");
             ViewModel.CustomerDetails = await _dssService.GetCustomerData(customer.CustomerId.ToString());
             return await base.Body();
         }

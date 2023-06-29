@@ -53,12 +53,14 @@ namespace DFC.APP.Account.CacheContentService
         {
             if (upsertDocumentModel == null)
             {
+                logger.LogWarning($"{nameof(UpdateAsync)} upsertDocumentModel is null ");
                 return HttpStatusCode.BadRequest;
             }
 
             var existingDocument = await _documentService.GetByIdAsync(upsertDocumentModel.Id).ConfigureAwait(false);
             if (existingDocument == null)
             {
+                logger.LogWarning($"{nameof(UpdateAsync)} existingDocument {upsertDocumentModel.Id} is null ");
                 return HttpStatusCode.NotFound;
             }
 
