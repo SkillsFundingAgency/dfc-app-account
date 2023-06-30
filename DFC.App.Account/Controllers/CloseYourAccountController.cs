@@ -20,9 +20,9 @@ namespace DFC.App.Account.Controllers
         private readonly IOpenIDConnectClient _openIdConnectClient;
         private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
-        private readonly ILogger _logger;
+        private readonly ILogger<CloseYourAccountController> _logger;
 
-        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
+        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger<CloseYourAccountController> logger)
             : base(compositeSettings, authService, documentService, config)
         {
             _openIdConnectClient = openIdConnectClient;

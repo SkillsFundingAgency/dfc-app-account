@@ -31,12 +31,12 @@ namespace DFC.App.Account.Controllers
         private const string ErrorMessageServiceUnavailable = "Find Address Service is currently unavailable. Please enter your address details in the boxes provided.";
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
-        private readonly ILogger _logger;
+        private readonly ILogger<EditYourDetailsController> _logger;
 
         public const string SmsErrorMessage = "You have selected a contact preference which requires a valid mobile number";
 
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
-            IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
+            IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger<EditYourDetailsController> logger)
             : base(compositeSettings, authService, documentService, config)
         {
             _dssReader = dssReader;

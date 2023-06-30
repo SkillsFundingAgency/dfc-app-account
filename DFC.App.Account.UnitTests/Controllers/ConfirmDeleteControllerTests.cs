@@ -28,7 +28,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private ISkillsHealthCheckService _skillsHealthCheckService;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
-        private ILogger _logger;
+        private ILogger<ConfirmDeleteController> _logger;
 
         [SetUp]
         public void Init()
@@ -45,7 +45,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
-            _logger = Substitute.For<ILogger>();
+            _logger = Substitute.For<ILogger<ConfirmDeleteController>>();
         }
         [Test]
         public async Task WhenDefaultBodyCalled_ReturnHtml()

@@ -35,7 +35,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IDssWriter _dssWriter;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
-        private ILogger _logger;
+        private ILogger<EditYourDetailsController> _logger;
 
         [SetUp]
         public void Init()
@@ -53,7 +53,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _authService = Substitute.For<IAuthService>();
             _dssWriter = Substitute.For<IDssWriter>();
             _dssReader = Substitute.For<IDssReader>();
-            _logger = Substitute.For<ILogger>();
+            _logger = Substitute.For<ILogger<EditYourDetailsController>>();
         }
 
         [Test]

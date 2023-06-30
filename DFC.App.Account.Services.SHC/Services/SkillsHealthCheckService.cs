@@ -18,7 +18,7 @@ namespace DFC.App.Account.Services.SHC.Services
     public class SkillsHealthCheckService : ISkillsHealthCheckService
     {
         private readonly IOptions<ShcSettings> _settings;
-        private readonly ILogger _logger;
+        private readonly ILogger<SkillsHealthCheckService> _logger;
         private readonly IHttpWebRequestFactory _factory;
         private const string ContentType = "text/xml;charset=\"utf-8\"";
         public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory, ILogger<SkillsHealthCheckService> logger)

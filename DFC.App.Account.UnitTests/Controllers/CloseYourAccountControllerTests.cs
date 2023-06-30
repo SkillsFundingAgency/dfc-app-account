@@ -30,7 +30,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOpenIDConnectClient _openIdConnectClient;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
-        private ILogger _logger;
+        private ILogger<CloseYourAccountController> _logger;
 
         [SetUp]
         public void Init()
@@ -47,7 +47,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _openIdConnectClient = Substitute.For<IOpenIDConnectClient>();
-            _logger = Substitute.For<ILogger>();
+            _logger = Substitute.For<ILogger<CloseYourAccountController>>();
         }
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()

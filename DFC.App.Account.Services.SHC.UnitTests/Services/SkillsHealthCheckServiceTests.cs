@@ -13,8 +13,7 @@ namespace DFC.App.Account.Services.SHC.UnitTest.Services
 {
     public class SkillsHealthCheckServiceTests
     {
-        private ILogger _logger;
-
+      
         [Test]
         public void IfIdIsNull_ReturnNull()
         {

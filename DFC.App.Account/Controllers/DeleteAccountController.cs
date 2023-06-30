@@ -18,8 +18,8 @@ namespace DFC.App.Account.Controllers
     public class DeleteAccountController : CompositeSessionController<DeleteAccountCompositeViewModel>
     {
         private readonly IDssWriter _dssService;
-        private readonly ILogger _logger;
-        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
+        private readonly ILogger<DeleteAccountController> _logger;
+        public DeleteAccountController(IOptions<CompositeSettings> compositeSettings, IDssWriter dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger<DeleteAccountController> logger)
             : base(compositeSettings, authService, documentService, config)
         {
             _dssService = dssService;

@@ -20,9 +20,9 @@ namespace DFC.App.Account.Controllers
     public class ConfirmDeleteController : CompositeSessionController<ConfirmDeleteCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        private readonly ILogger _logger;
+        private readonly ILogger<ConfirmDeleteController> _logger;
 
-        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger logger)
+        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger<ConfirmDeleteController> logger)
             : base(compositeSettings, authService, documentService, config)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));

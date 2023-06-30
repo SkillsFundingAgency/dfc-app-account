@@ -19,7 +19,7 @@ namespace DFC.App.Account.Controllers
     {
 
         private readonly IDssReader _dssService;
-        private readonly ILogger _logger;
+        private readonly ILogger<YourDetailsController> _logger;
 
         public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
             : base(compositeSettings, authService, documentService, config)
