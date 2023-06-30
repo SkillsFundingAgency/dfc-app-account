@@ -21,7 +21,7 @@ namespace DFC.App.Account.Services.SHC.Services
         private readonly ILogger _logger;
         private readonly IHttpWebRequestFactory _factory;
         private const string ContentType = "text/xml;charset=\"utf-8\"";
-        public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory, ILogger logger)
+        public SkillsHealthCheckService(IOptions<ShcSettings> settings, IHttpWebRequestFactory requestFactory, ILogger<SkillsHealthCheckService> logger)
         {
             
             Throw.IfNull(settings, nameof(settings));
