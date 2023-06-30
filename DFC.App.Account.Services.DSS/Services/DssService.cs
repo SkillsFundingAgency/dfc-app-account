@@ -81,7 +81,10 @@ namespace DFC.App.Account.Services.DSS.Services
         public async Task<Customer> UpdateCustomerData(Customer customerData)
         {
             if (customerData == null)
+            {
+                _logger.LogWarning($"DssService UpdateCustomerData customerData is null");
                 return null;
+            }
 
             Customer result;
             using (var request = CreateRequestMessage())
@@ -101,6 +104,7 @@ namespace DFC.App.Account.Services.DSS.Services
 
             if (!_restClient.LastResponse.IsSuccess)
             {
+                _logger.LogWarning($"Unable To Updated customer details for customer {customerData.CustomerId}  Response {_restClient.LastResponse.Content}");
                 throw new UnableToUpdateCustomerDetailsException($"Unable To Updated customer details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
 
@@ -140,12 +144,14 @@ namespace DFC.App.Account.Services.DSS.Services
             if (_restClient.LastResponse.Content.Contains(
                 $"Contact with Email Address {customerData.Contact.EmailAddress} already exists"))
             {
+                _logger.LogWarning($"DssService UpsertCustomerContactData Contact with Email Address {customerData.Contact.EmailAddress} already exists"); 
                 throw new EmailAddressAlreadyExistsException(_restClient.LastResponse.Content);
             }
 
             if (!_restClient.LastResponse.IsSuccess)
             {
-              throw new UnableToUpdateContactDetailsException($"Unable To Updated contact details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
+                _logger.LogWarning($"DssService UpsertCustomerContactData Unable To Updated contact details for customer {customerData.CustomerId} Response {_restClient.LastResponse.Content}");
+                throw new UnableToUpdateContactDetailsException($"Unable To Updated contact details for customer {customerData.CustomerId}, Response {_restClient.LastResponse.Content}");
             }
 
         }
@@ -187,6 +193,8 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"DssService GetCustomerDetail Failure Customer Details customerId {customerId}  {e.InnerException}");
+
                 throw new DssException($"Failure Customer Details, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 
@@ -207,6 +215,8 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"DssService GetCustomerContactDetails {e.InnerException}"); 
+
                 if (_restClient.LastResponse.StatusCode == HttpStatusCode.NoContent)
                     return new Contact();
                 else
@@ -244,6 +254,8 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"DssService DeleteCustomer {e.InnerException}"); 
+
                 throw new UnableToUpdateCustomerDetailsException(
                     $"Unable To Updated customer details for customer {customerId}, Response {_restClient?.LastResponse?.Content}");
             }
@@ -286,6 +298,7 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"DssService UpdateLastLogin {e.InnerException}"); 
                 throw new DssException(
                     $"Unable To Digital Identities customer details for customer {customerId}, Response {_restClient.LastResponse.Content}");
             }
@@ -312,6 +325,8 @@ namespace DFC.App.Account.Services.DSS.Services
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"DssService GetActionPlans {e.InnerException}"); 
+
                 throw new DssException($"Failure Action Plans, Code:{_restClient.LastResponse.StatusCode} {Environment.NewLine}  {e.InnerException}");
             }
 

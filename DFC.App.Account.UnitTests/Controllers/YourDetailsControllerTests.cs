@@ -41,6 +41,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _dssService = Substitute.For<IDssReader>();
             _authService = Substitute.For<IAuthService>();
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _logger = Substitute.For<ILogger<YourDetailsController>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };

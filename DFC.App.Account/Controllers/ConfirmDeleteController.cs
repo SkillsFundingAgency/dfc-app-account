@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using DFC.App.Account.Services.DSS.Models;
 
 namespace DFC.App.Account.Controllers
 {
@@ -18,11 +20,15 @@ namespace DFC.App.Account.Controllers
     public class ConfirmDeleteController : CompositeSessionController<ConfirmDeleteCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        private readonly ILogger<ConfirmDeleteController> _logger;
+
+        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config, ILogger<ConfirmDeleteController> logger)
             : base(compositeSettings, authService, documentService, config)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
+            _logger = logger;
+
         }
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public override async Task<IActionResult> Body()
@@ -34,7 +40,10 @@ namespace DFC.App.Account.Controllers
         public async Task<IActionResult> Body(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
+            {
+                _logger.LogWarning($"ConfirmDeleteController Body id is null");
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
+            }
 
             ViewModel.DocumentId = id;
 
@@ -45,10 +54,14 @@ namespace DFC.App.Account.Controllers
 
             if (!shcDocuments.Any())
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
+
             var doc = shcDocuments.FirstOrDefault(x => x.DocumentId == ViewModel.DocumentId);
 
-            if(doc == null)
+            if (doc == null)
+            {
+                _logger.LogInformation($"ConfirmDeleteController Body customer doc is null ");
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
+            }
 
             ViewModel.CreatedAt = doc.CreatedAt;
             return await base.Body();
@@ -59,14 +72,20 @@ namespace DFC.App.Account.Controllers
         public IActionResult Body(ConfirmDeleteCompositeViewModel viewModel)
         {
             if (viewModel == null)
+            {
+                _logger.LogWarning($"ConfirmDeleteController Body/controller viewModel is null ");
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
+            }
 
             if (string.IsNullOrWhiteSpace(viewModel.DocumentId))
+            {
+                _logger.LogWarning($"ConfirmDeleteController Body/controller DocumentId is null ");
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
+            }
 
             //Code to delete SHC goes here.
 
-
+            _logger.LogInformation($"ConfirmDeleteController Body/controller DocumentId is {viewModel.DocumentId} ");
             return RedirectTo($"{CompositeViewModel.PageId.ShcDeleted.Value}?id={viewModel.DocumentId}");
         }
 
