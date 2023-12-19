@@ -106,6 +106,12 @@
         },
         "AppLoginPassword": {
             "value": "AppLoginPassword"
+        },
+        "workspaceName": {
+            "value": "aTestLogAnalyticsAccount"
+        },
+        "workspaceResourceGroup": {
+            "value": "aResourceGroup"
         }
     }
 }
