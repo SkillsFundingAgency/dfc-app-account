@@ -63,7 +63,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 SignOutUrl = "signout"
             });
             _actionPlansSettings = Options.Create(new ActionPlansSettings() {Url ="/actionj-plans"});
-            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _documentService, _config);
+            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 GivenName = "givenName"
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _documentService, _config);
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext

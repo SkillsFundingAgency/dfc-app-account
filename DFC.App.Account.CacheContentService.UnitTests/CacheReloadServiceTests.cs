@@ -21,7 +21,7 @@ namespace DFC.App.Account.CacheContentService.UnitTests
 {
     public class CacheReloadServiceTests
     {
-        private readonly ILogger<CacheReloadService> fakeLogger = A.Fake<ILogger<CacheReloadService>>();
+        //private readonly ILogger<CacheReloadService> fakeLogger = A.Fake<ILogger<CacheReloadService>>();
         private readonly IEventMessageService<CmsApiSharedContentModel> fakeEventMessageService = A.Fake<IEventMessageService<CmsApiSharedContentModel>>();
         private readonly ICmsApiService fakeCmsApiService = A.Fake<ICmsApiService>();
         private readonly IContentTypeMappingService fakeContentTypeMappingService = A.Fake<IContentTypeMappingService>();
@@ -48,6 +48,8 @@ namespace DFC.App.Account.CacheContentService.UnitTests
 
             var cacheReloadService = new CacheReloadService(fakeLogger, fakeEventMessageService, fakeCmsApiService,
                 fakeContentTypeMappingService, _config);
+                  
+         
 
             // act
             await cacheReloadService.Reload(cancellationToken).ConfigureAwait(false);

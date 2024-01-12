@@ -47,7 +47,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenDefaultBodyCalled_ReturnHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -62,7 +62,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithoutId_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -77,7 +77,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentsReturnEmpty_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -92,7 +92,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentForIdNotFound_ReturnHomeHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -107,7 +107,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -129,7 +129,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenPostBodyCalled_ReturnHtml()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -144,7 +144,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenPostBodyCalledWithNullVm_ReturnHome()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -159,7 +159,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void WhenPostBodyCalledWithNullId_ReturnHome()
         {
-            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ConfirmDeleteController(_compositeSettings, _authService, _skillsHealthCheckService,  _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

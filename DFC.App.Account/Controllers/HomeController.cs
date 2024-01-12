@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
@@ -24,8 +24,8 @@ namespace DFC.App.Account.Controllers
         private readonly ActionPlansSettings _actionPlansSettings;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings,  IConfiguration config)
+            : base(compositeSettings, authService, config)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 
 namespace DFC.App.Account.Controllers
@@ -20,8 +20,8 @@ namespace DFC.App.Account.Controllers
 
         private readonly IDssReader _dssService;
 
-        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService,IConfiguration config)
+            : base(compositeSettings, authService, config)
         {
             _dssService = dssService;
         }

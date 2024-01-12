@@ -59,7 +59,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 GivenName = "givenName"
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new AuthSuccess( _compositeSettings, _authService, _dssWriter, _documentService, _config);
+            var controller = new AuthSuccess( _compositeSettings, _authService, _dssWriter, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -79,7 +79,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void When_RedirectCalled_Redirected()
         {
-            var controller = new AuthSuccess(_compositeSettings, _authService,_dssWriter, _documentService, _config);
+            var controller = new AuthSuccess(_compositeSettings, _authService,_dssWriter, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

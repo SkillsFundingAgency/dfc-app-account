@@ -69,7 +69,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             _dssService.GetCustomerData(Arg.Any<string>()).Returns(_customer);
-            _controller = new YourDetailsController(_logger, _compositeSettings, _dssService, _authService, _documentService, _config);
+            _controller = new YourDetailsController(_logger, _compositeSettings, _dssService, _authService, _config);
             _controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var result = await _controller.Body() as ViewResult;
             result.ViewData.Model.As<YourDetailsCompositeViewModel>().CustomerDetails.Should().NotBeNull();

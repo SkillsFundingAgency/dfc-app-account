@@ -3,7 +3,7 @@ using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+//using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -12,6 +12,7 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Common;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore;
 
 namespace DFC.App.Account.Controllers
 {
@@ -22,11 +23,12 @@ namespace DFC.App.Account.Controllers
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         private readonly IAuthService _authService;
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
+        //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
+        public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
 
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config)
         {
             _authService = authService;
             ViewModel = new TViewModel()
@@ -34,7 +36,7 @@ namespace DFC.App.Account.Controllers
                 CompositeSettings = compositeSettings.Value,
             };
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
-            _documentService = documentService;
+            //_documentService = documentService;
         }
 
         [HttpGet]
@@ -70,8 +72,19 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
-            ViewModel.SharedSideBar = sharedContent?.Content;
+            //var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
+            //ViewModel.SharedSideBar = sharedContent?.Content;
+
+
+            var cacheKey = "sharedcontent-" + SharedContentStaxId;
+            GraphQlActions graphQl = new GraphQlActions();
+            List<string> parameters = new List<string>() { cacheKey,"account" };
+            var sharedContent = await graphQl.GetDataAsync("shared-html", parameters).ConfigureAwait(false);
+
+
+
+
+
             return View(ViewModel);
         }
 

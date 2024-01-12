@@ -50,7 +50,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new SessionTimeoutController(_compositeSettings, _authService,_authSettings, _documentService, _config);
+            var controller = new SessionTimeoutController(_compositeSettings, _authService,_authSettings, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

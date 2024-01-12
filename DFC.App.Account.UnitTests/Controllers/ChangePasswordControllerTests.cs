@@ -42,7 +42,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ChangePasswordController(_compositeSettings, _authService, _documentService, _config);
+            var controller = new ChangePasswordController(_compositeSettings, _authService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

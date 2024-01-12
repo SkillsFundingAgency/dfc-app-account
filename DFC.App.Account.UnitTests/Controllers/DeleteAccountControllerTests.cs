@@ -48,7 +48,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new DeleteAccountController(_compositeSettings,_dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings,_dssService, _authService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -62,7 +62,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenAccountClosedCalled_ReturnHtml()
         {
-            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _config);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -79,7 +79,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService,_authService, _config);
 
 
             var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
@@ -102,7 +102,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _documentService, _config);
+            var controller = new DeleteAccountController(_compositeSettings, _dssService, _authService, _config);
 
             var deleteAccountCompositeViewModel = new DeleteAccountCompositeViewModel
             {
