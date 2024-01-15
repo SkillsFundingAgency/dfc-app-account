@@ -17,7 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -28,12 +28,14 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IDssWriter _dssWriter;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
 
 
         [SetUp]
         public void Init()
         {
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
 
             _compositeSettings = Options.Create(new CompositeSettings());
 
@@ -47,6 +49,7 @@ namespace DFC.App.Account.UnitTests.Controllers
 
             _authService = Substitute.For<IAuthService>();
             _dssWriter = Substitute.For<IDssWriter>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
         }
         [Test]
         
@@ -59,7 +62,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 GivenName = "givenName"
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new AuthSuccess( _compositeSettings, _authService, _dssWriter, _config);
+            var controller = new AuthSuccess( _compositeSettings, _authService, _dssWriter, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -79,7 +82,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public void When_RedirectCalled_Redirected()
         {
-            var controller = new AuthSuccess(_compositeSettings, _authService,_dssWriter, _config);
+            var controller = new AuthSuccess(_compositeSettings, _authService,_dssWriter, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

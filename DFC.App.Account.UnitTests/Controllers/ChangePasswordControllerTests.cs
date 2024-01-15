@@ -14,6 +14,7 @@ using DFC.App.Account.Services;
 using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -23,11 +24,14 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IAuthService _authService;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
         {
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
@@ -42,7 +46,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ChangePasswordController(_compositeSettings, _authService, _config);
+            var controller = new ChangePasswordController(_compositeSettings, _authService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

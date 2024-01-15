@@ -1,117 +1,133 @@
 {
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "appSharedResourceGroup": {
-            "value": "dfc-dev-app-sharedresources-rg"
-        },
-        "apimDSSProxyAddress": {
-            "value": "https://foo.api.nationalcareersservice.org.uk"
-        },
-        "aspInstances": {
-            "value": 1
-        },
-        "aspTier": {
-            "value": "Standard"
-        },
-        "aspSize": {
-            "value": "2"
-        },
-        "cdnUrl": {
-            "value": "https://foo.api.nationalcareersservice.org.uk"
-        },
-        "apimDSSApiKey": {
-            "value": "not-a-real-key"
-        },
-        "appSharedStorageAccountName": {
-            "value": "dfcdevappsharedstr"
-        },
-        "cosmosDBName": {
-            "value": "dfc-dev-app-sharedresources-cdb"
-        },
-        "cosmosDbKey": {
-            "value": "not-a-real-key"
-        },
-        "Environment": {
-            "value": "FOO"
-        },
-        "cosmosDbCollectionName": {
-            "value": "a-test-collection"
-        },
-        "cosmosContentDbCollectionName": {
-            "value": "another-test-collection"
-        },
-        "CosmosDbResourceGroup": {
-            "value": "dfc-dev-app-sharedresources-rg"
-        },
-        "accountAppDatabaseNeedsCreation": {
-            "value": true
-        },
-        "accountAppDatabaseThroughput": {
-            "value": 2
-        },
-        "enableAlerts": {
-            "value": false
-        },
-        "clientAffinity": {
-            "value": false
-        },
-        "ShcSettingsUrl": {
-            "value": "https://foo"
-        },
-        "ShcSettingsFindDocumentsAction": {
-            "value": "https://foo"
-        },
-        "ShcSettingsLinkUrl": {
-            "value": "https://foo"
-        },
-        "OIDCSettingsPwdVerificationClientId": {
-            "value": "fake-2ea33fcf-b1d0-42c3-a2b8-69bf2915f5ae"
-        },
-        "OIDCSettingsTokenEndPoint": {
-            "value": "https://foo"
-        },
-        "AuthSettingsIssuer": {
-            "value": "IAmAnIssuer"
-        },
-        "AuthSettingsClientSecret": {
-            "value": "ThisIsAClientSecret"
-        },
-        "AuthSettingsClientId": {
-            "value": "AuthSettingsClientId"
-        },
-        "AddressSearchServiceSettingsBaseUrl": {
-            "value": "MyBaseUrl"
-        },
-        "AddressSearchServiceSettingsKey": {
-            "value": "MyGuidLoqateKey"
-        },
-        "AddressSearchServiceSettingsAddressIdentifierPattern": {
-            "value": "MyRegexPattern"
-        },
-        "SubscriptionSettingsEndpoint": {
-            "value": "SubscriptionSettingsEndpoint"
-        },
-        "SummaryEndpoint": {
-            "value": "SummaryEndpoint"
-        },
-        "contentUrl": {
-            "value": "contentUrl"
-        },
-        "subscriptionUrl": {
-            "value": "subscriptionUrl"
-        },
-        "AppLoginEmail": {
-            "value": "AppLoginEmail"
-        },
-        "AppLoginPassword": {
-            "value": "AppLoginPassword"
-        },
-        "workspaceName": {
-            "value": "aTestLogAnalyticsAccount"
-        },
-        "workspaceResourceGroup": {
-            "value": "aResourceGroup"
-        }
+  "parameters": {
+    "appSharedResourceGroup": {
+      "value": "dfc-dev-app-sharedresources-rg"
+    },
+    "apimDSSProxyAddress": {
+      "value": "https://foo.api.nationalcareersservice.org.uk"
+    },
+    "aspInstances": {
+      "value": 1
+    },
+    "aspTier": {
+      "value": "Standard"
+    },
+    "aspSize": {
+      "value": "2"
+    },
+    "cdnUrl": {
+      "value": "https://foo.api.nationalcareersservice.org.uk"
+    },
+    "apimDSSApiKey": {
+      "value": "not-a-real-key"
+    },
+    "appSharedStorageAccountName": {
+      "value": "dfcdevappsharedstr"
+    },
+    "cosmosDBName": {
+      "value": "dfc-dev-app-sharedresources-cdb"
+    },
+    "cosmosDbKey": {
+      "value": "not-a-real-key"
+    },
+    "Environment": {
+      "value": "FOO"
+    },
+    "cosmosDbCollectionName": {
+      "value": "a-test-collection"
+    },
+    "cosmosContentDbCollectionName": {
+      "value": "another-test-collection"
+    },
+    "CosmosDbResourceGroup": {
+      "value": "dfc-dev-app-sharedresources-rg"
+    },
+    "accountAppDatabaseNeedsCreation": {
+      "value": true
+    },
+    "accountAppDatabaseThroughput": {
+      "value": 2
+    },
+    "enableAlerts": {
+      "value": false
+    },
+    "clientAffinity": {
+      "value": false
+    },
+    "ShcSettingsUrl": {
+      "value": "https://foo"
+    },
+    "ShcSettingsFindDocumentsAction": {
+      "value": "https://foo"
+    },
+    "ShcSettingsLinkUrl": {
+      "value": "https://foo"
+    },
+    "OIDCSettingsPwdVerificationClientId": {
+      "value": "fake-2ea33fcf-b1d0-42c3-a2b8-69bf2915f5ae"
+    },
+    "OIDCSettingsTokenEndPoint": {
+      "value": "https://foo"
+    },
+    "AuthSettingsIssuer": {
+      "value": "IAmAnIssuer"
+    },
+    "AuthSettingsClientSecret": {
+      "value": "ThisIsAClientSecret"
+    },
+    "AuthSettingsClientId": {
+      "value": "AuthSettingsClientId"
+    },
+    "AddressSearchServiceSettingsBaseUrl": {
+      "value": "MyBaseUrl"
+    },
+    "AddressSearchServiceSettingsKey": {
+      "value": "MyGuidLoqateKey"
+    },
+    "AddressSearchServiceSettingsAddressIdentifierPattern": {
+      "value": "MyRegexPattern"
+    },
+    "SubscriptionSettingsEndpoint": {
+      "value": "SubscriptionSettingsEndpoint"
+    },
+    "SummaryEndpoint": {
+      "value": "SummaryEndpoint"
+    },
+    "contentUrl": {
+      "value": "contentUrl"
+    },
+    "subscriptionUrl": {
+      "value": "subscriptionUrl"
+    },
+    "AppLoginEmail": {
+      "value": "AppLoginEmail"
+    },
+    "AppLoginPassword": {
+      "value": "AppLoginPassword"
+    },
+    "workspaceName": {
+      "value": "aTestLogAnalyticsAccount"
+    },
+    "workspaceResourceGroup": {
+      "value": "aResourceGroup"
+    },
+
+    "CmsTokenEndPointUrl": {
+      "value": "url.com"
+    },
+    "CmsGraphApiUrl": {
+      "value": "url.com"
+    },
+    "CmsClientId": {
+      "value": "testid"
+    },
+    "CmsClientSecret": {
+      "value": "testsecret"
+    },
+    "CmsRedisCacheConnectionString": {
+      "value": "teststring"
     }
+  }
 }

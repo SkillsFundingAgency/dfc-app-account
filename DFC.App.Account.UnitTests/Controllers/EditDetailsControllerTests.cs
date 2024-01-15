@@ -23,6 +23,7 @@ using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using NSubstitute.ExceptionExtensions;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -34,6 +35,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IDssWriter _dssWriter;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
@@ -51,6 +53,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _authService = Substitute.For<IAuthService>();
             _dssWriter = Substitute.For<IDssWriter>();
             _dssReader = Substitute.For<IDssReader>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
         }
 
         [Test]
@@ -58,7 +61,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _dssReader, _dssWriter, _config);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _dssReader, _dssWriter, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -76,7 +79,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         {
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new EditYourDetailsController(_compositeSettings, _authService, _dssReader, _dssWriter, _config);
+            var controller = new EditYourDetailsController(_compositeSettings, _authService, _dssReader, _dssWriter, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -128,7 +131,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext()}
             };
@@ -162,7 +165,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() { CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c") };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter,  _config)
+                _dssReader, _dssWriter,  _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -197,7 +200,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -222,7 +225,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             var customer = new Customer() {CustomerId = new Guid("c2e27821-cc60-4d3d-b4f0-cbe20867897c")};
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -243,7 +246,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetErrorClassCalledWithError_ReturnClass()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -256,7 +259,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetErrorClassCalledWithError_ReturnEmptyString()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -269,7 +272,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetFormGroupErrorClassCalledWithError_ReturnClass()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };
@@ -282,7 +285,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void WhenGetFormGroupErrorClassCalledWithError_ReturnEmptyString()
         {
             var controller = new EditYourDetailsController(_compositeSettings, _authService,
-                _dssReader, _dssWriter, _config)
+                _dssReader, _dssWriter, _config, _sharedContentRedisInterface)
             {
                 ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
             };

@@ -22,6 +22,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -37,6 +38,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private HomeController _controller;
         private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
@@ -55,6 +57,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _logger = Substitute.For<ILogger<HomeController>>();
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
+            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
             _dssReader = Substitute.For<IDssReader>();
             _authSettings = Options.Create(new AuthSettings
             {
@@ -63,7 +66,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 SignOutUrl = "signout"
             });
             _actionPlansSettings = Options.Create(new ActionPlansSettings() {Url ="/actionj-plans"});
-            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config);
+            _controller = new HomeController(_logger,_compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config, _sharedContentRedisInterface);
         }
 
         [Test]
@@ -93,7 +96,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 GivenName = "givenName"
             };
             _authService.GetCustomer(Arg.Any<ClaimsPrincipal>()).Returns(customer);
-            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config);
+            var controller = new HomeController(_logger, _compositeSettings, _authService, _dssReader, _skillsHealthCheckService, _authSettings, _actionPlansSettings, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
