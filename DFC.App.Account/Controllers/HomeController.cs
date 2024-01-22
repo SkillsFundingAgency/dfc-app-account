@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 //using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore;
 
 namespace DFC.App.Account.Controllers
 {
@@ -23,9 +25,10 @@ namespace DFC.App.Account.Controllers
         private readonly IDssReader _dssReader;
         private readonly ActionPlansSettings _actionPlansSettings;
         private readonly ILogger<HomeController> _logger;
+        private readonly ISharedContentRedisInterface sharedContentRedisInterface;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings,  IConfiguration config)
-            : base(compositeSettings, authService, config)
+        public HomeController(ILogger<HomeController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssReader dssReader, ISkillsHealthCheckService skillsHealthCheckService, IOptions<AuthSettings> authSettings, IOptions<ActionPlansSettings> actionPlansSettings,  IConfiguration config, ISharedContentRedisInterface sharedContentRedisInterface)
+            : base(compositeSettings, authService, config, sharedContentRedisInterface)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
@@ -33,6 +36,7 @@ namespace DFC.App.Account.Controllers
             _dssReader = dssReader;
             _actionPlansSettings = actionPlansSettings.Value;
             _logger = logger;
+            this.sharedContentRedisInterface = sharedContentRedisInterface;
         }
 
         #region Default Routes

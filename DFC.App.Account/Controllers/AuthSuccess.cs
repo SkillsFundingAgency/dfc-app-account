@@ -10,16 +10,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
     public class AuthSuccess: CompositeSessionController<AuthSuccessCompositeViewModel>
     {
         private readonly IDssWriter _dssWriter;
-        public AuthSuccess(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssWriter dssWriter,  IConfiguration config)
-            : base(compositeSettings, authService,  config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        public AuthSuccess(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDssWriter dssWriter,  IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
+            : base(compositeSettings, authService,  config, sharedContentRedis)
         {
             _dssWriter = dssWriter;
+            this.sharedContentRedis = sharedContentRedis;
         }
         [Authorize]
         [Route("/body/authsuccess")]

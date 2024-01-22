@@ -6,6 +6,7 @@ using DFC.App.Account.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
@@ -13,10 +14,12 @@ namespace DFC.App.Account.Controllers
     public class ErrorController : CompositeSessionController<ErrorCompositeViewModel>
     {
         private readonly ILogger<ErrorController> _logger;
-        public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config)
-            : base(compositeSettings, authService, config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        public ErrorController(ILogger<ErrorController> logger, IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
+            : base(compositeSettings, authService, config, sharedContentRedis)
         {
             _logger = logger;
+            this.sharedContentRedis = sharedContentRedis;;
         }
 
         

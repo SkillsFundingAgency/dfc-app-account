@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 //using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
@@ -19,11 +20,13 @@ namespace DFC.App.Account.Controllers
     {
 
         private readonly IDssReader _dssService;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
 
-        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService,IConfiguration config)
-            : base(compositeSettings, authService, config)
+        public YourDetailsController(ILogger<YourDetailsController> logger, IOptions<CompositeSettings> compositeSettings, IDssReader dssService, IAuthService authService,IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
+            : base(compositeSettings, authService, config, sharedContentRedis)
         {
             _dssService = dssService;
+            this.sharedContentRedis = sharedContentRedis;
         }
 
         

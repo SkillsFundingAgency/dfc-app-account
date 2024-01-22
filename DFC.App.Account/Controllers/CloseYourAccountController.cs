@@ -12,6 +12,8 @@ using DFC.APP.Account.Data.Models;
 using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore;
 using System.Collections.Generic;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 
 namespace DFC.App.Account.Controllers
 {
@@ -21,13 +23,16 @@ namespace DFC.App.Account.Controllers
         private readonly IOpenIDConnectClient _openIdConnectClient;
         //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
+        private readonly ISharedContentRedisInterface sharedContentRedisInterface;
 
-        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config)
-            : base(compositeSettings, authService,  config)
+
+        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
+            : base(compositeSettings, authService,  config, _sharedContentRedisInterface)
         {
             _openIdConnectClient = openIdConnectClient;
+            this.sharedContentRedisInterface = _sharedContentRedisInterface;
             //_documentService = documentService;
-          //  _sharedContent = config.GetValue<Guid>("SharedContentGuid");
+            //  _sharedContent = config.GetValue<Guid>("SharedContentGuid");
         }
 
         public override async Task<IActionResult> Body()
@@ -54,14 +59,11 @@ namespace DFC.App.Account.Controllers
                 ModelState.AddModelError("Password", "Wrong password. Try again.");
                 return View(ViewModel);
             }
-            
-            var cacheKey = "sharedcontent-" + SharedContentStaxId;
-            GraphQlActions graphQl = new GraphQlActions();
-            List<string> parameters = new List<string>();
-            var sharedContent = await graphQl.GetDataAsync("shared-html", parameters).ConfigureAwait(false);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
-            ViewModel.SharedSideBar = sharedContent;
+            ViewModel.SharedSideBar = sharedhtml.Html;
             return base.View("ConfirmDeleteAccount", ViewModel);
                       
          

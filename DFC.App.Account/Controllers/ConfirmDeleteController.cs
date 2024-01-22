@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
 //using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 
 namespace DFC.App.Account.Controllers
 {
@@ -18,11 +20,13 @@ namespace DFC.App.Account.Controllers
     public class ConfirmDeleteController : CompositeSessionController<ConfirmDeleteCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IConfiguration config)
-            : base(compositeSettings, authService, config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
+            : base(compositeSettings, authService, config, _sharedContentRedisInterface)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
+            this.sharedContentRedis = _sharedContentRedisInterface;
         }
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public override async Task<IActionResult> Body()
