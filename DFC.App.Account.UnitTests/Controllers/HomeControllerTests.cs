@@ -23,6 +23,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -57,7 +58,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _logger = Substitute.For<ILogger<HomeController>>();
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
             _dssReader = Substitute.For<IDssReader>();
             _authSettings = Options.Create(new AuthSettings
             {

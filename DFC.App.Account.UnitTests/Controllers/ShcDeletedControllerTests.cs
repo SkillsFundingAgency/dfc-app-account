@@ -17,6 +17,7 @@ using DFC.APP.Account.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -32,7 +33,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
@@ -44,7 +45,7 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _sharedContentRedisInterface =A.Fake<ISharedContentRedisInterface>();
         }
         [Test]
         public async Task WhenDefaultBodyCalled_ReturnHtml()

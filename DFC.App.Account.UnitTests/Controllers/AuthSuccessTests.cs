@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -35,7 +36,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         public void Init()
         {
             _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
             _compositeSettings = Options.Create(new CompositeSettings());
 
@@ -49,7 +50,7 @@ namespace DFC.App.Account.UnitTests.Controllers
 
             _authService = Substitute.For<IAuthService>();
             _dssWriter = Substitute.For<IDssWriter>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
         }
         [Test]
         

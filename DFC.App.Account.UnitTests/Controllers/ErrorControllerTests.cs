@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -24,7 +25,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<ErrorController> _logger;
         private IAuthService _authService;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        //private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
@@ -32,7 +33,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
@@ -42,7 +43,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 .Build();
 
             _logger = Substitute.For<ILogger<ErrorController>>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = new Logger<ErrorController>(new LoggerFactory());
             _authService = Substitute.For<IAuthService>();

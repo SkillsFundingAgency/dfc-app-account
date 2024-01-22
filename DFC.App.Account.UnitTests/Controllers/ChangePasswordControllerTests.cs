@@ -15,6 +15,7 @@ using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -22,15 +23,15 @@ namespace DFC.App.Account.UnitTests.Controllers
     {
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        ///private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
-            _sharedContentRedisInterface = Substitute.For<ISharedContentRedisInterface>();
+            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
