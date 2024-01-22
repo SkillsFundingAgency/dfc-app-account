@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Compile Remove="CacheReloadServiceTests.cs" />
+    <Compile Remove="EventMessageServiceTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

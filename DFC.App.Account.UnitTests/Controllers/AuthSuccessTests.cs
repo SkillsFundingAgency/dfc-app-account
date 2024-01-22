@@ -27,7 +27,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
         private IDssWriter _dssWriter;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
+        //private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
@@ -35,7 +35,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
+            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
             _compositeSettings = Options.Create(new CompositeSettings());
