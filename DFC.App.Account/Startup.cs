@@ -53,6 +53,10 @@ using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace DFC.App.Account
 {
@@ -102,7 +106,26 @@ namespace DFC.App.Account
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
                 return client;
             });
+            services.AddSingleton<IRestClient>(s =>
+            {
+                var option = new RestClientOptions()
+                {
+                    BaseUrl = new Uri(Configuration[ConfigKeys.SqlApiUrl]),
+                    ConfigureMessageHandler = handler => new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                };
+                JsonSerializerSettings defaultSettings = new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    DefaultValueHandling = DefaultValueHandling.Include,
+                    TypeNameHandling = TypeNameHandling.None,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Formatting = Formatting.None,
+                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                };
 
+                var client = new RestClient(option);
+                return client;
+            });
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
 
