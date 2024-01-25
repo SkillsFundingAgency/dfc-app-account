@@ -22,7 +22,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
-using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
+//using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
@@ -125,7 +125,7 @@ namespace DFC.App.Account
             services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
             services.AddSingleton(Configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.AddHostedServiceTelemetryWrapper();
-            services.AddSubscriptionBackgroundService(Configuration);
+            //services.AddSubscriptionBackgroundService(Configuration);
             //services.AddHostedService<CacheReloadBackgroundService>();
             var authSettings = new AuthSettings();
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
