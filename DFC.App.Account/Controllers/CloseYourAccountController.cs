@@ -59,7 +59,7 @@ namespace DFC.App.Account.Controllers
                 ModelState.AddModelError("Password", "Wrong password. Try again.");
                 return View(ViewModel);
             }
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
 
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";

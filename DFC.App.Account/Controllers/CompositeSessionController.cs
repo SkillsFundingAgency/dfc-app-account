@@ -78,7 +78,7 @@ namespace DFC.App.Account.Controllers
             //var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
             //ViewModel.SharedSideBar = sharedContent?.Content;
 
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
 
             ViewModel.SharedSideBar = sharedhtml.Html;
 
