@@ -50,6 +50,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using RestSharp;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 
 namespace DFC.App.Account
 {
