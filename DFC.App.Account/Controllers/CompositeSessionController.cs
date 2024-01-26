@@ -3,7 +3,7 @@ using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
 using DFC.APP.Account.Data.Models;
-//using DFC.Compui.Cosmos.Contracts;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -25,7 +25,6 @@ namespace DFC.App.Account.Controllers
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         private readonly IAuthService _authService;
-        //private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
         private readonly Guid _sharedContent;
         public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
@@ -39,7 +38,6 @@ namespace DFC.App.Account.Controllers
             };
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
              this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            //_documentService = documentService;
         }
 
         [HttpGet]
@@ -75,9 +73,6 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            //var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
-            //ViewModel.SharedSideBar = sharedContent?.Content;
-
             var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
 
             ViewModel.SharedSideBar = sharedhtml.Html;

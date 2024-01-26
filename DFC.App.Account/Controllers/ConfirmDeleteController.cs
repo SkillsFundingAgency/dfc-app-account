@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-//using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
@@ -44,7 +43,6 @@ namespace DFC.App.Account.Controllers
 
             var customer = await GetCustomerDetails();
 
-            //Hard coded value - Needs removing upon account, and DSS integration
             var shcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
 
             if (!shcDocuments.Any())
@@ -68,9 +66,7 @@ namespace DFC.App.Account.Controllers
             if (string.IsNullOrWhiteSpace(viewModel.DocumentId))
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
 
-            //Code to delete SHC goes here.
-
-
+       
             return RedirectTo($"{CompositeViewModel.PageId.ShcDeleted.Value}?id={viewModel.DocumentId}");
         }
 

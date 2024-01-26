@@ -1,6 +1,5 @@
 using AutoMapper;
 using DFC.App.Account.Application.Common.Services;
-//using DFC.App.Account.HostedServices;
 using DFC.App.Account.Models;
 using DFC.App.Account.Models.AddressSearch;
 using DFC.App.Account.Services;
@@ -22,7 +21,6 @@ using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
-//using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
@@ -80,19 +78,13 @@ namespace DFC.App.Account
         {
             var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            //services.AddDocumentServices<CmsApiSharedContentModel>(cosmosDbConnectionContentPages, env.IsDevelopment());
-            //services.AddContentPageServices<ContentPageModel>(cosmosDbConnectionContentPages, env.IsDevelopment(), cosmosRetryOptions);
-            //services.AddTransient<IEventMessageService<CmsApiSharedContentModel>, EventMessageService<CmsApiSharedContentModel>>();
-            //services.AddTransient<ICacheReloadService, CacheReloadService>();
-
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();
             services.AddScoped<IDssWriter, DssService>();
             services.AddAutoMapper(typeof(Startup).Assembly);
-            //services.AddTransient<IWebhooksService, WebhooksService>();
-            //services.AddTransient<IWebhookContentProcessor, WebhookContentProcessor>();
+
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>(); });
 
             services.AddHttpClient();
@@ -148,8 +140,7 @@ namespace DFC.App.Account
             services.Configure<OpenIDConnectSettings>(Configuration.GetSection("OIDCSettings"));
             services.AddSingleton(Configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.AddHostedServiceTelemetryWrapper();
-            //services.AddSubscriptionBackgroundService(Configuration);
-            //services.AddHostedService<CacheReloadBackgroundService>();
+
             var authSettings = new AuthSettings();
             var appPath = Configuration.GetSection("CompositeSettings:Path").Value;
 
