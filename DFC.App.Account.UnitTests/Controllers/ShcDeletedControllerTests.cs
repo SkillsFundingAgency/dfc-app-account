@@ -26,7 +26,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
         private ISkillsHealthCheckService _skillsHealthCheckService;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
