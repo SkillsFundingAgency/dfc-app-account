@@ -73,7 +73,7 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
 
             ViewModel.SharedSideBar = sharedhtml.Html;
 
