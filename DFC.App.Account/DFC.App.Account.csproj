@@ -4,6 +4,9 @@
     <ProjectGuid>{79FB0A7E-3102-4EDB-80C5-E38AD61709B1}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="HostedServices\CacheReloadBackgroundService.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
     <ProjectReference Include="..\DFC.APP.Account.CacheContentService\DFC.APP.Account.CacheContentService.csproj" />
     <ProjectReference Include="..\DFC.APP.Account.Data\DFC.APP.Account.Data.csproj" />
@@ -14,6 +17,7 @@
   <ItemGroup>
     <Folder Include="Connected Services\" />
     <Folder Include="Helpers\" />
+    <Folder Include="HostedServices\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Setup\" />
     <Folder Include="wwwroot\css\" />
@@ -25,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.67" />
+    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.23" />
     <PackageReference Include="DFC.Compui.Subscriptions" Version="1.0.96" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.29" />

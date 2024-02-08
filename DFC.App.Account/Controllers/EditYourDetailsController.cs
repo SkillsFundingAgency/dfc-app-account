@@ -7,7 +7,7 @@ using DFC.App.Account.Services.DSS.Interfaces;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +30,14 @@ namespace DFC.App.Account.Controllers
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
         public const string SmsErrorMessage = "You have selected a contact preference which requires a valid mobile number";
-
+        private readonly ISharedContentRedisInterface sharedContentRedis;
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
-            IDssReader dssReader, IDssWriter dssWriter, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+            IDssReader dssReader, IDssWriter dssWriter, IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
+            : base(compositeSettings, authService, config, sharedContentRedis)
         {
             _dssReader = dssReader;
             _dssWriter = dssWriter;
+              this.sharedContentRedis = sharedContentRedis;
         }
 
         [Route("/body/edit-your-details")]
