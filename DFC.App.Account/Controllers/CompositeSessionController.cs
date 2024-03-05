@@ -39,7 +39,7 @@ namespace DFC.App.Account.Controllers
             };
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
              this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            status = config.GetConnectionString("contentMode.contentMode");
+            status = config.GetConnectionString("ContentMode:ContentMode");
         }
 
         [HttpGet]

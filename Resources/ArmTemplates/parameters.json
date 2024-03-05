@@ -136,6 +136,9 @@
     },
     "CmsRedisCacheConnectionString": {
       "value": "__CmsRedisCacheConnectionString__"
+    },
+    "ContentMode": {
+      "value": "__ContentMode__"
     }
   }
 }

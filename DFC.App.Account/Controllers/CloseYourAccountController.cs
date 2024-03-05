@@ -31,7 +31,7 @@ namespace DFC.App.Account.Controllers
         {
             _openIdConnectClient = openIdConnectClient;
             this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            status = config.GetConnectionString("contentMode.contentMode");
+            status = config.GetConnectionString("ContentMode:ContentMode");
         }
 
         public override async Task<IActionResult> Body()
