@@ -26,6 +26,9 @@
     "appSharedStorageAccountName": {
       "value": "dfcdevappsharedstr"
     },
+    "contentMode": {
+      "value": "PUBLISHED"
+    },
     "cosmosDBName": {
       "value": "dfc-dev-app-sharedresources-cdb"
     },
