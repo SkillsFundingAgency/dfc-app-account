@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
 
 namespace DFC.APP.Account.Data.Contracts
 {

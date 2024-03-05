@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Common;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using FakeItEasy;

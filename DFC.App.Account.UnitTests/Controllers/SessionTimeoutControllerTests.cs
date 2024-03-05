@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Common;
 using DFC.APP.Account.Data.Models;
 using DFC.App.Account.Services;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;

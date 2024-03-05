@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using DFC.APP.Account.Data.Common;
 using DFC.APP.Account.Data.Models;
 using DFC.App.Account.Services.DSS.Models;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using NSubstitute.ExceptionExtensions;

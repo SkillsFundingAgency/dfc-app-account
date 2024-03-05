@@ -19,8 +19,6 @@ using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
-using DFC.Compui.Cosmos;
-using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
@@ -57,7 +55,6 @@ namespace DFC.App.Account
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:Account";
         private readonly IWebHostEnvironment env;
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
@@ -72,9 +69,7 @@ namespace DFC.App.Account
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
-            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            services.AddApplicationInsightsTelemetry();
+             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
             services.AddScoped<IDssReader, DssService>();

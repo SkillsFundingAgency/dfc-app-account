@@ -6,7 +6,6 @@ using DFC.APP.Account.Data.Common;
 using DFC.APP.Account.Data.Models;
 using DFC.App.Account.Models;
 using DFC.App.Account.Services;
-using DFC.Compui.Cosmos.Contracts;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
