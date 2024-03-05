@@ -147,6 +147,9 @@
     },
     "CmsTokenEndPointUrl": {
       "type": "string"
+    },
+    "ContentMode": {
+      "type": "string"
     }
   },
     "variables": {
@@ -515,8 +518,11 @@
                         {
                           "name": "Cms__RedisCacheConnectionString",
                           "value": "[parameters('CmsRedisCacheConnectionString')]"
+                        },
+                        {
+                          "name": "ContentMode__ContentMode",
+                          "value": "[parameters('ContentMode')]"
                         }
-
                       ]
                     }
                 }

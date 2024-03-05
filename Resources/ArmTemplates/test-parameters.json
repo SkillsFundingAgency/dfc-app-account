@@ -131,6 +131,9 @@
     },
     "CmsRedisCacheConnectionString": {
       "value": "teststring"
+    },
+    "ContentMode": {
+      "value": "PUBLISHED"
     }
   }
 }
