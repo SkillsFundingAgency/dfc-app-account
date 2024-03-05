@@ -28,6 +28,7 @@ namespace DFC.App.Account.Controllers
         private readonly Guid _sharedContent;
         public const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
+        private string status;
         protected TViewModel ViewModel { get; }
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config,ISharedContentRedisInterface _sharedContentRedisInterface)
         {
@@ -38,6 +39,7 @@ namespace DFC.App.Account.Controllers
             };
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
              this.sharedContentRedisInterface = _sharedContentRedisInterface;
+            status = config.GetConnectionString("contentMode.contentMode");
         }
 
         [HttpGet]
@@ -73,7 +75,12 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+            if (status == string.Empty)
+            {
+                status = "PUBLISHED";
+            }
+
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId, status);
 
             ViewModel.SharedSideBar = sharedhtml.Html;
 
