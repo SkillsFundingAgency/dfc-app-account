@@ -59,7 +59,7 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
 
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }

@@ -75,7 +75,7 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }
