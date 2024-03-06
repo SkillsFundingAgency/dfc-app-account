@@ -34,9 +34,6 @@
     "cdnUrl": {
       "type": "string"
     },
-    "contentMode": {
-      "type": "string"
-    },
     "CosmosDbResourceGroup": {
       "type": "string"
     },
@@ -289,10 +286,6 @@
                         {
                           "name": "Configuration__CosmosDbConnections__Account__PartitionKey",
                           "value": "[variables('cosmosDbCollectionPartitionKey')]"
-                        },
-                        {
-                          "name": "contentMode__contentMode",
-                          "value": "[parameters('contentMode')]"
                         },
                         {
                           "name": "DssSettings__CustomerApiUrl",

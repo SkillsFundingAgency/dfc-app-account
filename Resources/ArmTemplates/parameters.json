@@ -41,9 +41,6 @@
     "CosmosDbResourceGroup": {
       "value": "__appSharedResourceGroup__"
     },
-    "contentMode": {
-      "value": "__contentMode__"
-    },
     "environment": {
       "value": "__ReleaseEnvironmentName__",
       "metadata": {
