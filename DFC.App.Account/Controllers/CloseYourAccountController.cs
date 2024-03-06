@@ -1,5 +1,4 @@
-﻿using System;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.ViewModels;
@@ -7,13 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.APP.Account.Data.Models;
 using Microsoft.Extensions.Configuration;
-using DFC.Common.SharedContent.Pkg.Netcore;
-using System.Collections.Generic;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
-using NHibernate.Engine;
 
 namespace DFC.App.Account.Controllers
 {
@@ -23,7 +18,7 @@ namespace DFC.App.Account.Controllers
         private readonly IOpenIDConnectClient _openIdConnectClient;
         private new const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
-        private string status;
+        private string status = string.Empty;
 
 
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
@@ -59,7 +54,7 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
 
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }
