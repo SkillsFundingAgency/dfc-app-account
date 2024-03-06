@@ -39,7 +39,7 @@ namespace DFC.App.Account.Controllers
             };
             _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
              this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            status = config.GetConnectionString("ContentMode:ContentMode");
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         [HttpGet]
@@ -75,7 +75,7 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }

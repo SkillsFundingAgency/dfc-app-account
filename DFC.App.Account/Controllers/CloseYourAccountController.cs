@@ -31,7 +31,7 @@ namespace DFC.App.Account.Controllers
         {
             _openIdConnectClient = openIdConnectClient;
             this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            status = config.GetConnectionString("ContentMode:ContentMode");
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         public override async Task<IActionResult> Body()
@@ -59,7 +59,7 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
 
-            if (status == string.Empty)
+            if (string.IsNullOrEmpty(status))
             {
                 status = "PUBLISHED";
             }
