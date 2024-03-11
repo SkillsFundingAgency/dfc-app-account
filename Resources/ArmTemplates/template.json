@@ -150,6 +150,9 @@
     },
     "IocpThreads": {
         "type": "string"
+    },
+    "ContentMode": {
+      "type": "string"
     }
   },
     "variables": {
@@ -522,8 +525,11 @@
                         {
                            "name": "ThreadSettings__IocpThreads",
                            "value": "[parameters('IocpThreads')]"
+                        },
+                        {
+                          "name": "ContentMode__ContentMode",
+                          "value": "[parameters('ContentMode')]"
                         }
-
                       ]
                     }
                 }

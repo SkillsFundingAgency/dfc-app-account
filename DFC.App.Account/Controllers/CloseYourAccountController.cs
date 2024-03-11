@@ -13,6 +13,7 @@ using DFC.Common.SharedContent.Pkg.Netcore;
 using System.Collections.Generic;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using NHibernate.Engine;
 
 namespace DFC.App.Account.Controllers
 {
@@ -22,6 +23,7 @@ namespace DFC.App.Account.Controllers
         private readonly IOpenIDConnectClient _openIdConnectClient;
         private new const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
+        private string status;
 
 
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
@@ -29,6 +31,7 @@ namespace DFC.App.Account.Controllers
         {
             _openIdConnectClient = openIdConnectClient;
             this.sharedContentRedisInterface = _sharedContentRedisInterface;
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         public override async Task<IActionResult> Body()
@@ -55,7 +58,13 @@ namespace DFC.App.Account.Controllers
                 ModelState.AddModelError("Password", "Wrong password. Try again.");
                 return View(ViewModel);
             }
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId, status);
 
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
