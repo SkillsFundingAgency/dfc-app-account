@@ -46,6 +46,8 @@ using Newtonsoft.Json;
 using RestSharp;
 using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 using System.Threading;
+using Microsoft.Azure.Documents.Client;
+using DFC.Compui.Cosmos.Contracts;
 
 namespace DFC.App.Account
 {
