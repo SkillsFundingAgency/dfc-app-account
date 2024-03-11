@@ -7,6 +7,9 @@
     <Compile Remove="HostedServices\CacheReloadBackgroundService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="appsettings-template.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DFC.App.Account.Application\DFC.App.Account.Application.csproj" />
     <ProjectReference Include="..\DFC.APP.Account.CacheContentService\DFC.APP.Account.CacheContentService.csproj" />
     <ProjectReference Include="..\DFC.APP.Account.Data\DFC.APP.Account.Data.csproj" />
@@ -26,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="appsettings-template.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
