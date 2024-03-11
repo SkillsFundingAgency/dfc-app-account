@@ -45,26 +45,37 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using RestSharp;
 using DFC.Common.SharedContent.Pkg.Netcore.Constant;
+using System.Threading;
 
 namespace DFC.App.Account
 {
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly IWebHostEnvironment env;
+        private readonly ILogger<Startup> logger;
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
-        private readonly IWebHostEnvironment env;
+        private const string WorkerThreadsConfigAppSettings = "ThreadSettings:WorkerThreads";
+        private const string IocpThreadsConfigAppSettings = "ThreadSettings:IocpThreads";
+        private const string CosmosDbContentPagesConfigAppSettings = "Configuration:CosmosDbConnections:Account";
+
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             this.Configuration = configuration;
             this.env = env;
-
+            this.logger = logger;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureMinimumThreads();
+
+            var cosmosDbConnectionContentPages = Configuration.GetSection(CosmosDbContentPagesConfigAppSettings).Get<CosmosDbConnection>();
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
+
             services.AddApplicationInsightsTelemetry();
 
             services.AddControllersWithViews();
@@ -232,6 +243,24 @@ namespace DFC.App.Account
                 endpoints.MapControllers();
             });
 
+        }
+        private void ConfigureMinimumThreads()
+        {
+            var workerThreads = Convert.ToInt32(Configuration[WorkerThreadsConfigAppSettings]);
+
+            var iocpThreads = Convert.ToInt32(Configuration[IocpThreadsConfigAppSettings]);
+
+            if (ThreadPool.SetMinThreads(workerThreads, iocpThreads))
+            {
+                logger.LogInformation(
+                    "ConfigureMinimumThreads: Minimum configuration value set. IOCP = {0} and WORKER threads = {1}",
+                    iocpThreads,
+                    workerThreads);
+            }
+            else
+            {
+                logger.LogWarning("ConfigureMinimumThreads: The minimum number of threads was not changed");
+            }
         }
     }
 }

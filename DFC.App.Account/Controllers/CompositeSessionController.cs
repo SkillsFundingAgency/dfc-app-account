@@ -33,8 +33,9 @@ namespace DFC.App.Account.Controllers
             {
                 CompositeSettings = compositeSettings.Value,
             };
-             this.sharedContentRedisInterface = _sharedContentRedisInterface;
-            status = config.GetConnectionString("ContentMode:ContentMode");
+            this.sharedContentRedisInterface = _sharedContentRedisInterface;
+          
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         [HttpGet]
