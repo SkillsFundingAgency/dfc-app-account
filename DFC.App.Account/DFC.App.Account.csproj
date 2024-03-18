@@ -29,11 +29,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="appsettings-template.json" />
+    <None Include="appsettings-template.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.61" />
+    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.71" />
     <PackageReference Include="DFC.Compui.Subscriptions" Version="1.0.96" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
     <PackageReference Include="DFC.Personalisation.Common" Version="0.1.29" />
