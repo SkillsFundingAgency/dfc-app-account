@@ -2,16 +2,13 @@
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DFC.APP.Account.Data.Common;
-using Microsoft.Extensions.Configuration;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Constants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 
 namespace DFC.App.Account.Controllers
@@ -90,8 +87,6 @@ namespace DFC.App.Account.Controllers
         {
             return View(ViewModel);
         }
-       
-      
 
         protected IActionResult RedirectTo(string relativeAddress)
         {

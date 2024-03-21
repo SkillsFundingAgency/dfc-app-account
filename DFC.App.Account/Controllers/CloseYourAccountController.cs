@@ -17,7 +17,6 @@ namespace DFC.App.Account.Controllers
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
-        private new const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
         private string status = string.Empty;
 
@@ -67,10 +66,6 @@ namespace DFC.App.Account.Controllers
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
             ViewModel.SharedSideBar = sharedhtml.Html;
             return base.View("ConfirmDeleteAccount", ViewModel);
-                      
-         
         }
-        
-
     }
 }
