@@ -25,7 +25,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<ErrorController> _logger;
         private IAuthService _authService;
-        //private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
@@ -33,7 +32,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };

@@ -33,7 +33,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         private YourDetailsController _controller;
         private Customer _customer;
         private IAuthService _authService;
-       //private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
         [SetUp]
@@ -42,7 +41,6 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _dssService = Substitute.For<IDssReader>();
             _authService = Substitute.For<IAuthService>();
-            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
             var inMemorySettings = new Dictionary<string, string> {

@@ -34,14 +34,12 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IAuthService _authService;
         private IDssReader _dssReader;
         private IDssWriter _dssWriter;
-        //private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
         private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
         {
-           // _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };

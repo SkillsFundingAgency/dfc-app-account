@@ -32,7 +32,6 @@ namespace DFC.App.Account.UnitTests.Controllers
         [SetUp]
         public void Init()
         {
-            //_documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
