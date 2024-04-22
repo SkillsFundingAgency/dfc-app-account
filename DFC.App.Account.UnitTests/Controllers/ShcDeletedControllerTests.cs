@@ -16,6 +16,8 @@ using DFC.APP.Account.Data.Common;
 using DFC.APP.Account.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -24,13 +26,12 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private IAuthService _authService;
         private ISkillsHealthCheckService _skillsHealthCheckService;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
 
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
@@ -42,11 +43,12 @@ namespace DFC.App.Account.UnitTests.Controllers
             _compositeSettings = Options.Create(new CompositeSettings());
             _authService = Substitute.For<IAuthService>();
             _skillsHealthCheckService = Substitute.For<ISkillsHealthCheckService>();
+            _sharedContentRedisInterface =A.Fake<ISharedContentRedisInterface>();
         }
         [Test]
         public async Task WhenDefaultBodyCalled_ReturnHtml()
         {
-            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -61,7 +63,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalledWithoutId_ReturnHomeHtml()
         {
-            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -76,7 +78,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentsReturnEmpty_ReturnHomeHtml()
         {
-            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -91,7 +93,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenShcDocumentForIdNotFound_ReturnHomeHtml()
         {
-            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -106,7 +108,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _documentService, _config);
+            var controller = new ShcDeletedController(_compositeSettings, _authService, _skillsHealthCheckService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

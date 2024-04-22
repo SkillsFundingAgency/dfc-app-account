@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 
 namespace DFC.App.Account.Controllers
 {
@@ -18,11 +18,13 @@ namespace DFC.App.Account.Controllers
     public class ShcDeletedController : CompositeSessionController<ShcDeletedCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        public ShcDeletedController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        public ShcDeletedController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
+            : base(compositeSettings, authService, config, sharedContentRedis)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
+            this.sharedContentRedis = sharedContentRedis;
         }
         public override async Task<IActionResult> Body()
         {

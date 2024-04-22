@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using FakeItEasy;
 
 namespace DFC.App.Account.UnitTests.Controllers
 {
@@ -23,13 +25,13 @@ namespace DFC.App.Account.UnitTests.Controllers
         private IOptions<CompositeSettings> _compositeSettings;
         private ILogger<ErrorController> _logger;
         private IAuthService _authService;
-        private IDocumentService<CmsApiSharedContentModel> _documentService;
         private IConfiguration _config;
+        private ISharedContentRedisInterface _sharedContentRedisInterface;
+
 
         [SetUp]
         public void Init()
         {
-            _documentService = Substitute.For<IDocumentService<CmsApiSharedContentModel>>();
             var inMemorySettings = new Dictionary<string, string> {
                 {Constants.SharedContentGuidConfig, Guid.NewGuid().ToString()}
             };
@@ -39,6 +41,7 @@ namespace DFC.App.Account.UnitTests.Controllers
                 .Build();
 
             _logger = Substitute.For<ILogger<ErrorController>>();
+            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
             _compositeSettings = Options.Create(new CompositeSettings());
             _logger = new Logger<ErrorController>(new LoggerFactory());
             _authService = Substitute.For<IAuthService>();
@@ -47,7 +50,7 @@ namespace DFC.App.Account.UnitTests.Controllers
         [Test]
         public async Task WhenBodyCalled_ReturnHtml()
         {
-            var controller = new ErrorController(_logger, _compositeSettings, _authService, _documentService, _config);
+            var controller = new ErrorController(_logger, _compositeSettings, _authService, _config, _sharedContentRedisInterface);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

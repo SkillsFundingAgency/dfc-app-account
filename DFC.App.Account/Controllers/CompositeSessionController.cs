@@ -2,16 +2,14 @@
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.DSS.Models;
 using DFC.App.Account.ViewModels;
-using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using DFC.APP.Account.Data.Common;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Constants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 
 namespace DFC.App.Account.Controllers
 {
@@ -22,19 +20,19 @@ namespace DFC.App.Account.Controllers
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
         private readonly IAuthService _authService;
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
-        private readonly Guid _sharedContent;
-
+        private readonly ISharedContentRedisInterface sharedContentRedisInterface;
+        private string status = string.Empty;
         protected TViewModel ViewModel { get; }
-        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
+        protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config,ISharedContentRedisInterface _sharedContentRedisInterface)
         {
             _authService = authService;
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,
             };
-            _sharedContent = config.GetValue<Guid>(Constants.SharedContentGuidConfig);
-            _documentService = documentService;
+            this.sharedContentRedisInterface = _sharedContentRedisInterface;
+          
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         [HttpGet]
@@ -70,8 +68,16 @@ namespace DFC.App.Account.Controllers
         [Route("/body/[controller]/{id?}")]
         public virtual async Task<IActionResult> Body()
         {
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent,"account").ConfigureAwait(false);
-            ViewModel.SharedSideBar = sharedContent?.Content;
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status);
+
+            ViewModel.SharedSideBar = sharedhtml.Html;
+
+
             return View(ViewModel);
         }
 
@@ -81,8 +87,6 @@ namespace DFC.App.Account.Controllers
         {
             return View(ViewModel);
         }
-       
-      
 
         protected IActionResult RedirectTo(string relativeAddress)
         {

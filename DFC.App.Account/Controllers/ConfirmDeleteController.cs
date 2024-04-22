@@ -9,8 +9,9 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 
 namespace DFC.App.Account.Controllers
 {
@@ -18,11 +19,13 @@ namespace DFC.App.Account.Controllers
     public class ConfirmDeleteController : CompositeSessionController<ConfirmDeleteCompositeViewModel>
     {
         private readonly ISkillsHealthCheckService _skillsHealthCheckService;
-        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        public ConfirmDeleteController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, ISkillsHealthCheckService skillsHealthCheckService, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
+            : base(compositeSettings, authService, config, _sharedContentRedisInterface)
         {
             Throw.IfNull(skillsHealthCheckService, nameof(skillsHealthCheckService));
             _skillsHealthCheckService = skillsHealthCheckService;
+            this.sharedContentRedis = _sharedContentRedisInterface;
         }
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public override async Task<IActionResult> Body()
@@ -40,7 +43,6 @@ namespace DFC.App.Account.Controllers
 
             var customer = await GetCustomerDetails();
 
-            //Hard coded value - Needs removing upon account, and DSS integration
             var shcDocuments = _skillsHealthCheckService.GetShcDocumentsForUser("200010216");
 
             if (!shcDocuments.Any())
@@ -64,9 +66,7 @@ namespace DFC.App.Account.Controllers
             if (string.IsNullOrWhiteSpace(viewModel.DocumentId))
                 return RedirectTo(CompositeViewModel.PageId.Home.Value);
 
-            //Code to delete SHC goes here.
-
-
+       
             return RedirectTo($"{CompositeViewModel.PageId.ShcDeleted.Value}?id={viewModel.DocumentId}");
         }
 

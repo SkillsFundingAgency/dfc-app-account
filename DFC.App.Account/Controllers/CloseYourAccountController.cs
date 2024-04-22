@@ -1,5 +1,4 @@
-﻿using System;
-using DFC.App.Account.Models;
+﻿using DFC.App.Account.Models;
 using DFC.App.Account.Services;
 using DFC.App.Account.Services.Auth.Interfaces;
 using DFC.App.Account.ViewModels;
@@ -7,9 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using DFC.APP.Account.Data.Models;
-using DFC.Compui.Cosmos.Contracts;
 using Microsoft.Extensions.Configuration;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
+using Constants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 
 namespace DFC.App.Account.Controllers
 {
@@ -17,15 +17,17 @@ namespace DFC.App.Account.Controllers
     public class CloseYourAccountController : CompositeSessionController<CloseYourAccountCompositeViewModel>
     {
         private readonly IOpenIDConnectClient _openIdConnectClient;
-        private readonly IDocumentService<CmsApiSharedContentModel> _documentService;
-        private readonly Guid _sharedContent;
+        private readonly ISharedContentRedisInterface sharedContentRedisInterface;
+        private string status = string.Empty;
 
-        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IDocumentService<CmsApiSharedContentModel> documentService, IConfiguration config)
-            : base(compositeSettings, authService, documentService, config)
+
+        public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
+            : base(compositeSettings, authService,  config, _sharedContentRedisInterface)
         {
             _openIdConnectClient = openIdConnectClient;
-            _documentService = documentService;
-            _sharedContent = config.GetValue<Guid>("SharedContentGuid");
+            this.sharedContentRedisInterface = _sharedContentRedisInterface;
+
+            status = config.GetSection("ContentMode:ContentMode").Get<string>();
         }
 
         public override async Task<IActionResult> Body()
@@ -53,12 +55,17 @@ namespace DFC.App.Account.Controllers
                 return View(ViewModel);
             }
 
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status);
+
+
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";
-            var sharedContent = await _documentService.GetByIdAsync(_sharedContent, "account").ConfigureAwait(false);
-            ViewModel.SharedSideBar = sharedContent?.Content;
+            ViewModel.SharedSideBar = sharedhtml.Html;
             return base.View("ConfirmDeleteAccount", ViewModel);
         }
-        
-
     }
 }
