@@ -12,10 +12,14 @@ using DFC.App.Account.Services.DSS.Services;
 using DFC.App.Account.Services.SHC.Interfaces;
 using DFC.App.Account.Services.SHC.Models;
 using DFC.App.Account.Services.SHC.Services;
+using DFC.Common.SharedContent.Pkg.Netcore;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
+using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
 using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Telemetry;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Data.Models.PollyOptions;
@@ -29,25 +33,22 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RestSharp;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using DFC.Common.SharedContent.Pkg.Netcore;
-using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
-using RestSharp;
-using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 using System.Threading;
-using Microsoft.Azure.Documents.Client;
-using DFC.Compui.Cosmos.Contracts;
+using System.Threading.Tasks;
 
 namespace DFC.App.Account
 {
@@ -93,7 +94,11 @@ namespace DFC.App.Account
                 var option = new GraphQLHttpClientOptions()
                 {
                     EndPoint = new Uri(Configuration.GetSection(GraphApiUrlAppSettings).Get<string>()),
-                    HttpMessageHandler = new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                    HttpMessageHandler = new CmsRequestHandler(
+                        s.GetService<IHttpClientFactory>(),
+                        s.GetService<IConfiguration>(),
+                        s.GetService<IHttpContextAccessor>(),
+                        s.GetService<IMemoryCache>()),
                 };
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
                 return client;
@@ -103,7 +108,11 @@ namespace DFC.App.Account
                 var option = new RestClientOptions()
                 {
                     BaseUrl = new Uri(Configuration[ConfigKeys.SqlApiUrl]),
-                    ConfigureMessageHandler = handler => new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                    ConfigureMessageHandler = handler => new CmsRequestHandler(
+                        s.GetService<IHttpClientFactory>(),
+                        s.GetService<IConfiguration>(),
+                        s.GetService<IHttpContextAccessor>(),
+                        s.GetService<IMemoryCache>()),
                 };
                 JsonSerializerSettings defaultSettings = new JsonSerializerSettings
                 {
