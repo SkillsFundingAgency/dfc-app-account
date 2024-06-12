@@ -8,14 +8,11 @@
     "apimDSSProxyAddress": {
       "value": "https://foo.api.nationalcareersservice.org.uk"
     },
-    "aspInstances": {
-      "value": 1
+    "appServicePlanSuffix": {
+      "value": "-migrated"
     },
-    "aspTier": {
-      "value": "Standard"
-    },
-    "aspSize": {
-      "value": "2"
+    "appServiceName": {
+      "value": "dfc-foo-app-account-as-ver"
     },
     "cdnUrl": {
       "value": "https://foo.api.nationalcareersservice.org.uk"
