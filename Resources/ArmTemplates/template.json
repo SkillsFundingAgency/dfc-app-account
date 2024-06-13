@@ -139,9 +139,12 @@
       "type": "string"
     },
     "IocpThreads": {
-        "type": "string"
+      "type": "string"
     },
     "ContentMode": {
+      "type": "string"
+    },
+    "Expiry": {
       "type": "string"
     }
   },
@@ -480,12 +483,16 @@
                           "value": "[parameters('WorkerThreads')]"
                         },
                         {
-                           "name": "ThreadSettings__IocpThreads",
-                           "value": "[parameters('IocpThreads')]"
+                          "name": "ThreadSettings__IocpThreads",
+                          "value": "[parameters('IocpThreads')]"
                         },
                         {
                           "name": "ContentMode__ContentMode",
                           "value": "[parameters('ContentMode')]"
+                        },
+                        {
+                          "name": "Cms__Expiry",
+                          "value": "[parameters('Expiry')]"
                         }
                       ]
                     }
