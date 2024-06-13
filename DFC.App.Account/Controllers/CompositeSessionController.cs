@@ -19,20 +19,31 @@ namespace DFC.App.Account.Controllers
     /// </summary>
     public abstract class CompositeSessionController<TViewModel>:Controller where TViewModel : CompositeViewModel, new()
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private readonly IAuthService _authService;
+        private readonly IConfiguration configuration;
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
         private string status = string.Empty;
+        private double expiry = 4;
+
         protected TViewModel ViewModel { get; }
+
         protected CompositeSessionController(IOptions<CompositeSettings> compositeSettings, IAuthService authService, IConfiguration config,ISharedContentRedisInterface _sharedContentRedisInterface)
         {
             _authService = authService;
+            configuration = config;
             ViewModel = new TViewModel()
             {
                 CompositeSettings = compositeSettings.Value,
             };
             this.sharedContentRedisInterface = _sharedContentRedisInterface;
           
-            status = config.GetSection("ContentMode:ContentMode").Get<string>();
+            status = configuration.GetSection("ContentMode:ContentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+            }
         }
 
         [HttpGet]
@@ -73,7 +84,7 @@ namespace DFC.App.Account.Controllers
                 status = "PUBLISHED";
             }
 
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsync<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsyncWithExpiry<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status, expiry);
 
             ViewModel.SharedSideBar = sharedhtml.Html;
 
