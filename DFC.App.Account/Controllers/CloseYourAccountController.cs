@@ -21,7 +21,7 @@ namespace DFC.App.Account.Controllers
         private readonly IOpenIDConnectClient _openIdConnectClient;
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
         private string status = string.Empty;
-        private double expiry = 4;
+        private double expiryInHours = 4;
 
 
         public CloseYourAccountController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,IOpenIDConnectClient openIdConnectClient, IConfiguration config, ISharedContentRedisInterface _sharedContentRedisInterface)
@@ -35,7 +35,10 @@ namespace DFC.App.Account.Controllers
             if (this.configuration != null)
             {
                 string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
-                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
             }
         }
 
@@ -69,7 +72,7 @@ namespace DFC.App.Account.Controllers
                 status = "PUBLISHED";
             }
 
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsyncWithExpiry<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status, expiry);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsyncWithExpiry<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
 
             ViewModel.PageTitle = $"Are you sure you want to close your account? | {ViewModel.PageTitle}";

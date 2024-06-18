@@ -24,7 +24,7 @@ namespace DFC.App.Account.Controllers
         private readonly IConfiguration configuration;
         private readonly ISharedContentRedisInterface sharedContentRedisInterface;
         private string status = string.Empty;
-        private double expiry = 4;
+        private double expiryInHours = 4;
 
         protected TViewModel ViewModel { get; }
 
@@ -42,7 +42,10 @@ namespace DFC.App.Account.Controllers
             if (this.configuration != null)
             {
                 string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
-                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
             }
         }
 
@@ -84,7 +87,7 @@ namespace DFC.App.Account.Controllers
                 status = "PUBLISHED";
             }
 
-            var sharedhtml = await sharedContentRedisInterface.GetDataAsyncWithExpiry<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status, expiry);
+            var sharedhtml = await sharedContentRedisInterface.GetDataAsyncWithExpiry<SharedHtml>(Constants.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
             ViewModel.SharedSideBar = sharedhtml.Html;
 
