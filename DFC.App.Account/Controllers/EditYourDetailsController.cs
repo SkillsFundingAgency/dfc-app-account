@@ -30,6 +30,7 @@ namespace DFC.App.Account.Controllers
         private readonly IDssReader _dssReader;
         private readonly IDssWriter _dssWriter;
         public const string SmsErrorMessage = "You have selected a contact preference which requires a valid mobile number";
+        public const string WhatsAppErrorMessage = "You have selected a contact preference which requires a valid mobile number";
         private readonly ISharedContentRedisInterface sharedContentRedis;
         public EditYourDetailsController(IOptions<CompositeSettings> compositeSettings, IAuthService authService,
             IDssReader dssReader, IDssWriter dssWriter, IConfiguration config, ISharedContentRedisInterface sharedContentRedis)
@@ -122,6 +123,15 @@ namespace DFC.App.Account.Controllers
                 if (string.IsNullOrEmpty(contact.MobileNumber))
                 {
                     modelState.AddModelError("Identity.ContactDetails.MobileNumber", SmsErrorMessage);
+                    return false;
+                }
+            } 
+            else if (viewModel.Identity.ContactDetails.ContactPreference == CommonEnums.Channel.WhatsApp)
+            {
+                var contact = viewModel.Identity.ContactDetails;
+                if (string.IsNullOrEmpty(contact.MobileNumber))
+                {
+                    modelState.AddModelError("Identity.ContactDetails.MobileNumber", WhatsAppErrorMessage);
                     return false;
                 }
             }
