@@ -18,7 +18,9 @@ namespace DFC.App.Account.Application.Common.Enums
             [Display(Name = "SMS")]
             Text = 4,
             [Display(Name = "Post")]
-            Post = 5
+            Post = 5,
+            [Display(Name = "WhatsApp")]
+            WhatsApp = 6
         }
         public enum Gender
         {
