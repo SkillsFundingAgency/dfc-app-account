@@ -48,6 +48,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 using System.Threading;
 using Microsoft.Azure.Documents.Client;
 using DFC.Compui.Cosmos.Contracts;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DFC.App.Account
 {
@@ -92,8 +93,13 @@ namespace DFC.App.Account
             {
                 var option = new GraphQLHttpClientOptions()
                 {
-                    EndPoint = new Uri(Configuration.GetSection(GraphApiUrlAppSettings).Get<string>()),
-                    HttpMessageHandler = new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                    EndPoint = new Uri(Configuration[ConfigKeys.GraphApiUrl] ??
+                throw new ArgumentNullException($"{nameof(ConfigKeys.GraphApiUrl)} is missing or has an invalid value.")),
+                    HttpMessageHandler = new CmsRequestHandler(
+                        s.GetService<IHttpClientFactory>(),
+                        s.GetService<IConfiguration>(),
+                        s.GetService<IHttpContextAccessor>(),
+                        s.GetService<IMemoryCache>()),
                 };
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
                 return client;
@@ -102,10 +108,15 @@ namespace DFC.App.Account
             {
                 var option = new RestClientOptions()
                 {
-                    BaseUrl = new Uri(Configuration[ConfigKeys.SqlApiUrl]),
-                    ConfigureMessageHandler = handler => new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
+                    BaseUrl = new Uri(Configuration[ConfigKeys.SqlApiUrl] ??
+                throw new ArgumentNullException($"{nameof(ConfigKeys.SqlApiUrl)} is missing or has an invalid value.")),
+                    ConfigureMessageHandler = handler => new CmsRequestHandler(
+                        s.GetService<IHttpClientFactory>(),
+                        s.GetService<IConfiguration>(),
+                        s.GetService<IHttpContextAccessor>(),
+                        s.GetService<IMemoryCache>()),
                 };
-                JsonSerializerSettings defaultSettings = new JsonSerializerSettings
+                JsonSerializerSettings defaultSettings = new()
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     DefaultValueHandling = DefaultValueHandling.Include,
@@ -119,7 +130,7 @@ namespace DFC.App.Account
                 return client;
             });
 
-            services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
+            services.AddSingleton<ISharedContentRedisInterfaceStrategyWithRedisExpiry<SharedHtml>, SharedHtmlQueryStrategy>();
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
 
